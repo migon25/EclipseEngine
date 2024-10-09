@@ -1,3 +1,0 @@
-[submodule "EclipseEngine/vcpkg"]
-	path = EclipseEngine/vcpkg
-	url = https://github.com/microsoft/vcpkg.git
