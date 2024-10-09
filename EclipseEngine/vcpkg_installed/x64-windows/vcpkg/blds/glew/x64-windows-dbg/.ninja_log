@@ -1,0 +1,9 @@
+# ninja log v5
+65	156	7501897490094287	CMakeFiles/glew_s.dir/47b8c1ddcbdbf8ff213748683f11832e/x64-windows/vcpkg/blds/glew/src/glew-80f5997feb.clean/build/glew.rc.res	cdb9851d9eb47c32
+9	158	7501897490124302	CMakeFiles/glew.dir/47b8c1ddcbdbf8ff213748683f11832e/x64-windows/vcpkg/blds/glew/src/glew-80f5997feb.clean/build/glew.rc.res	2c8618c330e79bb8
+5	399	7501897492454827	CMakeFiles/glew.dir/47b8c1ddcbdbf8ff213748683f11832e/x64-windows/vcpkg/blds/glew/src/glew-80f5997feb.clean/src/glew.c.obj	4d49b516a366deaa
+62	408	7501897492564855	CMakeFiles/glew_s.dir/47b8c1ddcbdbf8ff213748683f11832e/x64-windows/vcpkg/blds/glew/src/glew-80f5997feb.clean/src/glew.c.obj	d76579f0513a3285
+408	577	7501897493527716	lib/libglew32d.lib	3cda6a920e9dd6a6
+399	1201	7501897499990225	bin/glew32d.dll	898b286b34f26740
+399	1201	7501897499990225	lib/glew32d.lib	898b286b34f26740
+1201	1339	0	CMakeFiles/install.util	b61aa7a00a5f8391
