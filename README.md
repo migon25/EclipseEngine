@@ -1,2 +1,2 @@
-# TestEngine
-A place holder for a 3D game engine made for the game engine subject.
+# EclipseEngine
+A 3D game engine made by 4 university students for the Game Engines subject.
