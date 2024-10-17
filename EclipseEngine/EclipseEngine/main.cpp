@@ -4,81 +4,105 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <gl/glew.h>
 #include <GLFW/glfw3.h>
+#include <IL/il.h>
+#include <IL/ilu.h>
+
+#include "Shader.h"
+#include "VAO.h"
+#include "VBO.h"
+#include "EBO.h"
+
 using namespace std;
 
 using vec3 = glm::dvec3;
 using mat4 = glm::dmat4x4;
 using ivec2 = glm::ivec2;
 
-static const ivec2 WINDOW_SIZE(640, 480);
+static const ivec2 WINDOW_SIZE(711, 400);
 
-struct Camera {
-	vec3 pos = vec3(0, 2, 10);
-	vec3 to = vec3(0, 2, 0);
-	vec3 up = vec3(0, 1, 0);
-	double fov = glm::radians(60.0);
-	double aspect = static_cast<double>(WINDOW_SIZE.x) / WINDOW_SIZE.y;
-	double zNear = 0.1;
-	double zFar = 100.0;
+GLfloat vertices[] =
+{
+	-0.5,-0.5 * float(sqrt(3)) / 3,     0.0f,    0.2f, 0.2f, 0.2f,  0.0f, 0.0f,
+	 0.5,-0.5 * float(sqrt(3)) / 3, 	0.0f,    0.2f, 0.2f, 0.5f,  0.0f, 1.0f,
+	 0.0, 0.5 * float(sqrt(3)) * 2 / 3, 0.0f,    0.2f, 0.2f, 0.9f,  1.0f, 1.0f
 };
 
-struct Triangle {
-	array<vec3, 3> verts = { vec3(-1, -1, 0), vec3(1, -1, 0), vec3(0, 1, 0) };
-	vec3& a = verts[0];
-	vec3& b = verts[1];
-	vec3& c = verts[2];
-};
-
-struct CTriangle {
-	vec3 color;
-	Triangle geometry;
+GLuint indices[] =
+{
+	0,1,2,
 };
 
 static void initOpenGL() {
 	glewInit();
-	glClearColor(0.5, 0.5, 0.5, 1.0);
+	glViewport(0,0,WINDOW_SIZE.x, WINDOW_SIZE.y);
+	glClearColor(0.35f, 0.34f, 0.30f, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 }
 
 int main(int argc, char** argv) {
-	//glfw init and enable context
+	
+	// glfw init and enable context
 	glfwInit();
-	GLFWwindow* window = glfwCreateWindow(640, 480, "GLFW Simple Example", nullptr, nullptr);
+
+	// defining what version of opengl we are using
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+	// creating a window
+	GLFWwindow* window = glfwCreateWindow(WINDOW_SIZE.x, WINDOW_SIZE.y, "ECLIPSE ENGINE", NULL, NULL);
+	// checking if there's an error in window creation
+	if (window == NULL)
+	{
+		cout << "failed to create GLFW WINDOW" << endl;
+		glfwTerminate();
+		return -1;
+	}
+
+	// tell opengl we want to use this window
 	glfwMakeContextCurrent(window);
 
 	initOpenGL();
 
-	Camera camera;
+	Shader shaderProgram("default.vert", "default.frag");
 
-	array<CTriangle, 3> triangles = { CTriangle{vec3(1, 0, 0)}, CTriangle{vec3(0, 1, 0)}, CTriangle{vec3(0, 0, 1)} };
-	for (auto& v : triangles[1].geometry.verts) v += vec3(1, 0, -1);
-	for (auto& v : triangles[2].geometry.verts) v += vec3(2, 0, -2);
+	VAO VAO1;
+	VAO1.Bind();
 
-	//Set projection matrix
-	auto proj_mat = glm::perspective(camera.fov, camera.aspect, camera.zNear, camera.zFar);
-	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixd(&proj_mat[0][0]);
+	VBO VBO1(vertices, sizeof(vertices));
+	EBO EBO1(indices, sizeof(indices));
 
-	while (!glfwWindowShouldClose(window)) {
+	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0);
+	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	VAO1.Unbind();
+	VBO1.Unbind();
+	EBO1.Unbind();
+
+	GLuint uniID = glGetUniformLocation(shaderProgram.ID, "scale");
+
+	while (!glfwWindowShouldClose(window))
+	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//Set view matrix
-		auto view_mat = glm::lookAt(camera.pos, camera.to, camera.up);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadMatrixd(&view_mat[0][0]);
-
-		//paint triangles
-		for (const auto& triangle : triangles) {
-			glColor3d(triangle.color.r, triangle.color.g, triangle.color.b);
-			glBegin(GL_TRIANGLES);
-			for (const auto& vert : triangle.geometry.verts) glVertex3d(vert.x, vert.y, vert.z);
-			glEnd();
-		}
+		shaderProgram.Activate();
+		glUniform1f(uniID, -0.5f);
+		VAO1.Bind();
+		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
+	VAO1.Delete();
+	VBO1.Delete();
+	EBO1.Delete();
+	shaderProgram.Delete();
+
+	// destroy the window
+	glfwDestroyWindow(window);
+	// terminate glfw
 	glfwTerminate();
 	return EXIT_SUCCESS;
 }
