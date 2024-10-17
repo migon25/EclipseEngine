@@ -7,10 +7,10 @@
 #include <IL/il.h>
 #include <IL/ilu.h>
 
-#include "Shader.h"
-#include "VAO.h"
-#include "VBO.h"
-#include "EBO.h"
+#include "EclipseEngine/Shader.h"
+#include "EclipseEngine/VAO.h"
+#include "EclipseEngine/VBO.h"
+#include "EclipseEngine/EBO.h"
 
 using namespace std;
 
