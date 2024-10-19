@@ -4,8 +4,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <gl/glew.h>
 #include <GLFW/glfw3.h>
-#include <IL/il.h>
-#include <IL/ilu.h>
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -15,6 +13,7 @@
 #include "EclipseEngine/VAO.h"
 #include "EclipseEngine/VBO.h"
 #include "EclipseEngine/EBO.h"
+#include "EclipseEngine/TextureLoader.h"
 
 using namespace std;
 
@@ -22,21 +21,24 @@ using vec3 = glm::dvec3;
 using mat4 = glm::dmat4x4;
 using ivec2 = glm::ivec2;
 
-static const ivec2 WINDOW_SIZE(711, 400);
+static const ivec2 WINDOW_SIZE(1100, 619);
 
 GLfloat vertices[] =
 {
-	-0.5,-0.5 * float(sqrt(3)) / 3,     0.0f,    0.2f, 0.2f, 0.2f,  0.0f, 0.0f,
-	 0.5,-0.5 * float(sqrt(3)) / 3, 	0.0f,    0.2f, 0.2f, 0.5f,  0.0f, 1.0f,
-	 0.0, 0.5 * float(sqrt(3)) * 2 / 3, 0.0f,    0.2f, 0.2f, 0.9f,  1.0f, 1.0f
+	 0.5, 0.5, 0.0f,    0.2f, 0.2f, 0.2f,    0.0f, 0.0f,
+	 0.5,-0.5, 0.0f,    0.2f, 0.2f, 0.5f,    0.0f, 1.0f,
+	-0.5,-0.5, 0.0f,    0.2f, 0.2f, 0.9f,    1.0f, 1.0f,
+	-0.5, 0.5, 0.0f,    0.2f, 0.2f, 0.9f,    1.0f, 0.0f
 };
 
 GLuint indices[] =
 {
-	0,1,2,
+	0,1,3,
+	1,2,3
 };
 
-static void initOpenGL() {
+static void initOpenGL() 
+{
 	glewInit();
 	glViewport(0,0,WINDOW_SIZE.x, WINDOW_SIZE.y);
 	glClearColor(0.35f, 0.34f, 0.30f, 1.0);
@@ -84,6 +86,9 @@ int main(int argc, char** argv) {
 	bool show_demo_window = true;
 	bool show_another_window = false;
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+	TextureLoader textureLoader;
+	GLuint texture = textureLoader.loadTexture("cat.jpg");
 
 	Shader shaderProgram("default.vert", "default.frag");
 
@@ -148,10 +153,17 @@ int main(int argc, char** argv) {
 			ImGui::End();
 		}
 
+		// Bind the texture
+		glActiveTexture(GL_TEXTURE0); // Activate texture unit 0
+		glBindTexture(GL_TEXTURE_2D, texture);
+
 		shaderProgram.Activate();
-		glUniform1f(uniID, -0.5f);
+		//glUniform1f(uniID, -0.5f);
+		// Set the texture uniform
+		glUniform1i(glGetUniformLocation(shaderProgram.ID, "tex0"), 0);
+
 		VAO1.Bind();
-		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		// Rendering
 		ImGui::Render();
@@ -170,6 +182,7 @@ int main(int argc, char** argv) {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
+	glDeleteTextures(1, &texture);
 
 	// destroy the window
 	glfwDestroyWindow(window);
