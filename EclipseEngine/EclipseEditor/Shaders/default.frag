@@ -10,5 +10,5 @@ void main()
 {
     //FragColor = vec4(color, 1.0f);
     //FragColor = vec4(1.0f) - vec4(color, 1.0f); //inverted color
-    FragColor = texture(tex0, texCoord);
+    FragColor = vec4(color, 1.0f) * texture(tex0, texCoord);
 }

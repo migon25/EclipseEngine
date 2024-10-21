@@ -1,7 +1,9 @@
 #include <iostream>
 #include <array>
+#include <string>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <gl/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -13,7 +15,7 @@
 #include "EclipseEngine/VAO.h"
 #include "EclipseEngine/VBO.h"
 #include "EclipseEngine/EBO.h"
-#include "EclipseEngine/TextureLoader.h"
+#include "EclipseEngine/Texture.h"
 
 using namespace std;
 
@@ -71,6 +73,8 @@ int main(int argc, char** argv) {
 
 	initOpenGL();
 
+	ilInit();  // Initialize the DevIL library
+
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -87,10 +91,10 @@ int main(int argc, char** argv) {
 	bool show_another_window = false;
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-	TextureLoader textureLoader;
-	GLuint texture = textureLoader.loadTexture("cat.jpg");
+	Shader shaderProgram("Shaders/default.vert", "Shaders/default.frag");
 
-	Shader shaderProgram("default.vert", "default.frag");
+	Texture texture("Assets/cat.jpg",GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+	texture.texUnit(shaderProgram, "tex0", 0);
 
 	VAO VAO1;
 	VAO1.Bind();
@@ -106,6 +110,9 @@ int main(int argc, char** argv) {
 	EBO1.Unbind();
 
 	GLuint uniID = glGetUniformLocation(shaderProgram.ID, "scale");
+
+	float rotation = 0.0f;
+	double prevTime = glfwGetTime();
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -153,17 +160,21 @@ int main(int argc, char** argv) {
 			ImGui::End();
 		}
 
-		// Bind the texture
-		glActiveTexture(GL_TEXTURE0); // Activate texture unit 0
-		glBindTexture(GL_TEXTURE_2D, texture);
-
 		shaderProgram.Activate();
 		//glUniform1f(uniID, -0.5f);
+
+		double crntTime = glfwGetTime();
+		if (crntTime - prevTime >= 1 / 60)
+		{
+			rotation += 0.5f;
+			prevTime = crntTime;
+		}
+
 		// Set the texture uniform
-		glUniform1i(glGetUniformLocation(shaderProgram.ID, "tex0"), 0);
+		texture.Bind();
 
 		VAO1.Bind();
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(int), GL_UNSIGNED_INT, 0);
 
 		// Rendering
 		ImGui::Render();
@@ -182,7 +193,7 @@ int main(int argc, char** argv) {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
-	glDeleteTextures(1, &texture);
+	texture.Delete();
 
 	// destroy the window
 	glfwDestroyWindow(window);
