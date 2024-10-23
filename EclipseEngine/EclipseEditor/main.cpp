@@ -21,16 +21,30 @@ static const ivec2 WINDOW_SIZE(1100, 619);
 
 Vertex vertices[] =
 { //               COORDINATES           /            NORMALS          /           COLORS         /       TEXTURE COORDINATES    //
-	Vertex{glm::vec3(-1.0f, 0.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
-	Vertex{glm::vec3(-1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
-	Vertex{glm::vec3(1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},
-	Vertex{glm::vec3(1.0f, 0.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)}
+	Vertex{glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},  // 0
+	Vertex{glm::vec3( 1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},  // 1
+	Vertex{glm::vec3( 1.0f,  1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},	 // 2
+	Vertex{glm::vec3(-1.0f,  1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},	 // 3
+	Vertex{glm::vec3( 1.0f, -1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},	 // 4
+	Vertex{glm::vec3( 1.0f,  1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},	 // 5
+	Vertex{glm::vec3(-1.0f,  1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},	 // 6
+	Vertex{glm::vec3(-1.0f, -1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)}	 // 7
 };
 
 GLuint indices[] =
 {
 	0, 1, 2,
-	0, 2, 3
+	0, 2, 3,
+	1, 4, 5,
+	1, 5, 2,
+	4, 7, 6,
+	4, 6, 5,
+	7, 0, 3,
+	7, 3, 6,
+	0, 1, 4,
+	0, 4, 7,
+	3, 2, 5,
+	3, 5, 6
 };
 
 Vertex Vertices[] =
@@ -65,9 +79,53 @@ static void initOpenGL()
 {
 	glewInit();
 	glViewport(0,0,WINDOW_SIZE.x, WINDOW_SIZE.y);
-	glClearColor(0.35f, 0.34f, 0.30f, 1.0);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
+}
+
+void SetupImGuiStyle()
+{
+	// Access the global style object
+	ImGuiStyle& style = ImGui::GetStyle();
+	ImVec4* colors = style.Colors;
+
+	// Example of a custom dark theme
+	colors[ImGuiCol_Text] = ImVec4(0.95f, 0.96f, 0.98f, 1.00f);
+	colors[ImGuiCol_WindowBg] = ImVec4(0.35f, 0.34f, 0.30f, 1.00f);     // Window background color
+	colors[ImGuiCol_Button] = ImVec4(0.10f, 0.10f, 0.10, 1.00f);       // Button color
+	colors[ImGuiCol_ButtonHovered] = ImVec4(0.30f, 0.30f, 0.30f, 1.00f); // Button hover color
+	colors[ImGuiCol_ButtonActive] = ImVec4(0.1f, 0.1f, 0.1f, 1.00f);  // Button active color
+	colors[ImGuiCol_FrameBg] = ImVec4(0.10f, 0.10f, 0.10f, 1.00f);      // Background color of widgets
+	colors[ImGuiCol_FrameBgHovered] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f); // Hovered widget background
+
+	// Customize rounding for a modern look
+	style.WindowRounding = 5.0f;     // Window corners rounding
+	style.FrameRounding = 4.0f;      // Frame corners rounding
+	style.GrabRounding = 4.0f;       // Slider and input grab rounding
+	style.ScrollbarRounding = 3.0f;  // Scrollbar rounding
+
+	// Customize paddings
+	style.WindowPadding = ImVec2(10, 10);   // Padding inside windows
+	style.FramePadding = ImVec2(5, 5);      // Padding inside frames
+	style.ItemSpacing = ImVec2(8, 8);       // Spacing between items
+
+	// Set a different theme as a base, if needed (optional)
+	// ImGui::StyleColorsDark();   // Start from the dark style
+	// ImGui::StyleColorsLight();  // Start from the light style
+	// ImGui::StyleColorsClassic(); // Start from the classic style
+}
+
+static void drawFloorGrid(int size, double step) {
+	glColor3ub(0, 0, 0);
+	glBegin(GL_LINES);
+	for (double i = -size; i <= size; i += step) {
+		glVertex3d(i, 0, -size);
+		glVertex3d(i, 0, size);
+		glVertex3d(-size, 0, i);
+		glVertex3d(size, 0, i);
+	}
+	glEnd();
 }
 
 int main(int argc, char** argv) {
@@ -102,9 +160,11 @@ int main(int argc, char** argv) {
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+	io.Fonts->AddFontFromFileTTF("Assets/comic.ttf", 18.0f);  // Specify your font and size
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	// Setup Dear ImGui style
-	ImGui::StyleColorsDark();
+	SetupImGuiStyle();
 
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
@@ -115,7 +175,7 @@ int main(int argc, char** argv) {
 
 	Texture textures[]
 	{
-		Texture("Assets/cat.jpg","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
+		Texture("Assets/Baker_house.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
 	};
 
 	Shader shaderProgram("Shaders/default.vert", "Shaders/default.frag");
@@ -150,6 +210,24 @@ int main(int argc, char** argv) {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+
+		if (ImGui::BeginMainMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				if (ImGui::MenuItem("Open", "Ctrl+O")) { /* Open action */ }
+				if (ImGui::MenuItem("Save", "Ctrl+S")) { /* Save action */ }
+				if (ImGui::MenuItem("Exit", "Alt+F4")) { glfwSetWindowShouldClose(window, true); }
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("Edit"))
+			{
+				if (ImGui::MenuItem("Undo", "Ctrl+Z")) { /* Undo action */ }
+				if (ImGui::MenuItem("Redo", "Ctrl+Y")) { /* Redo action */ }
+				ImGui::EndMenu();
+			}
+			ImGui::EndMainMenuBar();
+		}
 
 		// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 		if (show_demo_window)
@@ -192,6 +270,7 @@ int main(int argc, char** argv) {
 		camera.UpdateMatrix(45.0f, 0.1f, 100.0f);
 
 		cube.Draw(shaderProgram, camera);
+		drawFloorGrid(16, 0.25);
 
 		// Rendering
 		ImGui::Render();
