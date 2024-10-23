@@ -11,33 +11,54 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-#include "EclipseEngine/Shader.h"
-#include "EclipseEngine/VAO.h"
-#include "EclipseEngine/VBO.h"
-#include "EclipseEngine/EBO.h"
-#include "EclipseEngine/Texture.h"
-#include "EclipseEngine/Camera.h"
+#include "EclipseEngine/Mesh.h"
 
 using namespace std;
 
-using vec3 = glm::dvec3;
-using mat4 = glm::dmat4x4;
 using ivec2 = glm::ivec2;
 
 static const ivec2 WINDOW_SIZE(1100, 619);
 
-GLfloat vertices[] =
-{
-	 0.5, 0.5, 0.0f,    0.2f, 0.2f, 0.2f,    0.0f, 0.0f,
-	 0.5,-0.5, 0.0f,    0.2f, 0.2f, 0.5f,    0.0f, 1.0f,
-	-0.5,-0.5, 0.0f,    0.2f, 0.2f, 0.9f,    1.0f, 1.0f,
-	-0.5, 0.5, 0.0f,    0.2f, 0.2f, 0.9f,    1.0f, 0.0f
+Vertex vertices[] =
+{ //               COORDINATES           /            NORMALS          /           COLORS         /       TEXTURE COORDINATES    //
+	Vertex{glm::vec3(-1.0f, 0.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},
+	Vertex{glm::vec3(-1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},
+	Vertex{glm::vec3(1.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},
+	Vertex{glm::vec3(1.0f, 0.0f,  1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)}
 };
 
 GLuint indices[] =
 {
-	0,1,3,
-	1,2,3
+	0, 1, 2,
+	0, 2, 3
+};
+
+Vertex Vertices[] =
+{
+	Vertex{glm::vec3(-0.1f,-0.1f,  0.1f)},
+	Vertex{glm::vec3(-0.1f,-0.1f, -0.1f)},
+	Vertex{glm::vec3( 0.1f,-0.1f, -0.1f)},
+	Vertex{glm::vec3( 0.1f,-0.1f,  0.1f)},
+	Vertex{glm::vec3(-0.1f, 0.1f,  0.1f)},
+	Vertex{glm::vec3(-0.1f, 0.1f, -0.1f)},
+	Vertex{glm::vec3( 0.1f, 0.1f, -0.1f)},
+	Vertex{glm::vec3( 0.1f, 0.1f,  0.1f)}
+};
+
+GLuint Indices[] =
+{
+	0, 1, 2,
+	0, 2, 3,
+	0, 4, 7,
+	0, 7, 3,
+	3, 7, 6,
+	3, 6, 2,
+	2, 6, 5,
+	2, 5, 1,
+	1, 5, 4,
+	1, 4, 0,
+	4, 5, 6,
+	4, 6, 7
 };
 
 static void initOpenGL() 
@@ -92,23 +113,28 @@ int main(int argc, char** argv) {
 	bool show_another_window = false;
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+	Texture textures[]
+	{
+		Texture("Assets/cat.jpg","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
+	};
+
 	Shader shaderProgram("Shaders/default.vert", "Shaders/default.frag");
+	std::vector <Vertex> verts(vertices, vertices + sizeof(vertices) / sizeof(Vertex));
+	std::vector <GLuint> ind(indices, indices + sizeof(indices) / sizeof(GLuint));
+	std::vector <Texture> tex(textures, textures + sizeof(textures) / sizeof(Texture));
+	Mesh cube(verts, ind, tex);
 
-	Texture texture("Assets/cat.jpg",GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
-	texture.texUnit(shaderProgram, "tex0", 0);
+	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
+	glm::vec3 objectPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::mat4 objectModel = glm::mat4(1.0f);
+	objectModel = glm::translate(objectModel, objectPos);
 
-	VAO VAO1;
-	VAO1.Bind();
 
-	VBO VBO1(vertices, sizeof(vertices));
-	EBO EBO1(indices, sizeof(indices));
-
-	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0);
-	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	VAO1.Unbind();
-	VBO1.Unbind();
-	EBO1.Unbind();
+	shaderProgram.Activate();
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(objectModel));
+	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
 	Camera camera(WINDOW_SIZE.x, WINDOW_SIZE.y, glm::vec3(0.0f, 0.0f, 2.0f));
 
@@ -119,8 +145,6 @@ int main(int argc, char** argv) {
 		glfwGetWindowSize(window, &windowWidth, &windowHeight);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		camera.Inputs(window);
 
 		// Start the Dear ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
@@ -164,15 +188,10 @@ int main(int argc, char** argv) {
 			ImGui::End();
 		}
 
-		shaderProgram.Activate();
+		camera.Inputs(window);
+		camera.UpdateMatrix(45.0f, 0.1f, 100.0f);
 
-		camera.Matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
-
-		// Set the texture uniform
-		texture.Bind();
-
-		VAO1.Bind();
-		glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(int), GL_UNSIGNED_INT, 0);
+		cube.Draw(shaderProgram, camera);
 
 		// Rendering
 		ImGui::Render();
@@ -182,16 +201,12 @@ int main(int argc, char** argv) {
 		glfwPollEvents();
 	}
 
-	VAO1.Delete();
-	VBO1.Delete();
-	EBO1.Delete();
 	shaderProgram.Delete();
 
 	// Cleanup
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
-	texture.Delete();
 
 	// destroy the window
 	glfwDestroyWindow(window);

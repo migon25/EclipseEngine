@@ -2,7 +2,7 @@
 #include <iostream>
 
 // Constructor: Initializes DevIL
-Texture::Texture(const char* filename, GLenum texType, GLenum slot, GLenum format, GLenum pixelType)
+Texture::Texture(const char* filename, const char* texType, GLuint slot, GLenum format, GLenum pixelType)
 {
     // Assigns the type of the texture ot the texture object
     type = texType;
@@ -24,29 +24,30 @@ Texture::Texture(const char* filename, GLenum texType, GLenum slot, GLenum forma
     // Generates an OpenGL texture object
     glGenTextures(1, &textureID);
     // Assigns the texture to a Texture Unit
-    glActiveTexture(slot);
-    glBindTexture(texType, textureID);
+    glActiveTexture(GL_TEXTURE0 + slot);
+    unit = slot;
+    glBindTexture(GL_TEXTURE_2D, textureID);
 
     // Assigns the image to the OpenGL Texture object
-    glTexImage2D(texType, 0, GL_RGBA, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),
         0, format, pixelType, ilGetData());
 
-    glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-    glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(texType, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(texType, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     // Generates MipMaps
-    glGenerateMipmap(texType);
+    glGenerateMipmap(GL_TEXTURE_2D);
 
     // Clean up the DevIL image ID
     ilDeleteImages(1, &textureID);
 
     // Unbinds the OpenGL Texture object so that it can't accidentally be modified
-    glBindTexture(texType, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Texture::texUnit(Shader& shader, const char* uniform, GLuint unit)
+void Texture::TexUnit(Shader& shader, const char* uniform, GLuint unit)
 {
     // Gets the location of the uniform
     GLuint texUni = glGetUniformLocation(shader.ID, uniform);
@@ -58,12 +59,13 @@ void Texture::texUnit(Shader& shader, const char* uniform, GLuint unit)
 
 void Texture::Bind()
 {
-    glBindTexture(type, textureID);
+    glActiveTexture(GL_TEXTURE0 + unit);
+    glBindTexture(GL_TEXTURE_2D, textureID);
 }
 
 void Texture::Unbind()
 {
-    glBindTexture(type, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Texture::Delete()
