@@ -198,6 +198,9 @@ int main(int argc, char** argv) {
 
 	Camera camera(WINDOW_SIZE.x, WINDOW_SIZE.y, glm::vec3(0.0f, 0.0f, 2.0f));
 
+	// Register the scroll callback for zoom control
+	glfwSetScrollCallback(window, Camera::scroll_callback);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		// Get the current window size dynamically
@@ -267,7 +270,7 @@ int main(int argc, char** argv) {
 		}
 
 		camera.Inputs(window);
-		camera.UpdateMatrix(45.0f, 0.1f, 100.0f);
+		camera.UpdateMatrix(0.1f, 100.0f);
 
 		cube.Draw(shaderProgram, camera);
 		drawFloorGrid(16, 0.25);
