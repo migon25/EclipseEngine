@@ -47,34 +47,6 @@ GLuint indices[] =
 	3, 5, 6
 };
 
-Vertex Vertices[] =
-{
-	Vertex{glm::vec3(-0.1f,-0.1f,  0.1f)},
-	Vertex{glm::vec3(-0.1f,-0.1f, -0.1f)},
-	Vertex{glm::vec3( 0.1f,-0.1f, -0.1f)},
-	Vertex{glm::vec3( 0.1f,-0.1f,  0.1f)},
-	Vertex{glm::vec3(-0.1f, 0.1f,  0.1f)},
-	Vertex{glm::vec3(-0.1f, 0.1f, -0.1f)},
-	Vertex{glm::vec3( 0.1f, 0.1f, -0.1f)},
-	Vertex{glm::vec3( 0.1f, 0.1f,  0.1f)}
-};
-
-GLuint Indices[] =
-{
-	0, 1, 2,
-	0, 2, 3,
-	0, 4, 7,
-	0, 7, 3,
-	3, 7, 6,
-	3, 6, 2,
-	2, 6, 5,
-	2, 5, 1,
-	1, 5, 4,
-	1, 4, 0,
-	4, 5, 6,
-	4, 6, 7
-};
-
 static void initOpenGL() 
 {
 	glewInit();
@@ -109,23 +81,6 @@ void SetupImGuiStyle()
 	style.WindowPadding = ImVec2(10, 10);   // Padding inside windows
 	style.FramePadding = ImVec2(5, 5);      // Padding inside frames
 	style.ItemSpacing = ImVec2(8, 8);       // Spacing between items
-
-	// Set a different theme as a base, if needed (optional)
-	// ImGui::StyleColorsDark();   // Start from the dark style
-	// ImGui::StyleColorsLight();  // Start from the light style
-	// ImGui::StyleColorsClassic(); // Start from the classic style
-}
-
-static void drawFloorGrid(int size, double step) {
-	glColor3ub(0, 0, 0);
-	glBegin(GL_LINES);
-	for (double i = -size; i <= size; i += step) {
-		glVertex3d(i, 0, -size);
-		glVertex3d(i, 0, size);
-		glVertex3d(-size, 0, i);
-		glVertex3d(size, 0, i);
-	}
-	glEnd();
 }
 
 int main(int argc, char** argv) {
@@ -273,7 +228,6 @@ int main(int argc, char** argv) {
 		camera.UpdateMatrix(0.1f, 100.0f);
 
 		cube.Draw(shaderProgram, camera);
-		drawFloorGrid(16, 0.25);
 
 		// Rendering
 		ImGui::Render();
