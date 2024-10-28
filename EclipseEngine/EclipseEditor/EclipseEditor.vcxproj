@@ -136,12 +136,23 @@
     <None Include="default.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BasicPanel.cpp" />
+    <ClCompile Include="FPSpanel.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MenuPanel.cpp" />
+    <ClCompile Include="PanelHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EclipseEngine\EclipseEngine.vcxproj">
       <Project>{d4f94c1e-d350-4627-9b63-6fc15752b940}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BasicPanel.h" />
+    <ClInclude Include="FPSpanel.h" />
+    <ClInclude Include="MenuPanel.h" />
+    <ClInclude Include="Panel.h" />
+    <ClInclude Include="PanelHandler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
