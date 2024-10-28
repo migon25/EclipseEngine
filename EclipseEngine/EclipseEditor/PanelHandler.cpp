@@ -3,6 +3,7 @@
 #include "MenuPanel.h"
 #include "BasicPanel.h"
 #include "FPSpanel.h"
+#include "ConsolePanel.h"
 
 PanelHandler::PanelHandler(GLFWwindow* window) : m_Window(window) {
     IMGUI_CHECKVERSION();
@@ -52,6 +53,7 @@ void PanelHandler::InitializePanels()
     AddPanel(std::make_unique<MenuPanel>("Menu Panel", *this));
     AddPanel(std::make_unique<BasicPanel>("Basic Panel", true));
     AddPanel(std::make_unique<FPSPanel>("FPS Panel", false)); 
+    AddPanel(std::make_unique<ConsolePanel>("Console Panel", true));
 }
 
 void PanelHandler::AddPanel(std::unique_ptr<Panel> panel) {

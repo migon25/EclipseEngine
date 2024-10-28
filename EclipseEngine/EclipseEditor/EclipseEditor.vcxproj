@@ -137,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BasicPanel.cpp" />
+    <ClCompile Include="ConsolePanel.cpp" />
     <ClCompile Include="FPSpanel.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuPanel.cpp" />
@@ -149,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicPanel.h" />
+    <ClInclude Include="ConsolePanel.h" />
     <ClInclude Include="FPSpanel.h" />
     <ClInclude Include="MenuPanel.h" />
     <ClInclude Include="Panel.h" />

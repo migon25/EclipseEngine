@@ -17,6 +17,7 @@
 #include "EclipseEngine/EBO.h"
 #include "PanelHandler.h"
 #include "FPSpanel.h"
+#include "ConsolePanel.h"
 
 using namespace std;
 
@@ -92,6 +93,9 @@ int main(int argc, char** argv) {
 	float lastFrame = 0.0f;
 	std::unique_ptr<Panel>* panelPtr = &panelHandler.GetPanel("FPS Panel");
 
+	// console panel
+	auto consolePanel = dynamic_cast<ConsolePanel*>(panelHandler.GetPanel("Console Panel").get());
+
 	while (!glfwWindowShouldClose(window))
 	{
 		// fps
@@ -109,6 +113,16 @@ int main(int argc, char** argv) {
 		if (panelPtr) {
 			if (auto* fpsPanel = dynamic_cast<FPSPanel*>(panelPtr->get())) {
 				fpsPanel->Update(fps, ms);
+			}
+		}
+
+		if (consolePanel) {
+			if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) {
+				// PLACEHOLDER OF THE CONSOLE FOR LOADING GEOMETRY THERE
+				// SHOULD BE SMTHING IN THE ENGINE TO ACTIVATE THIS CODE
+				consolePanel->Log("Loading geometry from ASSIMP...");
+				// Load your geometry here
+				consolePanel->Log("Geometry loaded successfully.");
 			}
 		}
 
