@@ -1,11 +1,11 @@
 #include <iostream>
 #include <array>
+#include <string>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <gl/glew.h>
 #include <GLFW/glfw3.h>
-#include <IL/il.h>
-#include <IL/ilu.h>
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -15,34 +15,50 @@
 #include "EclipseEngine/VAO.h"
 #include "EclipseEngine/VBO.h"
 #include "EclipseEngine/EBO.h"
+#include "EclipseEngine/Mesh.h"
 #include "PanelHandler.h"
 #include "FPSpanel.h"
 #include "ConsolePanel.h"
 
 using namespace std;
 
-using vec3 = glm::dvec3;
-using mat4 = glm::dmat4x4;
 using ivec2 = glm::ivec2;
 
-static const ivec2 WINDOW_SIZE(711, 400);
+static const ivec2 WINDOW_SIZE(1100, 619);
 
-GLfloat vertices[] =
-{
-	-0.5,-0.5 * float(sqrt(3)) / 3,     0.0f,    0.2f, 0.2f, 0.2f,  0.0f, 0.0f,
-	 0.5,-0.5 * float(sqrt(3)) / 3, 	0.0f,    0.2f, 0.2f, 0.5f,  0.0f, 1.0f,
-	 0.0, 0.5 * float(sqrt(3)) * 2 / 3, 0.0f,    0.2f, 0.2f, 0.9f,  1.0f, 1.0f
+Vertex vertices[] =
+{ //               COORDINATES           /            NORMALS          /           COLORS         /       TEXTURE COORDINATES    //
+	Vertex{glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},  // 0
+	Vertex{glm::vec3( 1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},  // 1
+	Vertex{glm::vec3( 1.0f,  1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},	 // 2
+	Vertex{glm::vec3(-1.0f,  1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},	 // 3
+	Vertex{glm::vec3( 1.0f, -1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},	 // 4
+	Vertex{glm::vec3( 1.0f,  1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},	 // 5
+	Vertex{glm::vec3(-1.0f,  1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},	 // 6
+	Vertex{glm::vec3(-1.0f, -1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)}	 // 7
 };
 
 GLuint indices[] =
 {
-	0,1,2,
+	0, 1, 2,
+	0, 2, 3,
+	1, 4, 5,
+	1, 5, 2,
+	4, 7, 6,
+	4, 6, 5,
+	7, 0, 3,
+	7, 3, 6,
+	0, 1, 4,
+	0, 4, 7,
+	3, 2, 5,
+	3, 5, 6
 };
 
-static void initOpenGL() {
+static void initOpenGL() 
+{
 	glewInit();
 	glViewport(0,0,WINDOW_SIZE.x, WINDOW_SIZE.y);
-	glClearColor(0.35f, 0.34f, 0.30f, 1.0);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 }
@@ -70,23 +86,35 @@ int main(int argc, char** argv) {
 	initOpenGL();
 
 	PanelHandler panelHandler(window);
+	ilInit();  // Initialize the DevIL library
 
-	Shader shaderProgram("default.vert", "default.frag");
+	Texture textures[]
+	{
+		Texture("Assets/Baker_house.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
+	};
 
-	VAO VAO1;
-	VAO1.Bind();
+	Shader shaderProgram("Shaders/default.vert", "Shaders/default.frag");
+	std::vector <Vertex> verts(vertices, vertices + sizeof(vertices) / sizeof(Vertex));
+	std::vector <GLuint> ind(indices, indices + sizeof(indices) / sizeof(GLuint));
+	std::vector <Texture> tex(textures, textures + sizeof(textures) / sizeof(Texture));
+	Mesh cube(verts, ind, tex);
 
-	VBO VBO1(vertices, sizeof(vertices));
-	EBO EBO1(indices, sizeof(indices));
+	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
+	glm::vec3 objectPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::mat4 objectModel = glm::mat4(1.0f);
+	objectModel = glm::translate(objectModel, objectPos);
 
-	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0);
-	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	VAO1.Unbind();
-	VBO1.Unbind();
-	EBO1.Unbind();
 
-	GLuint uniID = glGetUniformLocation(shaderProgram.ID, "scale");
+	shaderProgram.Activate();
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(objectModel));
+	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+
+	Camera camera(WINDOW_SIZE.x, WINDOW_SIZE.y, glm::vec3(0.0f, 0.0f, 2.0f));
+
+	// Register the scroll callback for zoom control
+	glfwSetScrollCallback(window, Camera::scroll_callback);
 
 	// Variables to track FPS and milliseconds per frame
 	float deltaTime = 0.0f;
@@ -95,7 +123,7 @@ int main(int argc, char** argv) {
 
 	// console panel
 	auto consolePanel = dynamic_cast<ConsolePanel*>(panelHandler.GetPanel("Console Panel").get());
-
+  
 	while (!glfwWindowShouldClose(window))
 	{
 		// fps
@@ -134,6 +162,11 @@ int main(int argc, char** argv) {
 		VAO1.Bind();
 		glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(int), GL_UNSIGNED_INT, 0);
 
+		camera.Inputs(window);
+		camera.UpdateMatrix(0.1f, 100.0f);
+
+		cube.Draw(shaderProgram, camera);
+
 		// Rendering ImGui
 		panelHandler.Render();
 
@@ -141,9 +174,6 @@ int main(int argc, char** argv) {
 		glfwPollEvents();
 	}
 
-	VAO1.Delete();
-	VBO1.Delete();
-	EBO1.Delete();
 	shaderProgram.Delete();
 
 	// destroy the window
