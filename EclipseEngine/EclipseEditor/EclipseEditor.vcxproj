@@ -87,7 +87,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="default.frag" />
+    <None Include="default.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BasicPanel.cpp" />
+    <ClCompile Include="ConsolePanel.cpp" />
+    <ClCompile Include="FPSpanel.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MenuPanel.cpp" />
+    <ClCompile Include="PanelHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EclipseEngine\EclipseEngine.vcxproj">
@@ -95,6 +104,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BasicPanel.h" />
+    <ClInclude Include="ConsolePanel.h" />
+    <ClInclude Include="FPSpanel.h" />
+    <ClInclude Include="MenuPanel.h" />
+    <ClInclude Include="Panel.h" />
+    <ClInclude Include="PanelHandler.h" />
     <None Include="Shaders\default.frag" />
     <None Include="Shaders\default.vert" />
   </ItemGroup>
