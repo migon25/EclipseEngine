@@ -113,9 +113,14 @@ int main(int argc, char** argv) {
 		float fps = 1.0f / deltaTime;
 		float ms = deltaTime * 1000.0f;
 
+		panelHandler.NewFrame();
+
 		core.BeginFrame();
 
-		panelHandler.NewFrame();
+		camera.Inputs(core.GetWindow());
+		camera.UpdateMatrix(0.1f, 100.0f);
+
+		cube.Draw(shaderProgram, camera);
 
 		// fps
 		if (panelPtr) {
@@ -124,16 +129,10 @@ int main(int argc, char** argv) {
 			}
 		}
 
-		// Render all added panels
-		panelHandler.RenderPanels();
-
-		camera.Inputs(core.GetWindow());
-		camera.UpdateMatrix(0.1f, 100.0f);
-
-		cube.Draw(shaderProgram, camera);
-
 		// Rendering ImGui
 		panelHandler.Render();
+
+		panelHandler.EndFrame();
 
 		core.EndFrame();
 	}

@@ -17,6 +17,7 @@ public:
 
     void NewFrame();
     void Render();
+    void EndFrame();
     void ShowDemoWindow(bool* p_open);
 
     // Panel management

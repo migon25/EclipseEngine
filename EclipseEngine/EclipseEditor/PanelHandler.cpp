@@ -34,6 +34,46 @@ void PanelHandler::NewFrame() {
 }
 
 void PanelHandler::Render() {
+
+    // docking space
+    ImGuiViewport* viewport = ImGui::GetMainViewport();
+    ImGui::SetNextWindowPos(viewport->WorkPos);
+    ImGui::SetNextWindowSize(viewport->WorkSize);
+    ImGui::SetNextWindowViewport(viewport->ID);
+
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+
+    ImGuiWindowFlags dockspaceFlags = ImGuiWindowFlags_NoDocking |
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoBringToFrontOnFocus |
+        ImGuiWindowFlags_NoNavFocus |
+        ImGuiWindowFlags_AlwaysAutoResize | // Makes the window resize automatically
+        ImGuiWindowFlags_UnsavedDocument |
+        ImGuiDockNodeFlags_AutoHideTabBar |
+        ImGuiWindowFlags_NoBackground;
+
+    ImGui::Begin("DockSpace", nullptr, dockspaceFlags);
+
+    // Create the dockspace node
+    ImGuiID dockspaceID = ImGui::GetID("DockSpace");
+    ImGui::DockSpace(dockspaceID, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
+    ImGui::GetStyle().Colors[ImGuiCol_DockingEmptyBg] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f); // Transparent background for docking
+
+    RenderPanels();
+
+    ImGui::PopStyleVar(3);
+
+    ImGui::End();
+}
+
+void PanelHandler::EndFrame()
+{
+    // End the ImGui frame and render it
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -52,7 +92,7 @@ void PanelHandler::InitializePanels()
 {
     AddPanel(std::make_unique<MenuPanel>("Menu Panel", *this));
     AddPanel(std::make_unique<BasicPanel>("Basic Panel", true));
-    AddPanel(std::make_unique<FPSPanel>("FPS Panel", false)); 
+    AddPanel(std::make_unique<FPSPanel>("FPS Panel", true)); 
     AddPanel(std::make_unique<ConsolePanel>("Console Panel", true));
 }
 
