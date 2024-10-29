@@ -16,6 +16,8 @@
 #include "EclipseEngine/VBO.h"
 #include "EclipseEngine/EBO.h"
 #include "EclipseEngine/Mesh.h"
+#include "EclipseEngine/Core.h"
+#include "EclipseEngine/Logger.h"
 #include "PanelHandler.h"
 #include "FPSpanel.h"
 #include "ConsolePanel.h"
@@ -54,38 +56,17 @@ GLuint indices[] =
 	3, 5, 6
 };
 
-static void initOpenGL() 
-{
-	glewInit();
-	glViewport(0,0,WINDOW_SIZE.x, WINDOW_SIZE.y);
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
-}
-
 int main(int argc, char** argv) {
+	Logger::Init();
 	
-	glfwInit();
+	Core core(WINDOW_SIZE.x, WINDOW_SIZE.y, "Eclipse Engine");
 
-	// defining what version of opengl we are using
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-	// creating a window
-	GLFWwindow* window = glfwCreateWindow(WINDOW_SIZE.x, WINDOW_SIZE.y, "ECLIPSE ENGINE", NULL, NULL);
-	if (window == NULL)
-	{
-		cout << "failed to create GLFW WINDOW" << endl;
-		glfwTerminate();
+	if (!core.Initialize()) {
+		std::cerr << "Engine initialization failed." << std::endl;
 		return -1;
 	}
 
-	glfwMakeContextCurrent(window);
-
-	initOpenGL();
-
-	PanelHandler panelHandler(window);
+	PanelHandler panelHandler(core.GetWindow());
 	ilInit();  // Initialize the DevIL library
 
 	Texture textures[]
@@ -114,7 +95,7 @@ int main(int argc, char** argv) {
 	Camera camera(WINDOW_SIZE.x, WINDOW_SIZE.y, glm::vec3(0.0f, 0.0f, 2.0f));
 
 	// Register the scroll callback for zoom control
-	glfwSetScrollCallback(window, Camera::scroll_callback);
+	glfwSetScrollCallback(core.GetWindow(), Camera::scroll_callback);
 
 	// Variables to track FPS and milliseconds per frame
 	float deltaTime = 0.0f;
@@ -124,7 +105,7 @@ int main(int argc, char** argv) {
 	// console panel
 	auto consolePanel = dynamic_cast<ConsolePanel*>(panelHandler.GetPanel("Console Panel").get());
   
-	while (!glfwWindowShouldClose(window))
+	while (!core.ShouldClose())
 	{
 		// fps
 		float currentFrame = glfwGetTime();
@@ -133,7 +114,7 @@ int main(int argc, char** argv) {
 		float fps = 1.0f / deltaTime;
 		float ms = deltaTime * 1000.0f;
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		core.BeginFrame();
 
 		panelHandler.NewFrame();
 
@@ -145,7 +126,7 @@ int main(int argc, char** argv) {
 		}
 
 		if (consolePanel) {
-			if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) {
+			if (glfwGetKey(core.GetWindow(), GLFW_KEY_K) == GLFW_PRESS) {
 				// PLACEHOLDER OF THE CONSOLE FOR LOADING GEOMETRY THERE
 				// SHOULD BE SMTHING IN THE ENGINE TO ACTIVATE THIS CODE
 				consolePanel->Log("Loading geometry from ASSIMP...");
@@ -157,12 +138,7 @@ int main(int argc, char** argv) {
 		// Render all added panels
 		panelHandler.RenderPanels();
 
-		shaderProgram.Activate();
-		glUniform1f(uniID, -0.5f);
-		VAO1.Bind();
-		glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(int), GL_UNSIGNED_INT, 0);
-
-		camera.Inputs(window);
+		camera.Inputs(core.GetWindow());
 		camera.UpdateMatrix(0.1f, 100.0f);
 
 		cube.Draw(shaderProgram, camera);
@@ -170,15 +146,11 @@ int main(int argc, char** argv) {
 		// Rendering ImGui
 		panelHandler.Render();
 
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+		core.EndFrame();
 	}
 
 	shaderProgram.Delete();
+	Logger::Close();
 
-	// destroy the window
-	glfwDestroyWindow(window);
-	// terminate glfw
-	glfwTerminate();
 	return EXIT_SUCCESS;
 }
