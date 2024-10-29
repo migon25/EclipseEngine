@@ -5,7 +5,7 @@ Logger::LogCallback Logger::m_Callback = nullptr;
 
 void Logger::Init(const std::string& filename)
 {
-    m_LogStream.open(filename, std::ios::out | std::ios::app);
+    m_LogStream.open(filename, std::ios::out | std::ios::trunc);
 }
 
 void Logger::Log(const std::string& message)

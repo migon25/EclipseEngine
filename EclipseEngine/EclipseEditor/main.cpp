@@ -92,7 +92,7 @@ int main(int argc, char** argv) {
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
-	Camera camera(WINDOW_SIZE.x, WINDOW_SIZE.y, glm::vec3(0.0f, 0.0f, 2.0f));
+	Camera camera(WINDOW_SIZE.x, WINDOW_SIZE.y, glm::vec3(0.0f, 0.0f, 5.0f));
 
 	// Register the scroll callback for zoom control
 	glfwSetScrollCallback(core.GetWindow(), Camera::scroll_callback);
@@ -105,8 +105,7 @@ int main(int argc, char** argv) {
 	// console panel
 	auto consolePanel = dynamic_cast<ConsolePanel*>(panelHandler.GetPanel("Console Panel").get());
   
-	while (!core.ShouldClose())
-	{
+	while (!core.ShouldClose()){
 		// fps
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
@@ -122,16 +121,6 @@ int main(int argc, char** argv) {
 		if (panelPtr) {
 			if (auto* fpsPanel = dynamic_cast<FPSPanel*>(panelPtr->get())) {
 				fpsPanel->Update(fps, ms);
-			}
-		}
-
-		if (consolePanel) {
-			if (glfwGetKey(core.GetWindow(), GLFW_KEY_K) == GLFW_PRESS) {
-				// PLACEHOLDER OF THE CONSOLE FOR LOADING GEOMETRY THERE
-				// SHOULD BE SMTHING IN THE ENGINE TO ACTIVATE THIS CODE
-				consolePanel->Log("Loading geometry from ASSIMP...");
-				// Load your geometry here
-				consolePanel->Log("Geometry loaded successfully.");
 			}
 		}
 
