@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "Logger.h"
 
 float Camera::scrollOffset = 0.0f;  // Initialize static scroll offset
 
@@ -37,12 +38,12 @@ void Camera::Inputs(GLFWwindow* window)
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
     {
         // Flyby Movement (W, A, S, D, Q, E) only when RMB is pressed
-        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) Position += speed * Orientation;
-        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) Position -= speed * Orientation;
-        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) Position -= glm::normalize(glm::cross(Orientation, Up)) * speed;
-        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) Position += glm::normalize(glm::cross(Orientation, Up)) * speed;
-        if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) Position -= speed * Up;
-        if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) Position += speed * Up;
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) { Position += speed * Orientation; Logger::Log("Pressed W"); }
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) { Position -= speed * Orientation; Logger::Log("Pressed S");}
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) { Position -= glm::normalize(glm::cross(Orientation, Up)) * speed; Logger::Log("Pressed A"); }
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) { Position += glm::normalize(glm::cross(Orientation, Up)) * speed; Logger::Log("Pressed D"); }
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) { Position -= speed * Up; Logger::Log("Pressed CTRL"); }
+        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) { Position += speed * Up; Logger::Log("Pressed SPACE"); }
 
         // Hide cursor and handle cursor centering for look-around
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
