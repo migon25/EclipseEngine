@@ -4,31 +4,20 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <functional>
 
 class Logger {
 public:
-    static void Init(const std::string& filename = "log.txt")
-    {
-        m_LogStream.open(filename, std::ios::out | std::ios::app);
-    }
+    using LogCallback = std::function<void(const std::string&)>;
 
-    static void Log(const std::string& message)
-    {
-        if (m_LogStream.is_open()) {
-            m_LogStream << message << std::endl;
-        }
-        std::cout << message << std::endl; // Print to console as well
-    }
-
-    static void Close() 
-    {
-        if (m_LogStream.is_open()) {
-            m_LogStream.close();
-        }
-    }
+    static void Init(const std::string& filename = "log.txt");
+    static void Log(const std::string& message);
+    static void SetCallback(LogCallback callback); // callback
+    static void Close();
 
 private:
     static std::ofstream m_LogStream;
+    static LogCallback m_Callback; // Store the callback function
 };
 
 #endif // LOGGER_H
