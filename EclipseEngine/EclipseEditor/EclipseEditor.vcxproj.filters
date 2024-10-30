@@ -33,6 +33,12 @@
     <ClCompile Include="ConsolePanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HierarchyPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Panel.h">
@@ -53,6 +59,12 @@
     <ClInclude Include="ConsolePanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HierarchyPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\default.frag">
@@ -61,5 +73,7 @@
     <None Include="Shaders\default.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="default.frag" />
+    <None Include="default.vert" />
   </ItemGroup>
 </Project>

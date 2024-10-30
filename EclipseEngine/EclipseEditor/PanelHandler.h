@@ -26,6 +26,8 @@ public:
     bool TogglePanel(const std::string& name);
     bool GetPanelVisibility(const std::string& name);
 
+    inline GLFWwindow* GetWindow() { return m_Window; }
+
     std::unique_ptr<Panel>& GetPanel(const std::string& name);
 
 private:

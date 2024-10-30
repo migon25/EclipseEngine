@@ -19,6 +19,7 @@
 #include "PanelHandler.h"
 #include "FPSpanel.h"
 #include "ConsolePanel.h"
+#include "HierarchyPanel.h"
 
 using namespace std;
 
@@ -124,6 +125,9 @@ int main(int argc, char** argv) {
 	// console panel
 	auto consolePanel = dynamic_cast<ConsolePanel*>(panelHandler.GetPanel("Console Panel").get());
   
+	// hierarchy panel
+	auto hierarchyPanel = dynamic_cast<HierarchyPanel*>(panelHandler.GetPanel("Hierarchy Panel").get());
+
 	while (!glfwWindowShouldClose(window))
 	{
 		// fps
@@ -154,12 +158,21 @@ int main(int argc, char** argv) {
 			}
 		}
 
+		if (hierarchyPanel) {
+			if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
+				// PLACEHOLDER OF THE HIERARCHY FOR LOADING GEOMETRY THERE
+				// SHOULD BE SMTHING IN THE ENGINE TO ACTIVATE THIS CODE
+				hierarchyPanel->AddObject("Geometry");
+
+				// Remove the object
+				hierarchyPanel->RemoveObject("Geometry");
+			}
+		}
+
 		// Render all added panels
 		panelHandler.RenderPanels();
 
 		shaderProgram.Activate();
-		glUniform1f(uniID, -0.5f);
-		VAO1.Bind();
 		glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(int), GL_UNSIGNED_INT, 0);
 
 		camera.Inputs(window);
