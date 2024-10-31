@@ -24,9 +24,9 @@
 #include "EclipseEngine/Transform.h"
 #include "EclipseEngine/GameObject.h"
 #include "PanelHandler.h"
+#include "AssetsPanel.h"
 #include "FPSpanel.h"
 #include "ConsolePanel.h"
-#include "HierarchyPanel.h"
 
 using namespace std;
 
@@ -36,14 +36,14 @@ static const ivec2 WINDOW_SIZE(1100, 619);
 
 std::vector<Vertex> vertices =
 { //               COORDINATES           /            NORMALS                TEXTURE COORDINATES    //
-	Vertex{glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)},  // 0
-	Vertex{glm::vec3( 1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)},  // 1
-	Vertex{glm::vec3( 1.0f,  1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)},	 // 2
-	Vertex{glm::vec3(-1.0f,  1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},	 // 3
-	Vertex{glm::vec3( 1.0f, -1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)},	 // 4
-	Vertex{glm::vec3( 1.0f,  1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},	 // 5
-	Vertex{glm::vec3(-1.0f,  1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)},	 // 6
-	Vertex{glm::vec3(-1.0f, -1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)}	 // 7
+	Vertex{glm::vec3(-0.0f, -0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)},  // 0
+	Vertex{glm::vec3( 0.0f, -0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)},  // 1
+	Vertex{glm::vec3( 0.0f,  0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)},	 // 2
+	Vertex{glm::vec3(-0.0f,  0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},	 // 3
+	Vertex{glm::vec3( 0.0f, -0.0f,-0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)},	 // 4
+	Vertex{glm::vec3( 0.0f,  0.0f,-0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},	 // 5
+	Vertex{glm::vec3(-0.0f,  0.0f,-0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)},	 // 6
+	Vertex{glm::vec3(-0.0f, -0.0f,-0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)}	 // 7
 };
 
 std::vector<GLuint> indices =
@@ -62,9 +62,56 @@ std::vector<GLuint> indices =
 	3, 5, 6
 };
 
+void DrawGrid(Shader& shader, Camera& camera) {
+	// Step 1: Define grid vertices
+	const float gridSize = 10.0f; // Size of the grid
+	const int gridLines = 20;      // Number of lines in each direction
+	const float lineSpacing = gridSize / gridLines;
+
+	std::vector<Vertex> gridVertices;
+
+	for (int i = -gridLines / 2; i <= gridLines / 2; ++i) {
+		float offset = i * lineSpacing;
+
+		// Horizontal line
+		gridVertices.push_back({ glm::vec3(-gridSize / 2, 0.0f, offset), glm::vec3(0.0f), glm::vec2(0.0f) });
+		gridVertices.push_back({ glm::vec3(gridSize / 2, 0.0f, offset), glm::vec3(0.0f), glm::vec2(1.0f) });
+
+		// Vertical line
+		gridVertices.push_back({ glm::vec3(offset, 0.0f, -gridSize / 2), glm::vec3(0.0f), glm::vec2(0.0f) });
+		gridVertices.push_back({ glm::vec3(offset, 0.0f, gridSize / 2), glm::vec3(0.0f), glm::vec2(1.0f) });
+	}
+
+	// Step 2: Create VAO and VBO for the grid if they don't exist
+	static VAO gridVAO;
+	static VBO gridVBO(gridVertices); // Initialize VBO with grid vertices
+
+	gridVAO.Bind(); // Bind the VAO
+	gridVAO.LinkAttrib(gridVBO, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, position)); // Link position
+	gridVAO.Unbind(); // Unbind the VAO
+
+	// Step 3: Set the shader and draw the grid
+	shader.Activate(); // Activate the shader
+	glm::mat4 model = glm::mat4(1.0f); // Identity matrix for the grid
+	glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+
+	// Pass camera matrices
+	glm::mat4 view = camera.GetViewMatrix();
+	glm::mat4 projection = camera.GetProjectionMatrix();
+	glUniformMatrix4fv(glGetUniformLocation(shader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
+	glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+
+	// Draw the grid
+	gridVAO.Bind();
+	glLineWidth(1.0f); // Set line width
+	glDrawArrays(GL_LINES, 0, gridVertices.size());
+	gridVAO.Unbind();
+}
+
+
 int main(int argc, char** argv) {
 	Logger::Init();
-	
+
 	Core core(WINDOW_SIZE.x, WINDOW_SIZE.y, "Eclipse Engine");
 
 	if (!core.Initialize()) {
@@ -81,18 +128,14 @@ int main(int argc, char** argv) {
 	};
 
 	Shader shaderProgram("Shaders/default.vert", "Shaders/default.frag");
+	Shader gridShader("Shaders/grid.vert", "Shaders/grid.frag");
 
-	//GameObject cube;
-	//cube.AddComponent<Mesh>(vertices, indices, textures);
-
-	auto cube = std::make_unique<GameObject>();
-	cube->AddComponent<Mesh>(vertices, indices, textures);
+	GameObject cube;
+	cube.AddComponent<Mesh>(vertices, indices, textures);
 
 	GameObject house;
-	std::string meshFilePath = "Assets/BakerHouse.fbx"; // Path to the mesh file
+	std::string meshFilePath = "Assets/BakerHouse.fbx";
 	house.AddComponent<Mesh>(meshFilePath);
-
-	GameObject emptyObject;
 
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
@@ -100,13 +143,18 @@ int main(int argc, char** argv) {
 	glm::mat4 objectModel = glm::mat4(1.0f);
 	objectModel = glm::translate(objectModel, objectPos);
 
+	Camera camera(WINDOW_SIZE.x, WINDOW_SIZE.y, glm::vec3(7.0f, 4.0f, -7.0f));
 
 	shaderProgram.Activate();
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(objectModel));
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
-	Camera camera(WINDOW_SIZE.x, WINDOW_SIZE.y, glm::vec3(0.0f, 0.0f, 5.0f));
+	gridShader.Activate();
+	gridShader.SetMat4("view", camera.GetViewMatrix());
+	gridShader.SetMat4("projection", camera.GetProjectionMatrix());
+	glm::vec3 whiteColor(1.0f, 1.0f, 1.0f);
+	glUniform3fv(glGetUniformLocation(gridShader.ID, "gridColor"), 1, glm::value_ptr(whiteColor));
 
 	// Register the scroll callback for zoom control
 	glfwSetScrollCallback(core.GetWindow(), Camera::scroll_callback);
@@ -118,11 +166,8 @@ int main(int argc, char** argv) {
 
 	// console panel
 	auto consolePanel = dynamic_cast<ConsolePanel*>(panelHandler.GetPanel("Console Panel").get());
-  
-	// hierarchy panel
-	auto hierarchyPanel = dynamic_cast<HierarchyPanel*>(panelHandler.GetPanel("Hierarchy Panel").get());
 
-	while (!core.ShouldClose()){
+	while (!core.ShouldClose()) {
 		// fps
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
@@ -137,9 +182,10 @@ int main(int argc, char** argv) {
 		camera.Inputs(core.GetWindow());
 		camera.UpdateMatrix(0.1f, 100.0f);
 
-		cube->Draw(shaderProgram, camera);
+		DrawGrid(gridShader, camera);
+
+		cube.Draw(shaderProgram, camera);
 		house.Draw(shaderProgram, camera);
-		emptyObject.Draw(shaderProgram, camera);
 
 		// fps
 		if (panelPtr) {
@@ -147,10 +193,6 @@ int main(int argc, char** argv) {
 				fpsPanel->Update(fps, ms);
 			}
 		}
-
-		camera.Inputs(core.GetWindow());
-		camera.UpdateMatrix(0.1f, 100.0f);
-
 		// Rendering ImGui
 		panelHandler.Render();
 

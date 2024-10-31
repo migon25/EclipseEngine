@@ -5,10 +5,6 @@
 HierarchyPanel::HierarchyPanel(const std::string& name, bool isVisible) : Panel(name)
 {
 	SetVisible(isVisible);
-	m_Objects.push_back("Object 1");
-	m_Objects.push_back("Object 2");
-	m_Objects.push_back("Object 3");
-	m_Objects.push_back("Object 4");
 }
 
 void HierarchyPanel::Render()
@@ -26,7 +22,6 @@ void HierarchyPanel::Render()
 	}
 	
 	ImGui::End();
-
 }
 
 void HierarchyPanel::AddObject(const std::string& objectName)
