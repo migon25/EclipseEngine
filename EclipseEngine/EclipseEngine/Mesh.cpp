@@ -1,11 +1,8 @@
 #include "Mesh.h"
 
-Mesh::Mesh(std::vector<Vertex>& _vertices, std::vector<GLuint>& _indices, std::vector<Texture>& _textures)
+Mesh::Mesh(std::vector<Vertex>& _vertices, std::vector<GLuint>& _indices, std::vector<Texture>& _textures) 
+	: vertices(_vertices), indices(_indices), textures(_textures) 
 {
-	Mesh::vertices = _vertices;
-	Mesh::indices = _indices;
-	Mesh::textures = _textures;
-
 	VAO.Bind();
 
 	VBO VBO(vertices);
@@ -13,11 +10,29 @@ Mesh::Mesh(std::vector<Vertex>& _vertices, std::vector<GLuint>& _indices, std::v
 
 	VAO.LinkAttrib(VBO, 0, 3, GL_FLOAT, sizeof(Vertex), (void*) 0);
 	VAO.LinkAttrib(VBO, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float)));
-	VAO.LinkAttrib(VBO, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float)));
-	VAO.LinkAttrib(VBO, 3, 2, GL_FLOAT, sizeof(Vertex), (void*)(9 * sizeof(float)));
+	VAO.LinkAttrib(VBO, 2, 2, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float)));
 	VAO.Unbind();
 	VBO.Unbind();
 	EBO.Unbind();
+}
+
+Mesh::Mesh(const std::string& filepath) {
+	ModelLoader::LoadModel(filepath, vertices, indices, textures);
+
+	VAO.Bind();
+	VBO VBO(vertices);
+	EBO EBO(indices);
+
+	VAO.LinkAttrib(VBO, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)0);
+	VAO.LinkAttrib(VBO, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float)));
+	VAO.LinkAttrib(VBO, 2, 2, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float)));
+	VAO.Unbind();
+	VBO.Unbind();
+	EBO.Unbind();
+}
+
+void Mesh::Update() {
+	// Empty Update method
 }
 
 void Mesh::Draw(Shader& shader, Camera& camera)
