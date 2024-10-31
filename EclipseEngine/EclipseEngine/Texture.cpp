@@ -1,3 +1,6 @@
+#include <locale>
+#include <codecvt>
+#include <IL/il.h>
 #include "Texture.h"
 #include <iostream>
 #include "Logger.h"
@@ -20,6 +23,7 @@ Texture::Texture(const char* filename, const char* texType, GLuint slot, GLenum 
         return;
     }
     Logger::Log("Image loaded");
+    std::cerr << "image loaded: " << filename << std::endl;
 
     // Convert the image to RGBA format
     ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
@@ -51,17 +55,21 @@ Texture::Texture(const char* filename, const char* texType, GLuint slot, GLenum 
 }
 
 // Constructor: Initializes DevIL and loads a texture from file
-Texture::Texture(const aiString& filename, const std::string& texType, GLuint slot, GLenum format, GLenum pixelType)
+Texture::Texture(const std::string filename, const std::string& texType, GLuint slot, GLenum format, GLenum pixelType)
     : type(texType), unit(slot)
 {
     // Generate and bind a DevIL image ID
     ilGenImages(1, &imageID);
     ilBindImage(imageID);
 
+    // Convert std::string filename to std::wstring for DevIL compatibility
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::wstring wFilename = converter.from_bytes(filename);
+
     // Load the image using DevIL
-    if (!ilLoadImage((const wchar_t*)filename.C_Str())) {
+    if (!ilLoadImage(wFilename.c_str())) {
         Logger::Log("Failed to load image");
-        std::cerr << "Failed to load image: " << (const wchar_t*)filename.C_Str() << std::endl;
+        std::cerr << "Failed to load image: " << filename << std::endl;
         ilDeleteImages(1, &imageID);
         return;
     }
