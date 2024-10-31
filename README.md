@@ -1,4 +1,5 @@
 # EclipseEngine
+A 3D game engine made from scratch by 4 university students for the Game Engines subject.
 
 ## The Team
 This team is composed by:
