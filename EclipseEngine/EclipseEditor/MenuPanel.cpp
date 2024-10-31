@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include "MenuPanel.h"
 #include <imgui.h>
+#include "EclipseEngine/Logger.h"
 
 MenuPanel::MenuPanel(const std::string& name, PanelHandler& panelHandler)
     : Panel(name), m_PanelHandler(panelHandler) {}
@@ -72,6 +73,7 @@ void MenuPanel::Render() {
 						glfwGetWindowSize(m_PanelHandler.GetWindow(), &width, &height);
 						if (ImGui::SliderInt("Width", &width, 256, 4096) || ImGui::SliderInt("Height", &height, 144, 2160)) {
 							//App->window->ResizeWindow(width, height);
+							Logger::Log("screen size modified");
 							glfwSetWindowSize(m_PanelHandler.GetWindow(), width, height);
 						}
 
@@ -83,6 +85,7 @@ void MenuPanel::Render() {
 
 						float opacity = 1.0f;
 						if (ImGui::SliderFloat("Opacity", &opacity, 0.000f, 1.000f)) {
+							Logger::Log("screen opacity modified");
 							glfwSetWindowOpacity(m_PanelHandler.GetWindow(), opacity);
 						}
 
@@ -92,6 +95,7 @@ void MenuPanel::Render() {
 							//App->window->WindowSetFullscreen(temp);
 
 							if (temp) {
+								Logger::Log("Toggled fullscreen");
 								glfwSetWindowMonitor(m_PanelHandler.GetWindow(), nullptr, 0, 0, GL_MAX_WIDTH, GL_MAX_HEIGHT, GLFW_DONT_CARE);
 							}							
 						}

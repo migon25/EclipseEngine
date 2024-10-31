@@ -2,230 +2,415 @@ Initialized Engine
 Initialized GLFW corectly
 Initialized OpenGL corectly
 Image loaded
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed A
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
-Pressed D
+model Loaded
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+screen opacity modified
+Toggled fullscreen
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified
+screen size modified

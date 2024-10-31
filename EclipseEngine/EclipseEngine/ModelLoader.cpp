@@ -1,5 +1,6 @@
 #include "ModelLoader.h"
 #include <iostream>
+#include "Logger.h"
 
 void ModelLoader::LoadModel(const std::string& filepath,
     std::vector<Vertex>& vertices,
@@ -15,6 +16,7 @@ void ModelLoader::LoadModel(const std::string& filepath,
 
     // Process Assimp's root node recursively
     ProcessNode(scene->mRootNode, scene, vertices, indices, textures);
+    Logger::Log("model Loaded");
 }
 
 void ModelLoader::ProcessNode(aiNode* node, const aiScene* scene,
