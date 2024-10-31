@@ -114,7 +114,6 @@ int main(int argc, char** argv) {
 	// console panel
 	auto consolePanel = dynamic_cast<ConsolePanel*>(panelHandler.GetPanel("Console Panel").get());
   
-
 	// hierarchy panel
 	auto hierarchyPanel = dynamic_cast<HierarchyPanel*>(panelHandler.GetPanel("Hierarchy Panel").get());
 
@@ -143,25 +142,10 @@ int main(int argc, char** argv) {
 			}
 		}
 
-    // this shouldn't be in main btw
-		if (hierarchyPanel) {
-			if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
-				// PLACEHOLDER OF THE HIERARCHY FOR LOADING GEOMETRY THERE
-				// SHOULD BE SMTHING IN THE ENGINE TO ACTIVATE THIS CODE
-				hierarchyPanel->AddObject("Geometry");
-
-				// Remove the object
-				hierarchyPanel->RemoveObject("Geometry");
-			}
-		}
-
-		// Render all added panels
-		panelHandler.RenderPanels();
-
-		camera.Inputs(window);
+		camera.Inputs(core.GetWindow());
 		camera.UpdateMatrix(0.1f, 100.0f);
 
-		cube.Draw(shaderProgram, camera);
+		cube->Draw(shaderProgram, camera);
 
 		// Rendering ImGui
 		panelHandler.Render();
