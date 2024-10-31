@@ -84,6 +84,9 @@ int main(int argc, char** argv) {
 	GameObject* cube = new GameObject();
 	cube->AddComponent<Mesh>(vertices, indices, textures);
 
+	GameObject* house = new GameObject();
+	std::string meshFilePath = "Assets/BakerHouse.fbx"; // Path to the mesh file
+	house->AddComponent<Mesh>(meshFilePath);
 
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
@@ -126,6 +129,7 @@ int main(int argc, char** argv) {
 		camera.UpdateMatrix(0.1f, 100.0f);
 
 		cube->Draw(shaderProgram, camera);
+		house->Draw(shaderProgram, camera);
 
 		// fps
 		if (panelPtr) {
@@ -142,6 +146,7 @@ int main(int argc, char** argv) {
 		core.EndFrame();
 	}
 
+	delete house;
 	delete cube;
 	shaderProgram.Delete();
 	Logger::Close();
