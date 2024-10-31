@@ -15,9 +15,14 @@
 #include "EclipseEngine/VAO.h"
 #include "EclipseEngine/VBO.h"
 #include "EclipseEngine/EBO.h"
-#include "EclipseEngine/Mesh.h"
 #include "EclipseEngine/Core.h"
 #include "EclipseEngine/Logger.h"
+#include "EclipseEngine/Component.h"
+#include "EclipseEngine/Texture.h"
+#include "EclipseEngine/Mesh.h"
+#include "EclipseEngine/Material.h"
+#include "EclipseEngine/Transform.h"
+#include "EclipseEngine/GameObject.h"
 #include "PanelHandler.h"
 #include "FPSpanel.h"
 #include "ConsolePanel.h"
@@ -28,19 +33,19 @@ using ivec2 = glm::ivec2;
 
 static const ivec2 WINDOW_SIZE(1100, 619);
 
-Vertex vertices[] =
-{ //               COORDINATES           /            NORMALS          /           COLORS         /       TEXTURE COORDINATES    //
-	Vertex{glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},  // 0
-	Vertex{glm::vec3( 1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)},  // 1
-	Vertex{glm::vec3( 1.0f,  1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},	 // 2
-	Vertex{glm::vec3(-1.0f,  1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},	 // 3
-	Vertex{glm::vec3( 1.0f, -1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)},	 // 4
-	Vertex{glm::vec3( 1.0f,  1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)},	 // 5
-	Vertex{glm::vec3(-1.0f,  1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)},	 // 6
-	Vertex{glm::vec3(-1.0f, -1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)}	 // 7
+std::vector<Vertex> vertices =
+{ //               COORDINATES           /            NORMALS                TEXTURE COORDINATES    //
+	Vertex{glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)},  // 0
+	Vertex{glm::vec3( 1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)},  // 1
+	Vertex{glm::vec3( 1.0f,  1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)},	 // 2
+	Vertex{glm::vec3(-1.0f,  1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},	 // 3
+	Vertex{glm::vec3( 1.0f, -1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)},	 // 4
+	Vertex{glm::vec3( 1.0f,  1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},	 // 5
+	Vertex{glm::vec3(-1.0f,  1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)},	 // 6
+	Vertex{glm::vec3(-1.0f, -1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)}	 // 7
 };
 
-GLuint indices[] =
+std::vector<GLuint> indices =
 {
 	0, 1, 2,
 	0, 2, 3,
@@ -69,16 +74,16 @@ int main(int argc, char** argv) {
 	PanelHandler panelHandler(core.GetWindow());
 	ilInit();  // Initialize the DevIL library
 
-	Texture textures[]
+	std::vector<Texture> textures
 	{
 		Texture("Assets/Baker_house.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
 	};
 
 	Shader shaderProgram("Shaders/default.vert", "Shaders/default.frag");
-	std::vector <Vertex> verts(vertices, vertices + sizeof(vertices) / sizeof(Vertex));
-	std::vector <GLuint> ind(indices, indices + sizeof(indices) / sizeof(GLuint));
-	std::vector <Texture> tex(textures, textures + sizeof(textures) / sizeof(Texture));
-	Mesh cube(verts, ind, tex);
+
+	GameObject* cube = new GameObject();
+	cube->AddComponent<Mesh>(vertices, indices, textures);
+
 
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
@@ -120,7 +125,7 @@ int main(int argc, char** argv) {
 		camera.Inputs(core.GetWindow());
 		camera.UpdateMatrix(0.1f, 100.0f);
 
-		cube.Draw(shaderProgram, camera);
+		cube->Draw(shaderProgram, camera);
 
 		// fps
 		if (panelPtr) {
@@ -137,6 +142,7 @@ int main(int argc, char** argv) {
 		core.EndFrame();
 	}
 
+	delete cube;
 	shaderProgram.Delete();
 	Logger::Close();
 
