@@ -1,5 +1,5 @@
 #ifndef EBO_H
-#define EBO_h
+#define EBO_H
 
 #include <vector>
 #include <GL/glew.h>

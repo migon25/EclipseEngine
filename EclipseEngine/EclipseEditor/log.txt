@@ -1,0 +1,3 @@
+Initialized Engine
+Initialized GLFW corectly
+Initialized OpenGL corectly

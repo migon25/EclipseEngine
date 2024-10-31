@@ -1,9 +1,14 @@
 #include "ConsolePanel.h"
 #include <imgui.h>
+#include "EclipseEngine/Logger.h"
 
 ConsolePanel::ConsolePanel(const std::string& name, bool visible)
     : Panel(name) {
     SetVisible(visible);
+
+    Logger::SetCallback([this](const std::string& message) {
+        Log(message);
+        });
 }
 
 void ConsolePanel::Render() {
