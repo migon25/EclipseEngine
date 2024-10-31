@@ -81,16 +81,26 @@ void MenuPanel::Render() {
 							//App->window->ChangeWindowBrightnessTo(brightness);
 						}
 
+						float opacity = 1.0f;
+						if (ImGui::SliderFloat("Opacity", &opacity, 0.000f, 1.000f)) {
+							glfwSetWindowOpacity(m_PanelHandler.GetWindow(), opacity);
+						}
+
 						//bool temp = App->window->GetFullscreen();
 						bool temp = false;
 						if (ImGui::Checkbox("Fullscreen", &temp)) {
 							//App->window->WindowSetFullscreen(temp);
+
+							if (temp) {
+								glfwSetWindowMonitor(m_PanelHandler.GetWindow(), nullptr, 0, 0, GL_MAX_WIDTH, GL_MAX_HEIGHT, GLFW_DONT_CARE);
+							}							
 						}
 
 						ImGui::SameLine();
 						//temp = App->window->GetResizable();
 						if (ImGui::Checkbox("Resizable", &temp)) {
 							//App->window->WindowSetResizable(temp);
+
 						}
 
 						ImGui::SameLine();
@@ -103,6 +113,8 @@ void MenuPanel::Render() {
 						//temp = App->window->GetFullDesktop();
 						if (ImGui::Checkbox("Full Desktop", &temp)) {
 							//App->window->WindowSetFullscreenDesktop(temp);
+							glfwSetWindowSize(m_PanelHandler.GetWindow(), GL_MAX_WIDTH, GL_MAX_HEIGHT);
+							
 						}
 					}
 
