@@ -56,6 +56,7 @@ void InspectorPanel::Render()
             }
 
         }
-        ImGui::End();
+        ImGui::EndTabBar();
     }
+    ImGui::End();
 }
