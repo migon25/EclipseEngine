@@ -3,6 +3,7 @@
 
 #include "Panel.h"
 #include "PanelHandler.h" // PanelHandler for toggling panels
+#include "HierarchyPanel.h"
 
 class MenuPanel : public Panel {
 public:

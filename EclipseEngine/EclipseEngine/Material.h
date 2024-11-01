@@ -8,12 +8,12 @@
 
 class Material : public Component {
 public:
-    Shader* shader;
+    Shader& shader;
     std::vector<Texture> textures;
 
-    Material(Shader* shader, const std::vector<Texture>& textures);
+    Material(Shader& shader, const std::vector<Texture>& textures);
 
-    void BindTextures() const;
+    void BindTextures();
     void Update() override;
 };
 

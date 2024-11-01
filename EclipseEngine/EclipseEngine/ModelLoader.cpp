@@ -1,5 +1,6 @@
 #include "ModelLoader.h"
 #include <iostream>
+#include "Logger.h"
 
 void ModelLoader::LoadModel(const std::string& filepath,
     std::vector<Vertex>& vertices,
@@ -15,6 +16,7 @@ void ModelLoader::LoadModel(const std::string& filepath,
 
     // Process Assimp's root node recursively
     ProcessNode(scene->mRootNode, scene, vertices, indices, textures);
+    Logger::Log("model Loaded");
 }
 
 void ModelLoader::ProcessNode(aiNode* node, const aiScene* scene,
@@ -72,17 +74,21 @@ void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene,
         }
     }
 
-    // textures = LoadMaterialTextures(mesh, scene, someType); 
-    // (not implemented in the texture class to be funtional yet)
+    // Load textures
+    //aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+    //std::vector<Texture> diffuseTextures = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "diffuse"); // Fixed line
+    //textures.insert(textures.end(), diffuseTextures.begin(), diffuseTextures.end());
 }
 
-//std::vector<Texture> ModelLoader::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName) {
-//	std::vector<Texture> textures;
-//	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
-//		aiString str;
-//		mat->GetTexture(type, i, &str);
-//		Texture texture(str.C_Str(), typeName, i, GL_RGBA, GL_UNSIGNED_BYTE);
-//		textures.push_back(texture);
-//	}
-//	return textures;
-//}
+std::vector<Texture> ModelLoader::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName) {
+    std::vector<Texture> textures;
+    for (GLuint i = 0; i < mat->GetTextureCount(type); i++) {
+        aiString str;
+        mat->GetTexture(type, i, &str);  // Get the texture path from the material
+        std::string texturePath = str.C_Str();  // Convert aiString to std::string
+
+        Texture texture(texturePath, typeName, i, GL_RGBA, GL_UNSIGNED_BYTE);  // Now create Texture
+        textures.push_back(texture);
+    }
+    return textures;
+}

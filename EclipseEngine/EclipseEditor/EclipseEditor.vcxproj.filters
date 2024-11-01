@@ -33,6 +33,18 @@
     <ClCompile Include="ConsolePanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HierarchyPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetsPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectorPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Panel.h">
@@ -53,12 +65,33 @@
     <ClInclude Include="ConsolePanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HierarchyPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetsPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewportPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectorPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\default.frag">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Shaders\default.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="grid.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="grid.frag">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

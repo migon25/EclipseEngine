@@ -17,7 +17,7 @@ class Camera
 {
 public:
 	glm::vec3 Position;                                       // Camera's position
-	glm::vec3 Orientation = glm::vec3(0.0f, 0.0f, -1.0f);     // Camera's orientetion
+	glm::vec3 Orientation = glm::vec3(-1.0f, -0.5f, 1.0f);     // Camera's orientetion
 	glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);               // Camera's up vector (Y)
 	glm::vec3 targetPosition = glm::vec3(0.0f, 0.0f, 0.0f);	  // Orbit target position (default origin)
 	glm::mat4 cameraMatrix = glm::mat4(1.0f);					 
@@ -37,6 +37,15 @@ public:
 	void UpdateMatrix(float nearPlane, float farPlane);
 	void Matrix(Shader& shader, const char* uniform);
 	void Inputs(GLFWwindow* window);
+
+	glm::mat4 GetProjectionMatrix() const {
+		// Return a perspective projection matrix
+		return glm::perspective(glm::radians(FOVdeg), (float)width / height, 0.1f, 100.0f);
+	}
+
+	glm::mat4 GetViewMatrix() const {
+		return glm::lookAt(Position, Position + Orientation, Up);
+	}
 
 	// Static scroll callback function
 	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);

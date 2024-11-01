@@ -2,6 +2,7 @@
 #define PANEL_H
 
 #include <string>
+#include <vector>
 
 class Panel {
 public:

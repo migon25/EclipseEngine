@@ -61,6 +61,7 @@
       <AdditionalIncludeDirectories>..\</AdditionalIncludeDirectories>
       <AdditionalBMIDirectories>
       </AdditionalBMIDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -78,6 +79,7 @@
       <AdditionalIncludeDirectories>..\</AdditionalIncludeDirectories>
       <AdditionalBMIDirectories>
       </AdditionalBMIDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -87,16 +89,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="default.frag" />
-    <None Include="default.vert" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClCompile Include="AssetsPanel.cpp" />
     <ClCompile Include="BasicPanel.cpp" />
     <ClCompile Include="ConsolePanel.cpp" />
     <ClCompile Include="FPSpanel.cpp" />
+    <ClCompile Include="HierarchyPanel.cpp" />
+    <ClCompile Include="InspectorPanel.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuPanel.cpp" />
     <ClCompile Include="PanelHandler.cpp" />
+    <ClCompile Include="SettingsPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EclipseEngine\EclipseEngine.vcxproj">
@@ -104,12 +106,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AssetsPanel.h" />
     <ClInclude Include="BasicPanel.h" />
     <ClInclude Include="ConsolePanel.h" />
+    <ClInclude Include="InspectorPanel.h" />
+    <ClInclude Include="ViewportPanel.h" />
     <ClInclude Include="FPSpanel.h" />
+    <ClInclude Include="HierarchyPanel.h" />
     <ClInclude Include="MenuPanel.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PanelHandler.h" />
+    <ClInclude Include="SettingsPanel.h" />
+    <None Include="grid.frag" />
+    <None Include="grid.vert" />
     <None Include="Shaders\default.frag" />
     <None Include="Shaders\default.vert" />
   </ItemGroup>
