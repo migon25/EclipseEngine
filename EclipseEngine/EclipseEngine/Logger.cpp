@@ -20,6 +20,18 @@ void Logger::Log(const std::string& message)
     }
 }
 
+void Logger::Log(const std::string& message, const std::string& item)
+{
+    if (m_LogStream.is_open()) {
+        m_LogStream << message << std::endl;
+    }
+    std::cout << message << item << std::endl; 
+
+    if (m_Callback) {
+        m_Callback(message + item);
+    }
+}
+
 void Logger::SetCallback(LogCallback callback)
 {
     m_Callback = callback; // Set callback for external logging

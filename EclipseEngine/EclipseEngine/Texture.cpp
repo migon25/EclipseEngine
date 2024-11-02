@@ -22,7 +22,7 @@ Texture::Texture(const char* filename, const char* texType, GLuint slot, GLenum 
         ilDeleteImages(1, &imageID);
         return;
     }
-    Logger::Log("Image loaded");
+    Logger::Log("Image loaded: ", filename);
     std::cerr << "image loaded: " << filename << std::endl;
 
     // Convert the image to RGBA format
