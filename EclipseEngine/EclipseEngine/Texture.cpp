@@ -17,7 +17,7 @@ Texture::Texture(const char* filename, const char* texType, GLuint slot, GLenum 
 
     // Load the image using DevIL
     if (!ilLoadImage((const wchar_t*)filename)) { // Use filename directly here
-        Logger::Log("Failed to load image");
+        Logger::Log("Failed to load image: ", filename);
         std::cerr << "Failed to load image: " << filename << std::endl;
         ilDeleteImages(1, &imageID);
         return;
@@ -68,7 +68,7 @@ Texture::Texture(const std::string filename, const std::string& texType, GLuint 
 
     // Load the image using DevIL
     if (!ilLoadImage(wFilename.c_str())) {
-        Logger::Log("Failed to load image");
+        Logger::Log("Failed to load image: ", filename);
         std::cerr << "Failed to load image: " << filename << std::endl;
         ilDeleteImages(1, &imageID);
         return;
