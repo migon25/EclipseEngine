@@ -38,15 +38,6 @@ public:
 	void Matrix(Shader& shader, const char* uniform);
 	void Inputs(GLFWwindow* window);
 
-	glm::mat4 GetProjectionMatrix() const {
-		// Return a perspective projection matrix
-		return glm::perspective(glm::radians(FOVdeg), (float)width / height, 0.1f, 100.0f);
-	}
-
-	glm::mat4 GetViewMatrix() const {
-		return glm::lookAt(Position, Position + Orientation, Up);
-	}
-
 	// Static scroll callback function
 	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 };

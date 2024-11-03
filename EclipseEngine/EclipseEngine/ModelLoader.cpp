@@ -1,6 +1,9 @@
 #include "ModelLoader.h"
 #include <iostream>
+#include <set>
 #include "Logger.h"
+
+const std::string ASSET_PATH = "Assets/";
 
 void ModelLoader::LoadModel(const std::string& filepath,
     std::vector<Vertex>& vertices,
@@ -15,8 +18,8 @@ void ModelLoader::LoadModel(const std::string& filepath,
     }
 
     // Process Assimp's root node recursively
-    ProcessNode(scene->mRootNode, scene, vertices, indices, textures);
-    Logger::Log("model Loaded");
+    ProcessNode(scene->mRootNode, scene, vertices, indices, textures); 
+    Logger::Log("Model loaded: ", filepath);
 }
 
 void ModelLoader::ProcessNode(aiNode* node, const aiScene* scene,
@@ -25,10 +28,10 @@ void ModelLoader::ProcessNode(aiNode* node, const aiScene* scene,
     std::vector<Texture>& textures) {
     for (unsigned int i = 0; i < node->mNumMeshes; i++) {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        ProcessMesh(mesh, scene, vertices, indices, textures);
+        ProcessMesh(mesh, scene, vertices, indices, textures); 
     }
     for (unsigned int i = 0; i < node->mNumChildren; i++) {
-        ProcessNode(node->mChildren[i], scene, vertices, indices, textures);
+        ProcessNode(node->mChildren[i], scene, vertices, indices, textures); 
     }
 }
 
@@ -74,21 +77,33 @@ void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene,
         }
     }
 
-    // Load textures
-    //aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-    //std::vector<Texture> diffuseTextures = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "diffuse"); // Fixed line
-    //textures.insert(textures.end(), diffuseTextures.begin(), diffuseTextures.end());
+    // Load material textures
+    if (mesh->mMaterialIndex >= 0) {
+        aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+        std::vector<Texture> diffuseMaps = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "diffuse");
+        textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+        // Similarly handle other texture types (specular, normal, etc.)
+    }
 }
 
 std::vector<Texture> ModelLoader::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName) {
     std::vector<Texture> textures;
-    for (GLuint i = 0; i < mat->GetTextureCount(type); i++) {
-        aiString str;
-        mat->GetTexture(type, i, &str);  // Get the texture path from the material
-        std::string texturePath = str.C_Str();  // Convert aiString to std::string
+    std::set<std::string> loadedTextures; // To track loaded texture paths
 
-        Texture texture(texturePath, typeName, i, GL_RGBA, GL_UNSIGNED_BYTE);  // Now create Texture
+    for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
+        aiString str; // For texture file path
+        mat->GetTexture(type, i, &str);
+
+        // Check if texture is already loaded
+        if (loadedTextures.find(str.C_Str()) != loadedTextures.end()) {
+            continue; // Skip if already loaded
+        }
+
+        // Load the texture and add it to the vector
+        Texture texture(str.C_Str(), typeName, textures.size(), GL_RGBA, GL_UNSIGNED_BYTE);
         textures.push_back(texture);
+        loadedTextures.insert(str.C_Str()); // Track the loaded texture path
     }
     return textures;
 }
+

@@ -117,10 +117,10 @@
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PanelHandler.h" />
     <ClInclude Include="SettingsPanel.h" />
-    <None Include="grid.frag" />
-    <None Include="grid.vert" />
     <None Include="Shaders\default.frag" />
     <None Include="Shaders\default.vert" />
+    <None Include="Shaders\grid.frag" />
+    <None Include="Shaders\grid.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
