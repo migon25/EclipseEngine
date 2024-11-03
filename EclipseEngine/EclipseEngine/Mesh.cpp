@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include "Logger.h"
 
 Mesh::Mesh(std::vector<Vertex>& _vertices, std::vector<GLuint>& _indices, std::vector<Texture>& _textures) 
 	: vertices(_vertices), indices(_indices), textures(_textures) 
@@ -18,6 +19,7 @@ Mesh::Mesh(std::vector<Vertex>& _vertices, std::vector<GLuint>& _indices, std::v
 
 Mesh::Mesh(const std::string& filepath) {
 	ModelLoader::LoadModel(filepath, vertices, indices, textures);
+	Logger::Log(filepath, " Loaded");
 
 	VAO.Bind();
 	VBO VBO(vertices);
@@ -37,29 +39,17 @@ void Mesh::Update() {
 
 void Mesh::Draw(Shader& shader, Camera& camera)
 {
-	shader.Activate();
 	VAO.Bind();
 
-	unsigned int numDiffuse = 0;
-	unsigned int numSpecular = 0;
-
-	for (unsigned int i = 0; i < textures.size(); i++)
-	{
-		std::string num;
-		std::string type = textures[i].type;
-		if (type == "diffuse")
-		{
-			num = std::to_string(numDiffuse++);
-		}
-		else if (type == "specular")
-		{
-			num = std::to_string(numSpecular++);
-		}
-		textures[i].TexUnit(shader, (type + num).c_str(), i);
-		textures[i].Bind();
-	}
 	glUniform3f(glGetUniformLocation(shader.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
 	camera.Matrix(shader, "camMatrix");
 
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+
+	for (unsigned int i = 0; i < textures.size(); i++)
+	{
+		textures[i].Unbind();
+	}
+
+	VAO.Unbind();
 }

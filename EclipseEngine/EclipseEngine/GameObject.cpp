@@ -15,6 +15,9 @@ void GameObject::Update() {
 void GameObject::Draw(Shader& shader, Camera& camera) {
     // Get the model matrix from the Transform component
     glm::mat4 objectModel = transform.GetMatrix(); // Get the transformation matrix from Transform
+
+    // Activate the shader program
+    shader.Activate();
     glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(objectModel));
    
     if(material) material.get()->BindTextures(); // If it has material, bind it

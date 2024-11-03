@@ -19,8 +19,8 @@ public:
 	void Draw();
 
 public:
-	const float gridSize = 10.0f; // Size of the grid
-	const int gridLines = 20;      // Number of lines in each direction
+	const float gridSize = 50.0f; // Size of the grid
+	const int gridLines = 30;      // Number of lines in each direction
 	const float lineSpacing = gridSize / gridLines;
 };
 

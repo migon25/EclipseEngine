@@ -6,7 +6,7 @@
 #include "Logger.h"
 
 Texture::Texture(const char* filename, const char* texType, GLuint slot, GLenum format, GLenum pixelType)
-    : type(texType), unit(slot)
+    : type(texType), unit(slot), path(filename)
 {
     // Assigns the type of the texture to the texture object
     type = texType;
@@ -23,7 +23,6 @@ Texture::Texture(const char* filename, const char* texType, GLuint slot, GLenum 
         return;
     }
     Logger::Log("Image loaded: ", filename);
-    std::cerr << "image loaded: " << filename << std::endl;
 
     // Convert the image to RGBA format
     ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
@@ -66,13 +65,18 @@ Texture::Texture(const std::string filename, const std::string& texType, GLuint 
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     std::wstring wFilename = converter.from_bytes(filename);
 
+    std::cout << "Loading image: " << filename << std::endl;
     // Load the image using DevIL
     if (!ilLoadImage(wFilename.c_str())) {
         Logger::Log("Failed to load image: ", filename);
-        std::cerr << "Failed to load image: " << filename << std::endl;
         ilDeleteImages(1, &imageID);
+        ILenum error = ilGetError();
+    if (error != IL_NO_ERROR) {
+        std::cerr << "DevIL Error: " << error << std::endl;
+    }
         return;
     }
+    
     Logger::Log("Image loaded");
 
     // Convert the image to RGBA format
@@ -98,7 +102,7 @@ Texture::Texture(const std::string filename, const std::string& texType, GLuint 
     glGenerateMipmap(GL_TEXTURE_2D);
 
     // Clean up the DevIL image ID (correcting the cleanup)
-    ilDeleteImages(1, &imageID); // <- Correct cleanup
+    ilDeleteImages(1, &imageID);
 
     // Unbind the OpenGL Texture object to prevent accidental modifications
     glBindTexture(GL_TEXTURE_2D, 0);

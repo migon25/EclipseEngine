@@ -15,22 +15,23 @@ public:
     static void LoadModel(const std::string& filepath,
         std::vector<Vertex>& vertices,
         std::vector<GLuint>& indices,
-        std::vector<Texture>& textures);
+        std::vector<Texture>& textures); 
 
 private:
     static void ProcessNode(aiNode* node, const aiScene* scene,
-                            std::vector<Vertex>& vertices,
-                            std::vector<GLuint>& indices,
-                            std::vector<Texture>& textures);
+        std::vector<Vertex>& vertices,
+        std::vector<GLuint>& indices,
+        std::vector<Texture>& textures); 
 
     static void ProcessMesh(aiMesh* mesh, const aiScene* scene,
-                            std::vector<Vertex>& vertices,
-                            std::vector<GLuint>& indices,
-                            std::vector<Texture>& textures);
+        std::vector<Vertex>& vertices,
+        std::vector<GLuint>& indices,
+        std::vector<Texture>& textures);
 
-    static std::vector<Texture> LoadMaterialTextures(aiMaterial* mat,
-                                               aiTextureType type, 
-                                               const std::string& typeName);
+    static std::vector<Texture> LoadMaterialTextures(aiMaterial* material,
+        aiTextureType type,
+        const std::string& typeName);
+
 };
 
 #endif // MODELLOADER_H

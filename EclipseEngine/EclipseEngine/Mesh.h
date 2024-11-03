@@ -25,6 +25,10 @@ public:
     // Constructor for loading a mesh from a file path
     Mesh(const std::string& filepath);
 
+    std::vector<Texture>& GetTextures() {
+        return textures; // Return a reference to the textures vector
+    }
+
     void Update() override; // Provide an empty Update if necessary
     void Draw(Shader& shader, Camera& camera);
 };

@@ -98,7 +98,7 @@ int main(int argc, char** argv) {
 	std::string meshFilePath = "Assets/BakerHouse.fbx";
 	house.AddComponent<Mesh>(meshFilePath);
 	auto& meshTextures = house.GetComponent<Mesh>()->GetTextures();
-	house.AddComponent<Material>(shaderProgram, meshTextures);
+	house.AddComponent<Material>(shaderProgram, textures);
 	house.transform.SetPosition(glm::vec3(0.0f, 0.0f, 5.0f));
 
 	Camera camera(WINDOW_SIZE.x, WINDOW_SIZE.y, glm::vec3(7.0f, 4.0f, -7.0f));
