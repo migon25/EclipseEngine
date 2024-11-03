@@ -37,14 +37,14 @@ static const ivec2 WINDOW_SIZE(1100, 619);
 
 std::vector<Vertex> vertices =
 { //               COORDINATES           /            NORMALS                TEXTURE COORDINATES    //
-	Vertex{glm::vec3(-0.0f, -0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)},  // 0
-	Vertex{glm::vec3( 0.0f, -0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)},  // 1
-	Vertex{glm::vec3( 0.0f,  0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)},	 // 2
-	Vertex{glm::vec3(-0.0f,  0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},	 // 3
-	Vertex{glm::vec3( 0.0f, -0.0f,-0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)},	 // 4
-	Vertex{glm::vec3( 0.0f,  0.0f,-0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},	 // 5
-	Vertex{glm::vec3(-0.0f,  0.0f,-0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)},	 // 6
-	Vertex{glm::vec3(-0.0f, -0.0f,-0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)}	 // 7
+	Vertex{glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)},  // 0
+	Vertex{glm::vec3( 1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)},  // 1
+	Vertex{glm::vec3( 1.0f,  1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)},	 // 2
+	Vertex{glm::vec3(-1.0f,  1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},	 // 3
+	Vertex{glm::vec3( 1.0f, -1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)},	 // 4
+	Vertex{glm::vec3( 1.0f,  1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)},	 // 5
+	Vertex{glm::vec3(-1.0f,  1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)},	 // 6
+	Vertex{glm::vec3(-1.0f, -1.0f,-1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)}	 // 7
 };
 
 std::vector<GLuint> indices =
@@ -81,21 +81,25 @@ int main(int argc, char** argv) {
 		Texture("Assets/Baker_house.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
 	};
 
+	std::vector<Texture> catTexture
+	{
+		Texture("Assets/cat.jpg","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
+	};
+
 	Shader shaderProgram("Shaders/default.vert", "Shaders/default.frag");
 	Shader gridShader("Shaders/grid.vert", "Shaders/grid.frag");
 
 	GameObject cube;
-	cube.AddComponent<Mesh>(vertices, indices, textures);
+	cube.AddComponent<Mesh>(vertices, indices, catTexture);
+	cube.AddComponent<Material>(shaderProgram, catTexture);
+	cube.transform.SetPosition(glm::vec3(0.0f, 7.0f, 0.0f));
 
 	GameObject house;
 	std::string meshFilePath = "Assets/BakerHouse.fbx";
 	house.AddComponent<Mesh>(meshFilePath);
-
-	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
-	glm::vec3 objectPos = glm::vec3(0.0f, 0.0f, 0.0f);
-	glm::mat4 objectModel = glm::mat4(1.0f);
-	objectModel = glm::translate(objectModel, objectPos);
+	auto& meshTextures = house.GetComponent<Mesh>()->GetTextures();
+	house.AddComponent<Material>(shaderProgram, meshTextures);
+	house.transform.SetPosition(glm::vec3(0.0f, 0.0f, 5.0f));
 
 	Camera camera(WINDOW_SIZE.x, WINDOW_SIZE.y, glm::vec3(7.0f, 4.0f, -7.0f));
 

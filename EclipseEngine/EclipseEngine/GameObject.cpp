@@ -10,11 +10,12 @@ GameObject::~GameObject() {
 }
 
 void GameObject::Update() {
-    // Code to update the game object's state, e.g., update transform, physics, etc.
-    std::cout << "Updating GameObject" << std::endl;
 }
 
 void GameObject::Draw(Shader& shader, Camera& camera) {
+   
+    if(material) material.get()->BindTextures(); // If it has material, bind it
+
     // Code to draw the game object (calls Draw on the mesh if it exists)
     if (mesh) {
         mesh->Draw(shader, camera);

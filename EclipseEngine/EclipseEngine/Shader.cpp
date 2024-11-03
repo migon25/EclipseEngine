@@ -3,7 +3,6 @@
 
 std::string get_file_contents(const char* filename)
 {
-	Logger::Log("Shader loaded: ", filename);
 	std::ifstream in(filename, std::ios::binary);
 	if (in)
 	{
