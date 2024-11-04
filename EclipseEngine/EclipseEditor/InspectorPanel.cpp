@@ -54,9 +54,9 @@ void InspectorPanel::Render()
                 bool temp1;
                 ImGui::Checkbox("Active", &temp1);
             }
-
+            ImGui::EndTabBar();
         }
-        ImGui::EndTabBar();
+        ImGui::End();
     }
-    ImGui::End();
+    
 }

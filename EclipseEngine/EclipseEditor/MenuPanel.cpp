@@ -362,6 +362,7 @@ void MenuPanel::Render() {
 						ImGui::BulletText("Vendor: ");
 						ImGui::SameLine();
 						//ImGui::TextColored(ImVec4(255.0f, 0.0f, 0.0f, 255.00f), "%s", App->hardware.devil_info.vendor);
+						ImGui::Separator();
 					}
 
 					if (ImGui::CollapsingHeader("Hardware")) {
