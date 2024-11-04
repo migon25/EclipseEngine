@@ -23,16 +23,17 @@
 #include "EclipseEngine/Material.h"
 #include "EclipseEngine/Transform.h"
 #include "EclipseEngine/GameObject.h"
+#include "EclipseEngine/Grid.h"
 #include "PanelHandler.h"
+#include "AssetsPanel.h"
 #include "FPSpanel.h"
 #include "ConsolePanel.h"
-#include "HierarchyPanel.h"
 
 using namespace std;
 
 using ivec2 = glm::ivec2;
 
-static const ivec2 WINDOW_SIZE(1100, 619);
+static const ivec2 WINDOW_SIZE(1500, 844);
 
 std::vector<Vertex> vertices =
 { //               COORDINATES           /            NORMALS                TEXTURE COORDINATES    //
@@ -64,7 +65,7 @@ std::vector<GLuint> indices =
 
 int main(int argc, char** argv) {
 	Logger::Init();
-	
+
 	Core core(WINDOW_SIZE.x, WINDOW_SIZE.y, "Eclipse Engine");
 
 	if (!core.Initialize()) {
@@ -75,33 +76,45 @@ int main(int argc, char** argv) {
 	PanelHandler panelHandler(core.GetWindow());
 	ilInit();  // Initialize the DevIL library
 
-	std::vector<Texture> textures
+	std::vector<Texture> houseTexture
 	{
 		Texture("Assets/Baker_house.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
 	};
 
+	std::vector<Texture> shipTexture
+	{
+		Texture("Assets/SF_Fighter-Albedo_dds.dds","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
+	};
+
+	std::vector<Texture> catTexture
+	{
+		Texture("Assets/cat.jpg","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
+	};
+
 	Shader shaderProgram("Shaders/default.vert", "Shaders/default.frag");
+	Shader gridShader("Shaders/grid.vert", "Shaders/grid.frag");
 
-	GameObject* cube = new GameObject();
-	cube->AddComponent<Mesh>(vertices, indices, textures);
+	GameObject cube;
+	cube.AddComponent<Mesh>(vertices, indices, catTexture);
+	cube.AddComponent<Material>(shaderProgram, catTexture);
+	cube.transform.SetPosition(glm::vec3(0.0f, 7.0f, 0.0f));
 
-	GameObject* house = new GameObject();
-	std::string meshFilePath = "Assets/BakerHouse.fbx"; // Path to the mesh file
-	house->AddComponent<Mesh>(meshFilePath);
+	GameObject house;
+	std::string meshFilePath = "Assets/BakerHouse.FBX";
+	house.AddComponent<Mesh>(meshFilePath);
+	//auto& meshTexture = house.GetComponent<Mesh>()->GetTextures();    // It is supposed to get the defined texture from the fbx
+	house.AddComponent<Material>(shaderProgram, houseTexture);
 
-	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
-	glm::vec3 objectPos = glm::vec3(0.0f, 0.0f, 0.0f);
-	glm::mat4 objectModel = glm::mat4(1.0f);
-	objectModel = glm::translate(objectModel, objectPos);
+	GameObject ship;
+	std::string shipModel = "Assets/SF_Fighter.FBX";
+	ship.AddComponent<Mesh>(shipModel);
+	ship.AddComponent<Material>(shaderProgram, shipTexture);
+	ship.transform.SetPosition(glm::vec3(0.0f, 0.0f, 20.0f));
+	ship.transform.SetRotation(glm::vec3(-90.0f, 0.0f, 0.0f));
 
+	Camera camera(WINDOW_SIZE.x, WINDOW_SIZE.y, glm::vec3(7.0f, 4.0f, -7.0f));
 
-	shaderProgram.Activate();
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(objectModel));
-	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-
-	Camera camera(WINDOW_SIZE.x, WINDOW_SIZE.y, glm::vec3(0.0f, 0.0f, 5.0f));
+	Grid grid(gridShader, camera);
 
 	// Register the scroll callback for zoom control
 	glfwSetScrollCallback(core.GetWindow(), Camera::scroll_callback);
@@ -113,12 +126,8 @@ int main(int argc, char** argv) {
 
 	// console panel
 	auto consolePanel = dynamic_cast<ConsolePanel*>(panelHandler.GetPanel("Console Panel").get());
-  
 
-	// hierarchy panel
-	auto hierarchyPanel = dynamic_cast<HierarchyPanel*>(panelHandler.GetPanel("Hierarchy Panel").get());
-
-	while (!core.ShouldClose()){
+	while (!core.ShouldClose()) {
 		// fps
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
@@ -126,15 +135,17 @@ int main(int argc, char** argv) {
 		float fps = 1.0f / deltaTime;
 		float ms = deltaTime * 1000.0f;
 
-		panelHandler.NewFrame();
-
 		core.BeginFrame();
+		panelHandler.NewFrame();
 
 		camera.Inputs(core.GetWindow());
 		camera.UpdateMatrix(0.1f, 100.0f);
 
-		cube->Draw(shaderProgram, camera);
-		house->Draw(shaderProgram, camera);
+		cube.Draw(shaderProgram, camera);
+		house.Draw(shaderProgram, camera);
+		ship.Draw(shaderProgram, camera);
+
+		grid.Draw();
 
 		// fps
 		if (panelPtr) {
@@ -142,38 +153,15 @@ int main(int argc, char** argv) {
 				fpsPanel->Update(fps, ms);
 			}
 		}
-
-    // this shouldn't be in main btw
-		if (hierarchyPanel) {
-			if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
-				// PLACEHOLDER OF THE HIERARCHY FOR LOADING GEOMETRY THERE
-				// SHOULD BE SMTHING IN THE ENGINE TO ACTIVATE THIS CODE
-				hierarchyPanel->AddObject("Geometry");
-
-				// Remove the object
-				hierarchyPanel->RemoveObject("Geometry");
-			}
-		}
-
-		// Render all added panels
-		panelHandler.RenderPanels();
-
-		camera.Inputs(window);
-		camera.UpdateMatrix(0.1f, 100.0f);
-
-		cube.Draw(shaderProgram, camera);
-
 		// Rendering ImGui
 		panelHandler.Render();
 
 		panelHandler.EndFrame();
-
 		core.EndFrame();
 	}
 
-	delete house;
-	delete cube;
 	shaderProgram.Delete();
+	gridShader.Delete();
 	Logger::Close();
 
 	return EXIT_SUCCESS;

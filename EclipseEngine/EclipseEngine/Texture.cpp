@@ -1,9 +1,12 @@
+#include <locale>
+#include <codecvt>
+#include <IL/il.h>
 #include "Texture.h"
 #include <iostream>
 #include "Logger.h"
 
 Texture::Texture(const char* filename, const char* texType, GLuint slot, GLenum format, GLenum pixelType)
-    : type(texType), unit(slot)
+    : type(texType), unit(slot), path(filename)
 {
     // Assigns the type of the texture to the texture object
     type = texType;
@@ -14,12 +17,12 @@ Texture::Texture(const char* filename, const char* texType, GLuint slot, GLenum 
 
     // Load the image using DevIL
     if (!ilLoadImage((const wchar_t*)filename)) { // Use filename directly here
-        Logger::Log("Failed to load image");
+        Logger::Log("Failed to load image: ", filename);
         std::cerr << "Failed to load image: " << filename << std::endl;
         ilDeleteImages(1, &imageID);
         return;
     }
-    Logger::Log("Image loaded");
+    Logger::Log("Image loaded: ", filename);
 
     // Convert the image to RGBA format
     ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
@@ -51,20 +54,29 @@ Texture::Texture(const char* filename, const char* texType, GLuint slot, GLenum 
 }
 
 // Constructor: Initializes DevIL and loads a texture from file
-Texture::Texture(const aiString& filename, const std::string& texType, GLuint slot, GLenum format, GLenum pixelType)
+Texture::Texture(const std::string filename, const std::string& texType, GLuint slot, GLenum format, GLenum pixelType)
     : type(texType), unit(slot)
 {
     // Generate and bind a DevIL image ID
     ilGenImages(1, &imageID);
     ilBindImage(imageID);
 
+    // Convert std::string filename to std::wstring for DevIL compatibility
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::wstring wFilename = converter.from_bytes(filename);
+
+    std::cout << "Loading image: " << filename << std::endl;
     // Load the image using DevIL
-    if (!ilLoadImage((const wchar_t*)filename.C_Str())) {
-        Logger::Log("Failed to load image");
-        std::cerr << "Failed to load image: " << (const wchar_t*)filename.C_Str() << std::endl;
+    if (!ilLoadImage(wFilename.c_str())) {
+        Logger::Log("Failed to load image: ", filename);
         ilDeleteImages(1, &imageID);
+        ILenum error = ilGetError();
+    if (error != IL_NO_ERROR) {
+        std::cerr << "DevIL Error: " << error << std::endl;
+    }
         return;
     }
+    
     Logger::Log("Image loaded");
 
     // Convert the image to RGBA format
@@ -90,7 +102,7 @@ Texture::Texture(const aiString& filename, const std::string& texType, GLuint sl
     glGenerateMipmap(GL_TEXTURE_2D);
 
     // Clean up the DevIL image ID (correcting the cleanup)
-    ilDeleteImages(1, &imageID); // <- Correct cleanup
+    ilDeleteImages(1, &imageID);
 
     // Unbind the OpenGL Texture object to prevent accidental modifications
     glBindTexture(GL_TEXTURE_2D, 0);

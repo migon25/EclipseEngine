@@ -13,14 +13,13 @@ class Texture {
 public:
 	ILuint imageID = 0;
 	GLuint textureID = 0;
-	std::string type; // Changed to std::string for compatibility with Assimp
+	std::string type;
 	GLuint unit;
+	std::string path;
 
-	// Existing constructor
 	Texture(const char* filename, const char* texType, GLuint slot, GLenum format, GLenum pixelType);
 
-	// New constructor to load using Assimp-provided aiString
-	Texture(const aiString& filename, const std::string& texType, GLuint slot, GLenum format = GL_RGBA, GLenum pixelType = GL_UNSIGNED_BYTE);
+	Texture(const std::string filename, const std::string& texType, GLuint slot, GLenum format = GL_RGBA, GLenum pixelType = GL_UNSIGNED_BYTE);
 
 	// Assigns a texture unit to a texture
 	void TexUnit(Shader& shader, const char* uniform, GLuint unit);

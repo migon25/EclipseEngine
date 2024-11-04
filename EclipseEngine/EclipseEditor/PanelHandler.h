@@ -19,6 +19,7 @@ public:
     void Render();
     void EndFrame();
     void ShowDemoWindow(bool* p_open);
+    void CustomStyle();
 
     // Panel management
     void InitializePanels();

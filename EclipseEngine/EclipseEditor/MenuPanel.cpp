@@ -2,6 +2,8 @@
 #include <GLFW/glfw3.h>
 #include "MenuPanel.h"
 #include <imgui.h>
+#include "EclipseEngine/Logger.h"
+#include <windows.h>
 
 MenuPanel::MenuPanel(const std::string& name, PanelHandler& panelHandler)
     : Panel(name), m_PanelHandler(panelHandler) {}
@@ -72,6 +74,7 @@ void MenuPanel::Render() {
 						glfwGetWindowSize(m_PanelHandler.GetWindow(), &width, &height);
 						if (ImGui::SliderInt("Width", &width, 256, 4096) || ImGui::SliderInt("Height", &height, 144, 2160)) {
 							//App->window->ResizeWindow(width, height);
+							Logger::Log("screen size modified");
 							glfwSetWindowSize(m_PanelHandler.GetWindow(), width, height);
 						}
 
@@ -81,16 +84,28 @@ void MenuPanel::Render() {
 							//App->window->ChangeWindowBrightnessTo(brightness);
 						}
 
+						float opacity = 1.0f;
+						if (ImGui::SliderFloat("Opacity", &opacity, 0.000f, 1.000f)) {
+							Logger::Log("screen opacity modified");
+							glfwSetWindowOpacity(m_PanelHandler.GetWindow(), opacity);
+						}
+
 						//bool temp = App->window->GetFullscreen();
 						bool temp = false;
 						if (ImGui::Checkbox("Fullscreen", &temp)) {
 							//App->window->WindowSetFullscreen(temp);
+
+							if (temp) {
+								Logger::Log("Toggled fullscreen");
+								glfwSetWindowMonitor(m_PanelHandler.GetWindow(), nullptr, 0, 0, GL_MAX_WIDTH, GL_MAX_HEIGHT, GLFW_DONT_CARE);
+							}							
 						}
 
 						ImGui::SameLine();
 						//temp = App->window->GetResizable();
 						if (ImGui::Checkbox("Resizable", &temp)) {
 							//App->window->WindowSetResizable(temp);
+
 						}
 
 						ImGui::SameLine();
@@ -103,6 +118,8 @@ void MenuPanel::Render() {
 						//temp = App->window->GetFullDesktop();
 						if (ImGui::Checkbox("Full Desktop", &temp)) {
 							//App->window->WindowSetFullscreenDesktop(temp);
+							glfwSetWindowSize(m_PanelHandler.GetWindow(), GL_MAX_WIDTH, GL_MAX_HEIGHT);
+							
 						}
 					}
 
@@ -345,6 +362,7 @@ void MenuPanel::Render() {
 						ImGui::BulletText("Vendor: ");
 						ImGui::SameLine();
 						//ImGui::TextColored(ImVec4(255.0f, 0.0f, 0.0f, 255.00f), "%s", App->hardware.devil_info.vendor);
+						ImGui::Separator();
 					}
 
 					if (ImGui::CollapsingHeader("Hardware")) {
@@ -417,6 +435,20 @@ void MenuPanel::Render() {
 
 		if (ImGui::BeginMenu("Help")) {
 			ImGui::MenuItem("About", nullptr, nullptr);
+			if (ImGui::MenuItem("GitHub Repository")) {
+				// Open the GitHub repository in the default web browser
+				const char* url = "https://github.com/migon25/EclipseEngine";
+				#if defined(_WIN32)
+				ShellExecuteA(nullptr, "open", url, nullptr, nullptr, SW_SHOWNORMAL);
+				#elif defined(__APPLE__)
+				std::string openUrlCommand = "open " + std::string(url);
+				system(openUrlCommand.c_str());
+				#elif defined(__linux__)
+				std::string openUrlCommand = "xdg-open " + std::string(url);
+				system(openUrlCommand.c_str());
+				#endif
+			}
+
 			ImGui::EndMenu();
 		}
         ImGui::EndMainMenuBar();
