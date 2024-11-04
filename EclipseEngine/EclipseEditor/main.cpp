@@ -33,7 +33,7 @@ using namespace std;
 
 using ivec2 = glm::ivec2;
 
-static const ivec2 WINDOW_SIZE(1100, 619);
+static const ivec2 WINDOW_SIZE(1500, 844);
 
 std::vector<Vertex> vertices =
 { //               COORDINATES           /            NORMALS                TEXTURE COORDINATES    //
@@ -76,9 +76,14 @@ int main(int argc, char** argv) {
 	PanelHandler panelHandler(core.GetWindow());
 	ilInit();  // Initialize the DevIL library
 
-	std::vector<Texture> textures
+	std::vector<Texture> houseTexture
 	{
 		Texture("Assets/Baker_house.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
+	};
+
+	std::vector<Texture> shipTexture
+	{
+		Texture("Assets/SF_Fighter-Albedo_dds.dds","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
 	};
 
 	std::vector<Texture> catTexture
@@ -95,11 +100,17 @@ int main(int argc, char** argv) {
 	cube.transform.SetPosition(glm::vec3(0.0f, 7.0f, 0.0f));
 
 	GameObject house;
-	std::string meshFilePath = "Assets/BakerHouse.fbx";
+	std::string meshFilePath = "Assets/BakerHouse.FBX";
 	house.AddComponent<Mesh>(meshFilePath);
-	auto& meshTextures = house.GetComponent<Mesh>()->GetTextures();
-	house.AddComponent<Material>(shaderProgram, textures);
-	house.transform.SetPosition(glm::vec3(0.0f, 0.0f, 5.0f));
+	//auto& meshTexture = house.GetComponent<Mesh>()->GetTextures();    // It is supposed to get the defined texture from the fbx
+	house.AddComponent<Material>(shaderProgram, houseTexture);
+
+	GameObject ship;
+	std::string shipModel = "Assets/SF_Fighter.FBX";
+	ship.AddComponent<Mesh>(shipModel);
+	ship.AddComponent<Material>(shaderProgram, shipTexture);
+	ship.transform.SetPosition(glm::vec3(0.0f, 0.0f, 20.0f));
+	ship.transform.SetRotation(glm::vec3(-90.0f, 0.0f, 0.0f));
 
 	Camera camera(WINDOW_SIZE.x, WINDOW_SIZE.y, glm::vec3(7.0f, 4.0f, -7.0f));
 
@@ -132,6 +143,7 @@ int main(int argc, char** argv) {
 
 		cube.Draw(shaderProgram, camera);
 		house.Draw(shaderProgram, camera);
+		ship.Draw(shaderProgram, camera);
 
 		grid.Draw();
 
