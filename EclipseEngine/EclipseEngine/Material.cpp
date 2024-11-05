@@ -1,15 +1,17 @@
 #include "Material.h"
 
-Material::Material(Shader& shader, const std::vector<Texture>& textures)
-    : shader(shader), textures(textures) {}
+Material::Material(Shader& shader, const std::vector<Texture>& textures) : shader(shader), textures(textures) 
+{
 
-void Material::BindTextures()  {
+}
 
+void Material::BindTextures() 
+{
 	unsigned int numDiffuse = 0;
 	unsigned int numSpecular = 0;
 
-    for (unsigned int i = 0; i < textures.size(); ++i) {
-
+    for (unsigned int i = 0; i < textures.size(); ++i)
+	{
 		std::string num;
 		std::string type = textures[i].type;
 		if (type == "diffuse")
@@ -20,7 +22,8 @@ void Material::BindTextures()  {
 		{
 			num = std::to_string(numSpecular++);
 		}
-        else {
+        else 
+		{
             std::cerr << "Texture " << i << " not valid." << std::endl;
         }
 		textures[i].TexUnit(shader, (type + num).c_str(), i);
@@ -28,6 +31,7 @@ void Material::BindTextures()  {
     }
 }
 
-void Material::Update() {
+void Material::Update() 
+{
     // Any update logic specific to Material can go here
 }

@@ -9,7 +9,8 @@ InspectorPanel::InspectorPanel(const std::string& name, bool isVisible) : Panel 
 
 void InspectorPanel::Render()
 {
-    if (IsVisible()) {
+    if (IsVisible())
+    {
         ImGui::Begin(GetName().c_str(), &m_Visible);
         if(ImGui::BeginTabBar("##tabs", ImGuiTabBarFlags_None))
         {

@@ -4,7 +4,8 @@
 #include "Panel.h"
 #include <vector>
 
-class HierarchyPanel : public Panel {
+class HierarchyPanel : public Panel 
+{
 public:
 	HierarchyPanel(const std::string& name, bool isVisible = false);
 
@@ -15,7 +16,6 @@ public:
 private:
 	std::string m_Name;
 	std::vector<std::string> m_Objects;
-
 };
 
 #endif // HIERARCHY_PANEL_H

@@ -5,7 +5,8 @@
 #include <vector>
 #include <string>
 
-class ConsolePanel : public Panel {
+class ConsolePanel : public Panel 
+{
 public:
     ConsolePanel(const std::string& name, bool visible = true);
 

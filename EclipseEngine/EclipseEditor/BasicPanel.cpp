@@ -7,7 +7,8 @@ BasicPanel::BasicPanel(const std::string& name, bool isVisible) : Panel(name)
 }
 
 void BasicPanel::Render() {
-    if (IsVisible()) {
+    if (IsVisible())
+    {
         ImGui::Begin(GetName().c_str(), &m_Visible);
         ImGui::Text("Usar este codigo como referencia");
         ImGui::End();

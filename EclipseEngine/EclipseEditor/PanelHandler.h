@@ -10,7 +10,8 @@
 #include <memory> // For std::unique_ptr
 #include "Panel.h"
 
-class PanelHandler {
+class PanelHandler
+{
 public:
     PanelHandler(GLFWwindow* window);
     ~PanelHandler();

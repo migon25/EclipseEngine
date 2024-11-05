@@ -435,7 +435,7 @@ void MenuPanel::Render() {
 
 		if (ImGui::BeginMenu("Help")) {
 			ImGui::MenuItem("About", nullptr, nullptr);
-			if (ImGui::MenuItem("GitHub Repository")) {
+			if (ImGui::MenuItem("GitHub")) {
 				// Open the GitHub repository in the default web browser
 				const char* url = "https://github.com/migon25/EclipseEngine";
 				#if defined(_WIN32)

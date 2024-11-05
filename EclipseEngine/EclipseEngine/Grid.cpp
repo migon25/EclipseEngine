@@ -1,8 +1,10 @@
 #include "Grid.h"
 
-Grid::Grid(Shader& _shader, Camera& _camera) : shader(_shader), camera(_camera) {
+Grid::Grid(Shader& _shader, Camera& _camera) : shader(_shader), camera(_camera)
+{
 
-	for (int i = -gridLines / 2; i <= gridLines / 2; ++i) {
+	for (int i = -gridLines / 2; i <= gridLines / 2; ++i) 
+	{
 		float offset = i * lineSpacing;
 
 		// Horizontal line

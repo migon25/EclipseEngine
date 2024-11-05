@@ -4,7 +4,8 @@
 #include "Panel.h"
 #include <vector>
 
-class InspectorPanel : public Panel {
+class InspectorPanel : public Panel
+{
 public:
     InspectorPanel(const std::string& name, bool isVisible = false);;
     void Render() override;

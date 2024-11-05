@@ -2,7 +2,7 @@
 #include "Logger.h"
 
 Mesh::Mesh(std::vector<Vertex>& _vertices, std::vector<GLuint>& _indices, std::vector<Texture>& _textures) 
-	: vertices(_vertices), indices(_indices), textures(_textures) 
+					: vertices(_vertices),				indices(_indices),			   textures(_textures) 
 {
 	VAO.Bind();
 
@@ -17,9 +17,9 @@ Mesh::Mesh(std::vector<Vertex>& _vertices, std::vector<GLuint>& _indices, std::v
 	EBO.Unbind();
 }
 
-Mesh::Mesh(const std::string& filepath) {
+Mesh::Mesh(const std::string& filepath) 
+{
 	ModelLoader::LoadModel(filepath, vertices, indices, textures);
-	Logger::Log(filepath, " Loaded");
 
 	VAO.Bind();
 	VBO VBO(vertices);
@@ -33,7 +33,8 @@ Mesh::Mesh(const std::string& filepath) {
 	EBO.Unbind();
 }
 
-void Mesh::Update() {
+void Mesh::Update() 
+{
 	// Empty Update method
 }
 
