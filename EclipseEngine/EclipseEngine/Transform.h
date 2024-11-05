@@ -5,12 +5,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Component.h"
 
-class Transform : public Component {
+class Transform : public Component 
+{
 public:
-    glm::vec3 position;
-    glm::vec3 rotation; // In degrees
-    glm::vec3 scale;
-
     Transform();
 
     glm::mat4 GetMatrix() const;
@@ -20,6 +17,11 @@ public:
     void SetScale(const glm::vec3& newScale);
 
     void Update() override;
+
+public:
+    glm::vec3 position;
+    glm::vec3 rotation; // In degrees, maybe change it in future updates? idk yet
+    glm::vec3 scale;
 };
 
 #endif // TRANSFORM_H

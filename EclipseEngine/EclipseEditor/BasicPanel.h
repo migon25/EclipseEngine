@@ -4,7 +4,8 @@
 #include "Panel.h"
 #include <string>
 
-class BasicPanel : public Panel {
+class BasicPanel : public Panel
+{
 public:
     BasicPanel(const std::string& name, bool isVisible = false);
     void Render() override;

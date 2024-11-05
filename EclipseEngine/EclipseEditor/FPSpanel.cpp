@@ -6,7 +6,8 @@ FPSPanel::FPSPanel(const std::string& name, bool isVisible) : Panel(name), m_FPS
     SetVisible(isVisible);
 }
 
-void FPSPanel::Render() {
+void FPSPanel::Render() 
+{
     if (!IsVisible()) return;
 
     ImGui::Begin(GetName().c_str(), &m_Visible);
@@ -22,7 +23,8 @@ void FPSPanel::Render() {
     ImGui::End();
 }
 
-void FPSPanel::Update(float fps, float ms) {
+void FPSPanel::Update(float fps, float ms) 
+{
     m_FPSBuffer[m_CurrentIndex] = fps;
     m_MSBuffer[m_CurrentIndex] = ms;
     m_CurrentIndex = (m_CurrentIndex + 1) % BUFFER_SIZE;

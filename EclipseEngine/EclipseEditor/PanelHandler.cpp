@@ -13,7 +13,7 @@ PanelHandler::PanelHandler(GLFWwindow* window) : m_Window(window) {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.Fonts->AddFontFromFileTTF("Assets/Evander-ExtraLight.otf", 12.0f);
+    io.Fonts->AddFontFromFileTTF("Assets/Evander-ExtraLight.otf", 14.0f);
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable docking
@@ -110,79 +110,79 @@ void PanelHandler::CustomStyle()
     ImVec4* colors = ImGui::GetStyle().Colors;
 
     // Backgrounds
-    colors[ImGuiCol_WindowBg] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);   // Background color for main windows
-    colors[ImGuiCol_ChildBg] = ImVec4(0.15f, 0.15f, 0.18f, 1.0f); // Background color for child windows/panels
-    colors[ImGuiCol_PopupBg] = ImVec4(0.2f, 0.2f, 0.25f, 1.0f);   // Background color for pop-up windows
+    colors[ImGuiCol_WindowBg] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);             // Background color for main windows
+    colors[ImGuiCol_ChildBg] = ImVec4(0.15f, 0.15f, 0.18f, 1.0f);           // Background color for child windows/panels
+    colors[ImGuiCol_PopupBg] = ImVec4(0.2f, 0.2f, 0.25f, 1.0f);             // Background color for pop-up windows
 
     // Headers
-    colors[ImGuiCol_Header] = ImVec4(0.25f, 0.3f, 0.35f, 1.0f);   // Background color for headers (hovered or active)
-    colors[ImGuiCol_HeaderHovered] = ImVec4(0.3f, 0.4f, 0.5f, 1.0f);     // Color when header is hovered
-    colors[ImGuiCol_HeaderActive] = ImVec4(0.35f, 0.45f, 0.55f, 1.0f);  // Color when header is active
+    colors[ImGuiCol_Header] = ImVec4(0.25f, 0.3f, 0.35f, 1.0f);             // Background color for headers (hovered or active)
+    colors[ImGuiCol_HeaderHovered] = ImVec4(0.3f, 0.4f, 0.5f, 1.0f);        // Color when header is hovered
+    colors[ImGuiCol_HeaderActive] = ImVec4(0.35f, 0.45f, 0.55f, 1.0f);      // Color when header is active
 
     // Borders and separators
-    colors[ImGuiCol_Border] = ImVec4(0.4f, 0.4f, 0.5f, 0.5f);    // Border color
-    colors[ImGuiCol_BorderShadow] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);    // Border shadow color
+    colors[ImGuiCol_Border] = ImVec4(0.4f, 0.4f, 0.5f, 0.5f);               // Border color
+    colors[ImGuiCol_BorderShadow] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f)  ;       // Border shadow color
 
     // Buttons
-    colors[ImGuiCol_Button] = ImVec4(0.2f, 0.3f, 0.4f, 1.0f);    // Button color
-    colors[ImGuiCol_ButtonHovered] = ImVec4(0.3f, 0.4f, 0.5f, 1.0f);    // Button color when hovered
-    colors[ImGuiCol_ButtonActive] = ImVec4(0.4f, 0.5f, 0.6f, 1.0f);    // Button color when active
+    colors[ImGuiCol_Button] = ImVec4(0.2f, 0.3f, 0.4f, 1.0f);               // Button color
+    colors[ImGuiCol_ButtonHovered] = ImVec4(0.3f, 0.4f, 0.5f, 1.0f) ;       // Button color when hovered
+    colors[ImGuiCol_ButtonActive] = ImVec4(0.4f, 0.5f, 0.6f, 1.0f);         // Button color when active
 
     // Frame background (used for inputs, sliders, etc.)
-    colors[ImGuiCol_FrameBg] = ImVec4(0.2f, 0.2f, 0.25f, 1.0f);   // Background color for frames
-    colors[ImGuiCol_FrameBgHovered] = ImVec4(0.3f, 0.3f, 0.35f, 1.0f);   // Frame color when hovered
-    colors[ImGuiCol_FrameBgActive] = ImVec4(0.4f, 0.4f, 0.5f, 1.0f);    // Frame color when active
+    colors[ImGuiCol_FrameBg] = ImVec4(0.2f, 0.2f, 0.25f, 1.0f);             // Background color for frames
+    colors[ImGuiCol_FrameBgHovered] = ImVec4(0.3f, 0.3f, 0.35f, 1.0f);      // Frame color when hovered
+    colors[ImGuiCol_FrameBgActive] = ImVec4(0.4f, 0.4f, 0.5f, 1.0f);        // Frame color when active
 
     // Tabs
-    colors[ImGuiCol_Tab] = ImVec4(0.15f, 0.2f, 0.25f, 1.0f);  // Background color for tabs
-    colors[ImGuiCol_TabHovered] = ImVec4(0.3f, 0.4f, 0.5f, 1.0f);    // Tab color when hovered
-    colors[ImGuiCol_TabActive] = ImVec4(0.2f, 0.3f, 0.4f, 1.0f);    // Tab color when active
-    colors[ImGuiCol_TabUnfocused] = ImVec4(0.1f, 0.15f, 0.2f, 1.0f);   // Tab color when unfocused
+    colors[ImGuiCol_Tab] = ImVec4(0.15f, 0.2f, 0.25f, 1.0f);                // Background color for tabs
+    colors[ImGuiCol_TabHovered] = ImVec4(0.3f, 0.4f, 0.5f, 1.0f);           // Tab color when hovered
+    colors[ImGuiCol_TabActive] = ImVec4(0.2f, 0.3f, 0.4f, 1.0f);            // Tab color when active
+    colors[ImGuiCol_TabUnfocused] = ImVec4(0.1f, 0.15f, 0.2f, 1.0f);        // Tab color when unfocused
     colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.15f, 0.2f, 0.25f, 1.0f); // Active tab color when unfocused
 
     // Titles
-    colors[ImGuiCol_TitleBg] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);   // Background color for title bar
-    colors[ImGuiCol_TitleBgActive] = ImVec4(0.2f, 0.25f, 0.3f, 1.0f);  // Title bar color when active
-    colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.0f, 0.0f, 0.0f, 0.5f);   // Title bar color when collapsed
+    colors[ImGuiCol_TitleBg] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);              // Background color for title bar
+    colors[ImGuiCol_TitleBgActive] = ImVec4(0.2f, 0.25f, 0.3f, 1.0f);       // Title bar color when active
+    colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.0f, 0.0f, 0.0f, 0.5f);     // Title bar color when collapsed
 
     // Scrollbars
-    colors[ImGuiCol_ScrollbarBg] = ImVec4(0.05f, 0.05f, 0.1f, 0.5f); // Background color for scrollbars
-    colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);   // Scrollbar grab color
+    colors[ImGuiCol_ScrollbarBg] = ImVec4(0.05f, 0.05f, 0.1f, 0.5f);        // Background color for scrollbars
+    colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);        // Scrollbar grab color
     colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.4f, 0.4f, 0.4f, 1.0f); // Scrollbar grab color when hovered
-    colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.5f, 0.5f, 0.5f, 1.0f); // Scrollbar grab color when active
+    colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);  // Scrollbar grab color when active
 
     // Slider
-    colors[ImGuiCol_SliderGrab] = ImVec4(0.4f, 0.5f, 0.6f, 1.0f);    // Color for sliders
-    colors[ImGuiCol_SliderGrabActive] = ImVec4(0.5f, 0.6f, 0.7f, 1.0f);    // Color when slider is active
+    colors[ImGuiCol_SliderGrab] = ImVec4(0.4f, 0.5f, 0.6f, 1.0f);           // Color for sliders
+    colors[ImGuiCol_SliderGrabActive] = ImVec4(0.5f, 0.6f, 0.7f, 1.0f);     // Color when slider is active
 
     // Checkmark
-    colors[ImGuiCol_CheckMark] = ImVec4(0.1f, 0.9f, 0.4f, 1.0f);    // Color for checkmark
+    colors[ImGuiCol_CheckMark] = ImVec4(0.1f, 0.9f, 0.4f, 1.0f);            // Color for checkmark
 
     // Separators
-    colors[ImGuiCol_Separator] = ImVec4(0.4f, 0.4f, 0.5f, 1.0f);    // Separator color
-    colors[ImGuiCol_SeparatorHovered] = ImVec4(0.5f, 0.5f, 0.6f, 1.0f);    // Separator color when hovered
-    colors[ImGuiCol_SeparatorActive] = ImVec4(0.6f, 0.6f, 0.7f, 1.0f);    // Separator color when active
+    colors[ImGuiCol_Separator] = ImVec4(0.4f, 0.4f, 0.5f, 1.0f);            // Separator color
+    colors[ImGuiCol_SeparatorHovered] = ImVec4(0.5f, 0.5f, 0.6f, 1.0f);     // Separator color when hovered
+    colors[ImGuiCol_SeparatorActive] = ImVec4(0.6f, 0.6f, 0.7f, 1.0f);      // Separator color when active
 
     // Resize grip (used for resizable windows)
-    colors[ImGuiCol_ResizeGrip] = ImVec4(0.4f, 0.4f, 0.5f, 1.0f);    // Resize grip color
+    colors[ImGuiCol_ResizeGrip] = ImVec4(0.4f, 0.4f, 0.5f, 1.0f);           // Resize grip color
     colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.5f, 0.5f, 0.6f, 1.0f);    // Resize grip color when hovered
-    colors[ImGuiCol_ResizeGripActive] = ImVec4(0.6f, 0.6f, 0.7f, 1.0f);    // Resize grip color when active
+    colors[ImGuiCol_ResizeGripActive] = ImVec4(0.6f, 0.6f, 0.7f, 1.0f);     // Resize grip color when active
 
     // Plot lines and histogram
-    colors[ImGuiCol_PlotLines] = ImVec4(1.0f, 0.5f, 0.0f, 1.0f);    // Color for plot lines
-    colors[ImGuiCol_PlotLinesHovered] = ImVec4(1.0f, 0.6f, 0.1f, 1.0f);    // Plot lines when hovered
-    colors[ImGuiCol_PlotHistogram] = ImVec4(0.9f, 0.7f, 0.2f, 1.0f);    // Color for histogram plots
+    colors[ImGuiCol_PlotLines] = ImVec4(1.0f, 0.5f, 0.0f, 1.0f);            // Color for plot lines
+    colors[ImGuiCol_PlotLinesHovered] = ImVec4(1.0f, 0.6f, 0.1f, 1.0f);     // Plot lines when hovered
+    colors[ImGuiCol_PlotHistogram] = ImVec4(0.9f, 0.7f, 0.2f, 1.0f);        // Color for histogram plots
     colors[ImGuiCol_PlotHistogramHovered] = ImVec4(1.0f, 0.8f, 0.3f, 1.0f); // Histogram color when hovered
 
     // Modal window darkening
-    colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.1f, 0.1f, 0.1f, 0.5f);    // Dim background for modal windows
+    colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.1f, 0.1f, 0.1f, 0.5f);     // Dim background for modal windows
 
     // Table
-    colors[ImGuiCol_TableHeaderBg] = ImVec4(0.2f, 0.2f, 0.3f, 1.0f);    // Background for table headers
+    colors[ImGuiCol_TableHeaderBg] = ImVec4(0.2f, 0.2f, 0.3f, 1.0f);        // Background for table headers
     colors[ImGuiCol_TableBorderStrong] = ImVec4(0.4f, 0.4f, 0.5f, 1.0f);    // Strong border for tables
-    colors[ImGuiCol_TableBorderLight] = ImVec4(0.3f, 0.3f, 0.4f, 1.0f);    // Light border for tables
-    colors[ImGuiCol_TableRowBg] = ImVec4(0.1f, 0.1f, 0.15f, 1.0f);   // Row background for tables
-    colors[ImGuiCol_TableRowBgAlt] = ImVec4(0.15f, 0.15f, 0.2f, 1.0f);  // Alternate row background for tables
+    colors[ImGuiCol_TableBorderLight] = ImVec4(0.3f, 0.3f, 0.4f, 1.0f);     // Light border for tables
+    colors[ImGuiCol_TableRowBg] = ImVec4(0.1f, 0.1f, 0.15f, 1.0f);          // Row background for tables
+    colors[ImGuiCol_TableRowBgAlt] = ImVec4(0.15f, 0.15f, 0.2f, 1.0f);      // Alternate row background for tables
 
 }
 

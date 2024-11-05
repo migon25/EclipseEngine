@@ -5,7 +5,8 @@
 #include <iostream>
 #include <string>
 
-class Core {
+class Core 
+{
 public:
     Core(int width, int height, const std::string& title);
     ~Core();
@@ -24,6 +25,5 @@ private:
     bool InitializeGLFW();
     bool InitializeOpenGL();
 };
-
 
 #endif // CORE_H

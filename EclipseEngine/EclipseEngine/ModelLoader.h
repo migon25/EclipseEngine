@@ -9,7 +9,8 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-class ModelLoader {
+class ModelLoader 
+{
 public:
     // Static method to load a model from a file path
     static void LoadModel(const std::string& filepath,
@@ -31,7 +32,6 @@ private:
     static std::vector<Texture> LoadMaterialTextures(aiMaterial* material,
         aiTextureType type,
         const std::string& typeName);
-
 };
 
 #endif // MODELLOADER_H

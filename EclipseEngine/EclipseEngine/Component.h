@@ -1,9 +1,10 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
-class GameObject; // Forward declaration
+class GameObject;
 
-class Component {
+class Component 
+{
 public:
     virtual ~Component() = default;
     virtual void Update() = 0; // To be overridden in each derived component

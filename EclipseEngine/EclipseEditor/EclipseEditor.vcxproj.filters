@@ -74,9 +74,6 @@
     <ClInclude Include="AssetsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ViewportPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="InspectorPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>

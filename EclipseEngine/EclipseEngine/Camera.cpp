@@ -28,7 +28,7 @@ void Camera::Matrix(Shader& shader, const char* uniform)
 
 void Camera::Inputs(GLFWwindow* window)
 {
-	// Normal Camera Movement (Arrow Keys)
+	// Normal Camera Movement (Arrow Keys)z
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) Position += speed * Orientation;
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) Position -= speed * Orientation;
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) Position -= speed * glm::normalize(glm::cross(Orientation, Up));
@@ -48,10 +48,7 @@ void Camera::Inputs(GLFWwindow* window)
         // Hide cursor and handle cursor centering for look-around
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-        if (firstClick)
-        {
-            firstClick = false;
-        }
+        if (firstClick) firstClick = false;
 
         double mouseX, mouseY;
         glfwGetCursorPos(window, &mouseX, &mouseY);
@@ -62,10 +59,7 @@ void Camera::Inputs(GLFWwindow* window)
 
         glm::vec3 newOrientation = glm::rotate(Orientation, glm::radians(-rotX), glm::normalize(glm::cross(Orientation, Up)));
 
-        if (abs(glm::angle(newOrientation, Up) - glm::radians(90.0f)) <= glm::radians(85.0f))
-        {
-            Orientation = newOrientation;
-        }
+        if (abs(glm::angle(newOrientation, Up) - glm::radians(90.0f)) <= glm::radians(85.0f)) { Orientation = newOrientation; }
 
         Orientation = glm::rotate(Orientation, glm::radians(-rotY), Up);
 
@@ -94,10 +88,7 @@ void Camera::Inputs(GLFWwindow* window)
         // Set cursor mode for zoom
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-        if (firstClick)
-        {
-            firstClick = false;
-        }
+        if (firstClick) firstClick = false;
 
         double mouseX, mouseY;
         glfwGetCursorPos(window, &mouseX, &mouseY);
@@ -115,10 +106,7 @@ void Camera::Inputs(GLFWwindow* window)
         // Set cursor mode for look-around
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-        if (firstClick)
-        {
-            firstClick = false;
-        }
+        if (firstClick) firstClick = false;
 
         double mouseX, mouseY;
         glfwGetCursorPos(window, &mouseX, &mouseY);
@@ -129,10 +117,7 @@ void Camera::Inputs(GLFWwindow* window)
 
         glm::vec3 newOrientation = glm::rotate(Orientation, glm::radians(-rotX), glm::normalize(glm::cross(Orientation, Up)));
 
-        if (abs(glm::angle(newOrientation, Up) - glm::radians(90.0f)) <= glm::radians(85.0f))
-        {
-            Orientation = newOrientation;
-        }
+        if (abs(glm::angle(newOrientation, Up) - glm::radians(90.0f)) <= glm::radians(85.0f)) { Orientation = newOrientation; }
 
         Orientation = glm::rotate(Orientation, glm::radians(-rotY), Up);
 
@@ -152,10 +137,7 @@ void Camera::Inputs(GLFWwindow* window)
     {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-        if (firstClick)
-        {
-            firstClick = false;
-        }
+        if (firstClick) firstClick = false;
 
         double mouseX, mouseY;
         glfwGetCursorPos(window, &mouseX, &mouseY);
@@ -180,10 +162,7 @@ void Camera::Inputs(GLFWwindow* window)
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
         speed = 5.0f; // Set a different speed for panning
 
-        if (firstClick)
-        {
-            firstClick = false;
-        }
+        if (firstClick) firstClick = false;
 
         double mouseX, mouseY;
         glfwGetCursorPos(window, &mouseX, &mouseY);
