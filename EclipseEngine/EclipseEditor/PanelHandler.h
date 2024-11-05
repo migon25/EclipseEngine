@@ -10,7 +10,8 @@
 #include <memory> // For std::unique_ptr
 #include "Panel.h"
 
-class PanelHandler {
+class PanelHandler
+{
 public:
     PanelHandler(GLFWwindow* window);
     ~PanelHandler();
@@ -19,6 +20,7 @@ public:
     void Render();
     void EndFrame();
     void ShowDemoWindow(bool* p_open);
+    void CustomStyle();
 
     // Panel management
     void InitializePanels();

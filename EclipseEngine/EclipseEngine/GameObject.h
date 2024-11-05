@@ -8,7 +8,8 @@
 #include "Mesh.h"
 #include "Texture.h"
 
-class GameObject {
+class GameObject 
+{
 public:
     GameObject();
     ~GameObject();
@@ -25,8 +26,8 @@ public:
     void Update();
     void Draw(Shader& shader, Camera& camera);
 
+public:
     Transform transform;
-private:
     std::unique_ptr<Material> material; // Using unique_ptr for automatic memory management
     std::unique_ptr<Mesh> mesh;         // Using unique_ptr for automatic memory management
 };

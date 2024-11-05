@@ -110,7 +110,6 @@
     <ClInclude Include="BasicPanel.h" />
     <ClInclude Include="ConsolePanel.h" />
     <ClInclude Include="InspectorPanel.h" />
-    <ClInclude Include="ViewportPanel.h" />
     <ClInclude Include="FPSpanel.h" />
     <ClInclude Include="HierarchyPanel.h" />
     <ClInclude Include="MenuPanel.h" />

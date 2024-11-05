@@ -9,7 +9,8 @@ InspectorPanel::InspectorPanel(const std::string& name, bool isVisible) : Panel 
 
 void InspectorPanel::Render()
 {
-    if (IsVisible()) {
+    if (IsVisible())
+    {
         ImGui::Begin(GetName().c_str(), &m_Visible);
         if(ImGui::BeginTabBar("##tabs", ImGuiTabBarFlags_None))
         {
@@ -54,9 +55,9 @@ void InspectorPanel::Render()
                 bool temp1;
                 ImGui::Checkbox("Active", &temp1);
             }
-
+            ImGui::EndTabBar();
         }
-        ImGui::EndTabBar();
+        ImGui::End();
     }
-    ImGui::End();
+    
 }

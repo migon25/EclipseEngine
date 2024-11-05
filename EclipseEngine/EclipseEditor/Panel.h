@@ -4,7 +4,8 @@
 #include <string>
 #include <vector>
 
-class Panel {
+class Panel 
+{
 public:
     Panel(const std::string& name) : m_Name(name), m_Visible(false) {}
     virtual ~Panel() {}

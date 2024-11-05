@@ -3,6 +3,7 @@
 #include "MenuPanel.h"
 #include <imgui.h>
 #include "EclipseEngine/Logger.h"
+#include <windows.h>
 
 MenuPanel::MenuPanel(const std::string& name, PanelHandler& panelHandler)
     : Panel(name), m_PanelHandler(panelHandler) {}
@@ -361,6 +362,7 @@ void MenuPanel::Render() {
 						ImGui::BulletText("Vendor: ");
 						ImGui::SameLine();
 						//ImGui::TextColored(ImVec4(255.0f, 0.0f, 0.0f, 255.00f), "%s", App->hardware.devil_info.vendor);
+						ImGui::Separator();
 					}
 
 					if (ImGui::CollapsingHeader("Hardware")) {
@@ -433,6 +435,20 @@ void MenuPanel::Render() {
 
 		if (ImGui::BeginMenu("Help")) {
 			ImGui::MenuItem("About", nullptr, nullptr);
+			if (ImGui::MenuItem("GitHub")) {
+				// Open the GitHub repository in the default web browser
+				const char* url = "https://github.com/migon25/EclipseEngine";
+				#if defined(_WIN32)
+				ShellExecuteA(nullptr, "open", url, nullptr, nullptr, SW_SHOWNORMAL);
+				#elif defined(__APPLE__)
+				std::string openUrlCommand = "open " + std::string(url);
+				system(openUrlCommand.c_str());
+				#elif defined(__linux__)
+				std::string openUrlCommand = "xdg-open " + std::string(url);
+				system(openUrlCommand.c_str());
+				#endif
+			}
+
 			ImGui::EndMenu();
 		}
         ImGui::EndMainMenuBar();

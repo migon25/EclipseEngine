@@ -7,16 +7,11 @@
 #include <assimp/postprocess.h>
 #include <IL/il.h>    
 #include "Shader.h"
-#include <string>  // Include string to use std::string
+#include <string>
 
-class Texture {
+class Texture 
+{
 public:
-	ILuint imageID = 0;
-	GLuint textureID = 0;
-	std::string type;
-	GLuint unit;
-	std::string path;
-
 	Texture(const char* filename, const char* texType, GLuint slot, GLenum format, GLenum pixelType);
 
 	Texture(const std::string filename, const std::string& texType, GLuint slot, GLenum format = GL_RGBA, GLenum pixelType = GL_UNSIGNED_BYTE);
@@ -29,6 +24,13 @@ public:
 	void Unbind();
 	// Deletes a texture
 	void Delete();
+
+public:
+	ILuint imageID = 0;
+	GLuint textureID = 0;
+	std::string type;
+	GLuint unit;
+	std::string path;
 };
 
 #endif // TEXTURE_H

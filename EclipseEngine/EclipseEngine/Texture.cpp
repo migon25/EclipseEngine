@@ -5,8 +5,7 @@
 #include <iostream>
 #include "Logger.h"
 
-Texture::Texture(const char* filename, const char* texType, GLuint slot, GLenum format, GLenum pixelType)
-    : type(texType), unit(slot), path(filename)
+Texture::Texture(const char* filename, const char* texType, GLuint slot, GLenum format, GLenum pixelType): path(filename), type(texType), unit(slot)
 {
     // Assigns the type of the texture to the texture object
     type = texType;
@@ -16,7 +15,8 @@ Texture::Texture(const char* filename, const char* texType, GLuint slot, GLenum 
     ilBindImage(imageID);
 
     // Load the image using DevIL
-    if (!ilLoadImage((const wchar_t*)filename)) { // Use filename directly here
+    if (!ilLoadImage((const wchar_t*)filename)) 
+    {
         Logger::Log("Failed to load image: ", filename);
         std::cerr << "Failed to load image: " << filename << std::endl;
         ilDeleteImages(1, &imageID);
@@ -35,8 +35,7 @@ Texture::Texture(const char* filename, const char* texType, GLuint slot, GLenum 
     glBindTexture(GL_TEXTURE_2D, textureID);
 
     // Assigns the image to the OpenGL Texture object
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),
-        0, format, pixelType, ilGetData());
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, format, pixelType, ilGetData());
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -54,8 +53,7 @@ Texture::Texture(const char* filename, const char* texType, GLuint slot, GLenum 
 }
 
 // Constructor: Initializes DevIL and loads a texture from file
-Texture::Texture(const std::string filename, const std::string& texType, GLuint slot, GLenum format, GLenum pixelType)
-    : type(texType), unit(slot)
+Texture::Texture(const std::string filename, const std::string& texType, GLuint slot, GLenum format, GLenum pixelType) : path(filename), type(texType), unit(slot)
 {
     // Generate and bind a DevIL image ID
     ilGenImages(1, &imageID);
@@ -67,13 +65,15 @@ Texture::Texture(const std::string filename, const std::string& texType, GLuint 
 
     std::cout << "Loading image: " << filename << std::endl;
     // Load the image using DevIL
-    if (!ilLoadImage(wFilename.c_str())) {
+    if (!ilLoadImage(wFilename.c_str())) 
+    {
         Logger::Log("Failed to load image: ", filename);
         ilDeleteImages(1, &imageID);
         ILenum error = ilGetError();
-    if (error != IL_NO_ERROR) {
-        std::cerr << "DevIL Error: " << error << std::endl;
-    }
+        if (error != IL_NO_ERROR)
+        {
+            std::cerr << "DevIL Error: " << error << std::endl;
+        }
         return;
     }
     

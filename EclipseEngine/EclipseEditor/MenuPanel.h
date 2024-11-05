@@ -5,7 +5,8 @@
 #include "PanelHandler.h" // PanelHandler for toggling panels
 #include "HierarchyPanel.h"
 
-class MenuPanel : public Panel {
+class MenuPanel : public Panel
+{
 public:
     MenuPanel(const std::string& name, PanelHandler& panelHandler);
 

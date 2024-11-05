@@ -6,7 +6,8 @@
 
 class GameObject;
 
-class AssetsPanel : public Panel {
+class AssetsPanel : public Panel
+{
 public:
     AssetsPanel(const std::string& name, bool visible = true);
 

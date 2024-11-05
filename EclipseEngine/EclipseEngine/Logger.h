@@ -6,7 +6,8 @@
 #include <fstream>
 #include <functional>
 
-class Logger {
+class Logger 
+{
 public:
     using LogCallback = std::function<void(const std::string&)>;
 

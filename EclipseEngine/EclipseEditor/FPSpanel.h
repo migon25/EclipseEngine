@@ -4,7 +4,8 @@
 #include "Panel.h"
 #include <vector>
 
-class FPSPanel : public Panel {
+class FPSPanel : public Panel
+{
 public:
     FPSPanel(const std::string& name, bool isVisible = false);
 

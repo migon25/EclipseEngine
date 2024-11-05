@@ -1,18 +1,23 @@
 #include "GameObject.h"
 #include <iostream>
 
-GameObject::GameObject() {
+GameObject::GameObject()
+{
     // Initialization code for the GameObject
 }
 
-GameObject::~GameObject() {
+GameObject::~GameObject()
+{
     // placeholder for Cleanup
 }
 
-void GameObject::Update() {
+void GameObject::Update()
+{
+    // placeholder for Update
 }
 
-void GameObject::Draw(Shader& shader, Camera& camera) {
+void GameObject::Draw(Shader& shader, Camera& camera) 
+{
     // Get the model matrix from the Transform component
     glm::mat4 objectModel = transform.GetMatrix(); // Get the transformation matrix from Transform
 
@@ -23,7 +28,8 @@ void GameObject::Draw(Shader& shader, Camera& camera) {
     if(material) material.get()->BindTextures(); // If it has material, bind it
 
     // Code to draw the game object (calls Draw on the mesh if it exists)
-    if (mesh) {
+    if (mesh)
+    {
         mesh->Draw(shader, camera);
     }
 }
