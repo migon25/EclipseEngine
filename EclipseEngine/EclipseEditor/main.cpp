@@ -76,6 +76,11 @@ int main(int argc, char** argv) {
 	PanelHandler panelHandler(core.GetWindow());
 	ilInit();  // Initialize the DevIL library
 
+	std::vector<Texture> catTexture
+	{
+		Texture("Assets/cat.jpg","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
+	};
+
 	std::vector<Texture> houseTexture
 	{
 		Texture("Assets/Baker_house.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
@@ -86,9 +91,9 @@ int main(int argc, char** argv) {
 		Texture("Assets/SF_Fighter-Albedo_dds.dds","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
 	};
 
-	std::vector<Texture> catTexture
+	std::vector<Texture> F1Texture
 	{
-		Texture("Assets/cat.jpg","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
+		Texture("Assets/F1_texture.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
 	};
 
 	Shader shaderProgram("Shaders/default.vert", "Shaders/default.frag");
@@ -111,6 +116,12 @@ int main(int argc, char** argv) {
 	ship.AddComponent<Material>(shaderProgram, shipTexture);
 	ship.transform.SetPosition(glm::vec3(0.0f, 0.0f, 20.0f));
 	ship.transform.SetRotation(glm::vec3(-90.0f, 0.0f, 0.0f));
+
+	GameObject F1;
+	std::string F1Mesh = "Assets/formula1.fbx";
+	F1.AddComponent<Mesh>(F1Mesh);
+	F1.AddComponent<Material>(shaderProgram, F1Texture);
+	F1.transform.SetPosition(glm::vec3(5.0f, 0.0f, 0.0f));
 
 	Camera camera(WINDOW_SIZE.x, WINDOW_SIZE.y, glm::vec3(7.0f, 4.0f, -7.0f));
 
@@ -143,6 +154,7 @@ int main(int argc, char** argv) {
 
 		cube.Draw(shaderProgram, camera);
 		house.Draw(shaderProgram, camera);
+		F1.Draw(shaderProgram, camera);
 		ship.Draw(shaderProgram, camera);
 
 		grid.Draw();
