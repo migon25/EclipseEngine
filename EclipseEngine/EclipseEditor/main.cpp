@@ -15,6 +15,7 @@
 #include "EclipseEngine/VAO.h"
 #include "EclipseEngine/VBO.h"
 #include "EclipseEngine/EBO.h"
+#include "EclipseEngine/FrameBuffer.h"
 #include "EclipseEngine/Core.h"
 #include "EclipseEngine/Logger.h"
 #include "EclipseEngine/Component.h"
@@ -28,6 +29,7 @@
 #include "AssetsPanel.h"
 #include "FPSpanel.h"
 #include "ConsolePanel.h"
+#include "ViewportPanel.h"
 
 using namespace std;
 
@@ -66,14 +68,16 @@ std::vector<GLuint> indices =
 int main(int argc, char** argv) {
 	Logger::Init();
 
-	Core core(WINDOW_SIZE.x, WINDOW_SIZE.y, "Eclipse Engine");
+	Framebuffer fbo(WINDOW_SIZE.x, WINDOW_SIZE.y);
+	Core core(WINDOW_SIZE.x, WINDOW_SIZE.y, "Eclipse Engine", fbo);
 
 	if (!core.Initialize()) {
 		std::cerr << "Engine initialization failed." << std::endl;
 		return -1;
 	}
 
-	PanelHandler panelHandler(core.GetWindow());
+	fbo.Initialize();
+	PanelHandler panelHandler(core.GetWindow(), fbo);
 	ilInit();  // Initialize the DevIL library
 
 	std::vector<Texture> catTexture
@@ -91,10 +95,10 @@ int main(int argc, char** argv) {
 		Texture("Assets/SF_Fighter-Albedo_dds.dds","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
 	};
 
-	std::vector<Texture> F1Texture
-	{
-		Texture("Assets/F1_texture.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
-	};
+	//std::vector<Texture> F1Texture
+	//{
+	//	Texture("Assets/F1_texture.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
+	//};
 
 	Shader shaderProgram("Shaders/default.vert", "Shaders/default.frag");
 	Shader gridShader("Shaders/grid.vert", "Shaders/grid.frag");
@@ -117,11 +121,11 @@ int main(int argc, char** argv) {
 	ship.transform.SetPosition(glm::vec3(0.0f, 0.0f, 20.0f));
 	ship.transform.SetRotation(glm::vec3(-90.0f, 0.0f, 0.0f));
 
-	GameObject F1;
-	std::string F1Mesh = "Assets/formula1.fbx";
-	F1.AddComponent<Mesh>(F1Mesh);
-	F1.AddComponent<Material>(shaderProgram, F1Texture);
-	F1.transform.SetPosition(glm::vec3(5.0f, 0.0f, 0.0f));
+	//GameObject F1;
+	//std::string F1Mesh = "Assets/formula1.fbx";
+	//F1.AddComponent<Mesh>(F1Mesh);
+	//F1.AddComponent<Material>(shaderProgram, F1Texture);
+	//F1.transform.SetPosition(glm::vec3(5.0f, 0.0f, 0.0f));
 
 	Camera camera(WINDOW_SIZE.x, WINDOW_SIZE.y, glm::vec3(7.0f, 4.0f, -7.0f));
 
@@ -135,8 +139,7 @@ int main(int argc, char** argv) {
 	float lastFrame = 0.0f;
 	std::unique_ptr<Panel>* panelPtr = &panelHandler.GetPanel("FPS Panel");
 
-	// console panel
-	auto consolePanel = dynamic_cast<ConsolePanel*>(panelHandler.GetPanel("Console Panel").get());
+	auto* viewportPanel = dynamic_cast<ViewportPanel*>(panelHandler.GetPanel("Viewport Panel").get());
 
 	while (!core.ShouldClose()) {
 		// fps
@@ -147,18 +150,19 @@ int main(int argc, char** argv) {
 		float ms = deltaTime * 1000.0f;
 
 		core.BeginFrame();
+		camera.Inputs(core.GetWindow());
 		panelHandler.NewFrame();
 
-		camera.Inputs(core.GetWindow());
 		camera.UpdateMatrix(0.1f, 100.0f);
 
 		cube.Draw(shaderProgram, camera);
 		house.Draw(shaderProgram, camera);
-		F1.Draw(shaderProgram, camera);
+		//F1.Draw(shaderProgram, camera);
 		ship.Draw(shaderProgram, camera);
 
 		grid.Draw();
 
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		// fps
 		if (panelPtr) {
 			if (auto* fpsPanel = dynamic_cast<FPSPanel*>(panelPtr->get())) {

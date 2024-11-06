@@ -2,7 +2,7 @@
 #include "Core.h"
 #include "Logger.h"
 
-Core::Core(int width, int height, const std::string& title) : m_Window(nullptr), m_Width(width), m_Height(height), m_Title(title) 
+Core::Core(int width, int height, const std::string& title, Framebuffer& framebuffer) : m_Window(nullptr), m_Width(width), m_Height(height), m_Title(title), fbo(framebuffer)
 {
     Logger::Log("Initialized Engine");
 }
@@ -22,6 +22,8 @@ bool Core::Initialize()
 
 void Core::BeginFrame()
 {
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo.GetFBO());
+    glViewport(0, 0, fbo.GetWidth(), fbo.GetHeight());
     glClearColor(0.05f, 0.05f, 0.05f, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

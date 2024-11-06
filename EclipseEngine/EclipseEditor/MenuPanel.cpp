@@ -43,10 +43,10 @@ void MenuPanel::Render() {
         }
 
 		if (ImGui::BeginMenu("Windows")) {
-			bool isScenePanelVisible = m_PanelHandler.GetPanelVisibility("Scene Panel");
-			ImGui::MenuItem("Scene Panel", nullptr, &isScenePanelVisible);
-			if (isScenePanelVisible != m_PanelHandler.GetPanelVisibility("Scene Panel")) {
-				m_PanelHandler.TogglePanel("Scene Panel");
+			bool isScenePanelVisible = m_PanelHandler.GetPanelVisibility("Viewport Panel");
+			ImGui::MenuItem("Viewport", nullptr, &isScenePanelVisible);
+			if (isScenePanelVisible != m_PanelHandler.GetPanelVisibility("Viewport Panel")) {
+				m_PanelHandler.TogglePanel("Viewport Panel");
 			}
 
 			bool isInspectorPanelVisible = m_PanelHandler.GetPanelVisibility("Inspector Panel");

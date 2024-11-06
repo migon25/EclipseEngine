@@ -99,6 +99,7 @@
     <ClCompile Include="MenuPanel.cpp" />
     <ClCompile Include="PanelHandler.cpp" />
     <ClCompile Include="SettingsPanel.cpp" />
+    <ClCompile Include="ViewportPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EclipseEngine\EclipseEngine.vcxproj">
@@ -116,6 +117,7 @@
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PanelHandler.h" />
     <ClInclude Include="SettingsPanel.h" />
+    <ClInclude Include="ViewportPanel.h" />
     <None Include="Shaders\default.frag" />
     <None Include="Shaders\default.vert" />
     <None Include="Shaders\grid.frag" />

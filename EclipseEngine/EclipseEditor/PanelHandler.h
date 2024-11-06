@@ -9,11 +9,12 @@
 #include <vector>
 #include <memory> // For std::unique_ptr
 #include "Panel.h"
+#include "EclipseEngine/FrameBuffer.h"
 
 class PanelHandler
 {
 public:
-    PanelHandler(GLFWwindow* window);
+    PanelHandler(GLFWwindow* window, Framebuffer& framebuffer);
     ~PanelHandler();
 
     void NewFrame();
@@ -35,6 +36,7 @@ public:
 
 private:
     GLFWwindow* m_Window;
+    Framebuffer& m_Framebuffer;
     std::vector<std::unique_ptr<Panel>> m_Panels;
 };
 

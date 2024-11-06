@@ -8,16 +8,19 @@
 #include "SettingsPanel.h"
 #include "AssetsPanel.h"
 #include "InspectorPanel.h"
+#include "ViewportPanel.h"
 
-PanelHandler::PanelHandler(GLFWwindow* window) : m_Window(window) {
+PanelHandler::PanelHandler(GLFWwindow* window, Framebuffer& framebuffer)
+    : m_Window(window), m_Framebuffer(framebuffer) // Store the framebuffer reference
+{
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.Fonts->AddFontFromFileTTF("Assets/Evander-ExtraLight.otf", 14.0f);
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable docking
-    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
     ImGui::StyleColorsDark();
 
     CustomStyle();
@@ -61,8 +64,7 @@ void PanelHandler::Render() {
         ImGuiWindowFlags_NoNavFocus |
         ImGuiWindowFlags_AlwaysAutoResize | // Makes the window resize automatically
         ImGuiWindowFlags_UnsavedDocument |
-        ImGuiDockNodeFlags_AutoHideTabBar |
-        ImGuiWindowFlags_NoBackground;
+        ImGuiDockNodeFlags_AutoHideTabBar;
 
     ImGui::Begin("DockSpace", nullptr, dockspaceFlags);
 
@@ -196,6 +198,7 @@ void PanelHandler::InitializePanels()
 	AddPanel(std::make_unique<SettingsPanel>("Settings Panel", false));
     AddPanel(std::make_unique<AssetsPanel>("Assets Panel", true));
     AddPanel(std::make_unique<InspectorPanel>("Inspector Panel", true));
+    AddPanel(std::make_unique<ViewportPanel>("Viewport Panel", m_Framebuffer, true));
 }
 
 void PanelHandler::AddPanel(std::unique_ptr<Panel> panel) {
