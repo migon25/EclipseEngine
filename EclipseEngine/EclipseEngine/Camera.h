@@ -20,10 +20,10 @@ public:
 
 	void UpdateMatrix(float nearPlane, float farPlane);
 	void Matrix(Shader& shader, const char* uniform);
-	void Inputs(GLFWwindow* window);
+	void Inputs(GLFWwindow* window); // This has to be in the Camera Controller class with the input methods
 
 	// Static scroll callback function
-	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset); // This has to be in the Camera Controller class with the input methods
 
 public:
 	glm::vec3 Position;                                       // Camera's position

@@ -184,6 +184,6 @@ void Camera::Inputs(GLFWwindow* window)
 void Camera::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	scrollOffset = static_cast<float>(yoffset); // Capture vertical scroll offset for zoom
-	std::cout << "Scroll detected: " << yoffset << std::endl; // Debug: Check if scroll events are detected
+	//std::cout << "Scroll detected: " << yoffset << std::endl; // Debug: Check if scroll events are detected
 }
 

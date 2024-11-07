@@ -7,19 +7,24 @@ Grid::Grid(Shader& _shader, Camera& _camera) : shader(_shader), camera(_camera)
 	{
 		float offset = i * lineSpacing;
 
-		// Horizontal line
-		gridVertices.push_back({ glm::vec3(-gridSize / 2, 0.0f, offset), glm::vec3(0.0f), glm::vec2(0.0f) });
-		gridVertices.push_back({ glm::vec3(gridSize / 2, 0.0f, offset), glm::vec3(0.0f), glm::vec2(1.0f) });
+		glm::vec3 neutralColor = glm::vec3(0.3f, 0.3f, 0.3f);
 
-		// Vertical line
-		gridVertices.push_back({ glm::vec3(offset, 0.0f, -gridSize / 2), glm::vec3(0.0f), glm::vec2(0.0f) });
-		gridVertices.push_back({ glm::vec3(offset, 0.0f, gridSize / 2), glm::vec3(0.0f), glm::vec2(1.0f) });
+		// Horizontal line (Z-axis)
+		glm::vec3 colorZ = (offset == 0.0f) ? glm::vec3(0.0f, 0.5f, 0.0f) : neutralColor;
+		gridVertices.push_back({ glm::vec3(-gridSize / 2, 0.0f, offset), glm::vec3(0.0f),colorZ, glm::vec2(0.0f) });
+		gridVertices.push_back({ glm::vec3(gridSize / 2, 0.0f, offset), glm::vec3(0.0f), colorZ, glm::vec2(1.0f) });
+
+		// Vertical line (X-axis)
+		glm::vec3 colorX = (offset == 0.0f) ? glm::vec3(0.5f, 0.0f, 0.0f) : neutralColor; // Red for center X-axis
+		gridVertices.push_back({ glm::vec3(offset, 0.0f, -gridSize / 2), glm::vec3(0.0f),colorX, glm::vec2(0.0f) });
+		gridVertices.push_back({ glm::vec3(offset, 0.0f, gridSize / 2), glm::vec3(0.0f),colorX, glm::vec2(1.0f) });
 	}
 	// Step 2: Create VAO and VBO for the grid if they don't exist
 	vao.Bind(); // Bind the VAO
 	VBO gridVBO(gridVertices); // Initialize VBO with grid vertices
 
 	vao.LinkAttrib(gridVBO, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, position)); // Link position
+	vao.LinkAttrib(gridVBO, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, color));    // Link color
 	vao.Unbind(); // Unbind the VAO
 	gridVBO.Unbind();
 }

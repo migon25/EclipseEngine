@@ -1,7 +1,7 @@
 #include "AssetsPanel.h"
 #include "EclipseEngine/Logger.h"
-#include "EclipseEngine/GameObject.h" // Include your GameObject header
-#include "EclipseEngine/Mesh.h"       // Include your Mesh header
+#include "EclipseEngine/GameObject.h" 
+#include "EclipseEngine/Mesh.h"       
 #include <filesystem>
 #include <imgui.h>
 
