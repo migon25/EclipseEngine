@@ -4,9 +4,3 @@ Initialized OpenGL corectly
 Image loaded: 
 Image loaded: 
 Image loaded: 
-Image loaded: 
-Failed to load image: 
-Failed to load image: 
-Model loaded: 
-Failed to load image: 
-Model loaded: 

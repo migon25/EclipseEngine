@@ -104,7 +104,7 @@ int main(int argc, char** argv) {
 
 	Shader shaderProgram("Shaders/default.vert", "Shaders/default.frag");
 	Shader gridShader("Shaders/grid.vert", "Shaders/grid.frag");
-	Shader outlineShader("Shaders/outline.vert", "Shaders/outline.frag");
+	//Shader outlineShader("Shaders/outline.vert", "Shaders/outline.frag");
 
 	// Initialize the hierarchy panel
 	auto hierarchyPanel = std::dynamic_pointer_cast<HierarchyPanel>(panelHandler.GetPanel("Hierarchy Panel"));
@@ -170,10 +170,10 @@ int main(int argc, char** argv) {
 
 		camera.UpdateMatrix(0.1f, 100.0f);
 
-		cube.Draw(shaderProgram, camera);
-		house.Draw(shaderProgram, camera);
+		cube->Draw(shaderProgram, camera);
+		//house.Draw(shaderProgram, camera);
 		//F1.Draw(shaderProgram, camera);
-		ship.Draw(shaderProgram, camera);
+		//ship.Draw(shaderProgram, camera);
 
 		grid.Draw();
 
