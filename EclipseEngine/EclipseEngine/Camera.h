@@ -12,18 +12,21 @@
 #include <glm/gtx/vector_angle.hpp>
 
 #include "Shader.h"
+#include "Component.h"
 
-class Camera
+class Camera 
 {
 public:
 	Camera(int widht, int height, glm::vec3 position);
 
+	//void Update() override;
+
 	void UpdateMatrix(float nearPlane, float farPlane);
 	void Matrix(Shader& shader, const char* uniform);
-	void Inputs(GLFWwindow* window); // This has to be in the Camera Controller class with the input methods
+	void Inputs(GLFWwindow* window); //C
 
 	// Static scroll callback function
-	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset); // This has to be in the Camera Controller class with the input methods
+	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset); //C
 
 public:
 	glm::vec3 Position;                                       // Camera's position
@@ -31,17 +34,16 @@ public:
 	glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);               // Camera's up vector (Y)
 	glm::vec3 targetPosition = glm::vec3(0.0f, 0.0f, 0.0f);	  // Orbit target position (default origin)
 	glm::mat4 cameraMatrix = glm::mat4(1.0f);
-	bool firstClick = true;
+	bool firstClick = true; //C
 
 	int width;
 	int height;
 
-	float speed = 0.1f;
-	float sensitivity = 100.0f;
+	float speed = 0.1f; //C
+	float sensitivity = 100.0f; //C
 	float FOVdeg = 45.0f;   // Field of View, adjustable for zoom
 
-	static float scrollOffset;  // Static variable for scroll offset
-
+	static float scrollOffset;  //C
 };
 
 #endif //CAMERA_H

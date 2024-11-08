@@ -176,6 +176,7 @@ void Camera::Inputs(GLFWwindow* window)
     }
     else
     {
+        speed = 0.1f;
         firstClick = true;
     }
 }

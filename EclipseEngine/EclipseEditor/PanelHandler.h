@@ -25,19 +25,19 @@ public:
 
     // Panel management
     void InitializePanels();
-    void AddPanel(std::unique_ptr<Panel> panel);
+    void AddPanel(std::shared_ptr<Panel> panel);
     void RenderPanels();
     bool TogglePanel(const std::string& name);
     bool GetPanelVisibility(const std::string& name);
 
     inline GLFWwindow* GetWindow() { return m_Window; }
 
-    std::unique_ptr<Panel>& GetPanel(const std::string& name);
+    std::shared_ptr<Panel> GetPanel(const std::string& name);
 
 private:
     GLFWwindow* m_Window;
     Framebuffer& m_Framebuffer;
-    std::vector<std::unique_ptr<Panel>> m_Panels;
+    std::vector<std::shared_ptr<Panel>> m_Panels;
 };
 
 #endif // PANELHANDLER_H

@@ -14,22 +14,26 @@ public:
     GameObject();
     ~GameObject();
 
-    // Add a component to the game object
-    template<typename T, typename... Args>
-    void AddComponent(Args&&... args);
-
-    // Retrieve a component of a specific type
-    template<typename T>
-    T* GetComponent();
-
-    // Update and draw the game object
-    void Update();
+    void Update();    // Update and draw the game object
     void Draw(Shader& shader, Camera& camera);
 
+    template<typename T, typename... Args>
+    void AddComponent(Args&&... args);    // Add a component to the game object
+    inline void AddChild(std::shared_ptr<GameObject> child);    // Add a child game object
+
+    template<typename T>
+    T* GetComponent();    // Retrieve a component of a specific type
+    const std::vector<std::shared_ptr<GameObject>>& GetChildren() const { return children; }    // Add a child game object
+    std::string GetName() const { return name; }
+
 public:
+    std::string name;
     Transform transform;
     std::unique_ptr<Material> material; // Using unique_ptr for automatic memory management
     std::unique_ptr<Mesh> mesh;         // Using unique_ptr for automatic memory management
+
+private:
+    std::vector<std::shared_ptr<GameObject>> children;
 };
 
 // Template member function definitions should go here as well
@@ -56,6 +60,11 @@ T* GameObject::GetComponent() {
         return mesh.get(); // Return the raw pointer of the unique_ptr
     }
     return nullptr; // If no matching component, return nullptr
+}
+
+// AddChild
+inline void GameObject::AddChild(std::shared_ptr<GameObject> child) {
+    children.push_back(child);
 }
 
 #endif // GAME_OBJECT_H

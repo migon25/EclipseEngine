@@ -30,6 +30,7 @@
 #include "FPSpanel.h"
 #include "ConsolePanel.h"
 #include "ViewportPanel.h"
+#include "HierarchyPanel.h"
 
 using namespace std;
 
@@ -69,6 +70,7 @@ int main(int argc, char** argv) {
 	Logger::Init();
 
 	Framebuffer fbo(WINDOW_SIZE.x, WINDOW_SIZE.y);
+	Framebuffer fbo2(WINDOW_SIZE.x, WINDOW_SIZE.y);
 	Core core(WINDOW_SIZE.x, WINDOW_SIZE.y, "Eclipse Engine", fbo);
 
 	if (!core.Initialize()) {
@@ -82,7 +84,7 @@ int main(int argc, char** argv) {
 
 	std::vector<Texture> catTexture
 	{
-		Texture("Assets/cat.jpg","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
+		Texture("Assets/checkerboard.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
 	};
 
 	std::vector<Texture> houseTexture
@@ -90,44 +92,58 @@ int main(int argc, char** argv) {
 		Texture("Assets/Baker_house.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
 	};
 
-	std::vector<Texture> shipTexture
-	{
-		Texture("Assets/SF_Fighter-Albedo_dds.dds","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
-	};
-
-	//std::vector<Texture> F1Texture
+	//std::vector<Texture> shipTexture
 	//{
-	//	Texture("Assets/F1_texture.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
+	//	Texture("Assets/SF_Fighter-Albedo_dds.dds","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
 	//};
+
+	std::vector<Texture> F1Texture
+	{
+		Texture("Assets/F1_texture.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
+	};
 
 	Shader shaderProgram("Shaders/default.vert", "Shaders/default.frag");
 	Shader gridShader("Shaders/grid.vert", "Shaders/grid.frag");
+	Shader outlineShader("Shaders/outline.vert", "Shaders/outline.frag");
 
-	GameObject cube;
-	cube.AddComponent<Mesh>(vertices, indices, catTexture);
-	cube.AddComponent<Material>(shaderProgram, catTexture);
-	cube.transform.SetPosition(glm::vec3(0.0f, 7.0f, 0.0f));
+	// Initialize the hierarchy panel
+	auto hierarchyPanel = std::dynamic_pointer_cast<HierarchyPanel>(panelHandler.GetPanel("Hierarchy Panel"));
 
-	GameObject house;
-	std::string meshFilePath = "Assets/BakerHouse.FBX";
-	house.AddComponent<Mesh>(meshFilePath);
-	//auto& meshTexture = house.GetComponent<Mesh>()->GetTextures();    // It is supposed to get the defined texture from the fbx
-	house.AddComponent<Material>(shaderProgram, houseTexture);
+	auto cube = std::make_shared<GameObject>();
+	cube.get()->name = "cube";
+	cube->AddComponent<Mesh>(vertices, indices, catTexture);
+	cube->AddComponent<Material>(shaderProgram, catTexture);
+	cube.get()->transform.SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 
-	GameObject ship;
-	std::string shipModel = "Assets/SF_Fighter.FBX";
-	ship.AddComponent<Mesh>(shipModel);
-	ship.AddComponent<Material>(shaderProgram, shipTexture);
-	ship.transform.SetPosition(glm::vec3(0.0f, 0.0f, 20.0f));
-	ship.transform.SetRotation(glm::vec3(-90.0f, 0.0f, 0.0f));
+	//auto house = std::make_shared<GameObject>();
+	//house.get()->name = "house";
+	//std::string meshFilePath = "Assets/BakerHouse.FBX";
+	//house->AddComponent<Mesh>(meshFilePath);
+	////auto& meshTexture = house.GetComponent<Mesh>()->GetTextures();    // It is supposed to get the defined texture from the fbx
+	//house->AddComponent<Material>(shaderProgram, houseTexture);
 
-	//GameObject F1;
+	//auto ship = std::make_shared<GameObject>();
+	//ship.get()->name = "ship";
+	//std::string shipModel = "Assets/SF_Fighter.FBX";
+	//ship->AddComponent<Mesh>(shipModel);
+	//ship->AddComponent<Material>(shaderProgram, shipTexture);
+	//ship->transform.SetPosition(glm::vec3(0.0f, 0.0f, 20.0f));
+	//ship->transform.SetRotation(glm::vec3(-90.0f, 0.0f, 0.0f));
+
+	//auto F1 = std::make_shared<GameObject>();
 	//std::string F1Mesh = "Assets/formula1.fbx";
-	//F1.AddComponent<Mesh>(F1Mesh);
-	//F1.AddComponent<Material>(shaderProgram, F1Texture);
-	//F1.transform.SetPosition(glm::vec3(5.0f, 0.0f, 0.0f));
+	//F1.get()->name = "Franccesco Virgolini";
+	//F1->AddComponent<Mesh>(F1Mesh);
+	//F1->AddComponent<Material>(shaderProgram, F1Texture);
+	//F1->transform.SetPosition(glm::vec3(5.0f, 0.0f, 0.0f));
+
+		// Parent-child relationships (optional)
+	//hierarchyPanel->AddRootObject(ship);  // Make the ship a child of the house
+	hierarchyPanel->AddRootObject(cube);
+	//hierarchyPanel->AddRootObject(F1);
 
 	Camera camera(WINDOW_SIZE.x, WINDOW_SIZE.y, glm::vec3(7.0f, 4.0f, -7.0f));
+	Camera camera2(800, 800, glm::vec3(7.0f, 4.0f, -7.0f));
 
 	Grid grid(gridShader, camera);
 
@@ -137,9 +153,8 @@ int main(int argc, char** argv) {
 	// Variables to track FPS and milliseconds per frame
 	float deltaTime = 0.0f;
 	float lastFrame = 0.0f;
-	std::unique_ptr<Panel>* panelPtr = &panelHandler.GetPanel("FPS Panel");
-
-	auto* viewportPanel = dynamic_cast<ViewportPanel*>(panelHandler.GetPanel("Viewport Panel").get());
+	//std::shared_ptr<Panel>* panelPtr = &panelHandler.GetPanel("FPS Panel");
+	auto panelPtr = std::dynamic_pointer_cast<FPSPanel>(panelHandler.GetPanel("FPS Panel"));
 
 	while (!core.ShouldClose()) {
 		// fps
@@ -165,7 +180,7 @@ int main(int argc, char** argv) {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		// fps
 		if (panelPtr) {
-			if (auto* fpsPanel = dynamic_cast<FPSPanel*>(panelPtr->get())) {
+			if (auto fpsPanel = dynamic_cast<FPSPanel*>(panelPtr.get())) {
 				fpsPanel->Update(fps, ms);
 			}
 		}
