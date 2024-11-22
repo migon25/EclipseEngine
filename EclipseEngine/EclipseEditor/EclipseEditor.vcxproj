@@ -58,7 +58,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\vcpkg_installed;..\</AdditionalIncludeDirectories>
       <AdditionalBMIDirectories>
       </AdditionalBMIDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
