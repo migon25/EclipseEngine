@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 # vcpkg_installed
 EclipseEngine/vcpkg_installed/
+vcpkg/
