@@ -1,4 +1,5 @@
 #include "../EclipseEngine/Camera.h"
+#include "App.h"
 #include <GLFW/glfw3.h>
 #include "MenuPanel.h"
 #include <imgui.h>
@@ -11,13 +12,13 @@ MenuPanel::MenuPanel(const std::string& name, PanelHandler& panelHandler)
 void MenuPanel::Render() {
     if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
-			ImGui::MenuItem("New", nullptr, nullptr);
+			bool _new = false;
+			ImGui::MenuItem("New", nullptr, _new);
 			ImGui::MenuItem("Open", nullptr, nullptr);
 			ImGui::MenuItem("Save", nullptr, nullptr);
 			ImGui::MenuItem("Save As", nullptr, nullptr);
 			ImGui::EndMenu();
 		}
-
         if (ImGui::BeginMenu("Panels")) {
             bool isBasicPanelVisible = m_PanelHandler.GetPanelVisibility("Basic Panel"); // Check visibility
             ImGui::MenuItem("Basic Panel", nullptr, &isBasicPanelVisible);
@@ -71,11 +72,11 @@ void MenuPanel::Render() {
 						int height = App->window->GetHeight();*/
 						int width;
 						int height;
-						glfwGetWindowSize(m_PanelHandler.GetWindow(), &width, &height);
+						glfwGetWindowSize(core->window->GetWindow() , &width, &height);
 						if (ImGui::SliderInt("Width", &width, 256, 4096) || ImGui::SliderInt("Height", &height, 144, 2160)) {
 							//App->window->ResizeWindow(width, height);
 							Logger::Log("screen size modified");
-							glfwSetWindowSize(m_PanelHandler.GetWindow(), width, height);
+							glfwSetWindowSize(core->window->GetWindow(), width, height);
 						}
 
 						//float brightness = App->window->GetBrightness();
@@ -87,7 +88,7 @@ void MenuPanel::Render() {
 						float opacity = 1.0f;
 						if (ImGui::SliderFloat("Opacity", &opacity, 0.000f, 1.000f)) {
 							Logger::Log("screen opacity modified");
-							glfwSetWindowOpacity(m_PanelHandler.GetWindow(), opacity);
+							glfwSetWindowOpacity(core->window->GetWindow(), opacity);
 						}
 
 						//bool temp = App->window->GetFullscreen();
@@ -97,7 +98,7 @@ void MenuPanel::Render() {
 
 							if (temp) {
 								Logger::Log("Toggled fullscreen");
-								glfwSetWindowMonitor(m_PanelHandler.GetWindow(), nullptr, 0, 0, GL_MAX_WIDTH, GL_MAX_HEIGHT, GLFW_DONT_CARE);
+								glfwSetWindowMonitor(core->window->GetWindow(), nullptr, 0, 0, GL_MAX_WIDTH, GL_MAX_HEIGHT, GLFW_DONT_CARE);
 							}							
 						}
 
@@ -118,7 +119,7 @@ void MenuPanel::Render() {
 						//temp = App->window->GetFullDesktop();
 						if (ImGui::Checkbox("Full Desktop", &temp)) {
 							//App->window->WindowSetFullscreenDesktop(temp);
-							glfwSetWindowSize(m_PanelHandler.GetWindow(), GL_MAX_WIDTH, GL_MAX_HEIGHT);
+							glfwSetWindowSize(core->window->GetWindow(), GL_MAX_WIDTH, GL_MAX_HEIGHT);
 							
 						}
 					}

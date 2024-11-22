@@ -40,12 +40,12 @@ void Mesh::Update()
 	// Empty Update method
 }
 
-void Mesh::Draw(Shader& shader, Camera& camera)
+void Mesh::Draw(Shader& shader, Camera& camera) // Camera should not be passed only the position (vec3)
 {
 	VAO.Bind();
 
-	glUniform3f(glGetUniformLocation(shader.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
-	camera.Matrix(shader, "camMatrix");
+	//glUniform3f(glGetUniformLocation(shader.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
+	camera.Matrix(shader, "camMatrix"); // This should be moved to the renderer
 
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 

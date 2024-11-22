@@ -15,6 +15,7 @@ public:
     const std::string& GetName() const { return m_Name; }
     bool IsVisible() const { return m_Visible; }
     void SetVisible(bool visible) { m_Visible = visible; }
+	virtual bool CleanUp() { return true; }
 
 protected:
     std::string m_Name;

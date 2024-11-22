@@ -89,10 +89,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="App.cpp" />
     <ClCompile Include="AssetsPanel.cpp" />
     <ClCompile Include="BasicPanel.cpp" />
     <ClCompile Include="ConsolePanel.cpp" />
+    <ClCompile Include="EditorRenderer.cpp" />
     <ClCompile Include="FPSpanel.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
     <ClCompile Include="main.cpp" />
@@ -107,13 +110,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="App.h" />
     <ClInclude Include="AssetsPanel.h" />
     <ClInclude Include="BasicPanel.h" />
     <ClInclude Include="ConsolePanel.h" />
+    <ClInclude Include="EditorRenderer.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="FPSpanel.h" />
     <ClInclude Include="HierarchyPanel.h" />
     <ClInclude Include="MenuPanel.h" />
+    <ClInclude Include="Module.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PanelHandler.h" />
     <ClInclude Include="SettingsPanel.h" />
@@ -122,6 +129,8 @@
     <None Include="Shaders\default.vert" />
     <None Include="Shaders\grid.frag" />
     <None Include="Shaders\grid.vert" />
+    <None Include="Shaders\outline.frag" />
+    <None Include="Shaders\outline.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

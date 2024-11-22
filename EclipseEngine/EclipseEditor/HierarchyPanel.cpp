@@ -14,9 +14,21 @@ void HierarchyPanel::Render()
 
 	ImGui::Begin(GetName().c_str(), &m_Visible);
 
-	for (const auto& rootObject : m_RootObjects) {
-		RenderGameObjectTree(rootObject);
+    if (ImGui::Button("Add Object")) 
+    {
+		// Add logic here to create a new game object
 	}
+
+    for (const auto& object : m_RootObjects) {
+        if (ImGui::TreeNode(object->GetName().c_str())) {
+            // Optionally display details or components of the GameObject
+            ImGui::TreePop();
+        }
+    }
+
+	//for (const auto& rootObject : m_RootObjects) {
+	//	RenderGameObjectTree(rootObject);
+	//}
 	
 	ImGui::End();
 }

@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include "App.h"
 #include "PanelHandler.h"
 #include "MenuPanel.h"
 #include "BasicPanel.h"
@@ -10,8 +11,7 @@
 #include "InspectorPanel.h"
 #include "ViewportPanel.h"
 
-PanelHandler::PanelHandler(GLFWwindow* window, Framebuffer& framebuffer)
-    : m_Window(window), m_Framebuffer(framebuffer) // Store the framebuffer reference
+PanelHandler::PanelHandler(App* app) : app(app)
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -22,19 +22,49 @@ PanelHandler::PanelHandler(GLFWwindow* window, Framebuffer& framebuffer)
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
     ImGui::StyleColorsDark();
-
-    CustomStyle();
-
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 330");
-
-    InitializePanels();
 }
 
 PanelHandler::~PanelHandler() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+}
+
+bool PanelHandler::Initialize()
+{
+    CustomStyle();
+
+    ImGui_ImplGlfw_InitForOpenGL(core->window->GetWindow(), true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+
+    InitializePanels();
+	return true;
+}
+
+bool PanelHandler::PreUpdate() 
+{
+	NewFrame();
+	Render();
+	return true;
+}
+
+bool PanelHandler::Update(double dt) 
+{
+	EndFrame();
+	return true;
+}
+
+bool PanelHandler::PostUpdate()
+{
+	return true;
+}
+
+bool PanelHandler::CleanUp()
+{
+	for (auto& panel : m_Panels) {
+		panel->CleanUp();
+	}
+	return true;
 }
 
 void PanelHandler::NewFrame() {
@@ -64,7 +94,7 @@ void PanelHandler::Render() {
         ImGuiWindowFlags_NoNavFocus |
         ImGuiWindowFlags_AlwaysAutoResize | // Makes the window resize automatically
         ImGuiWindowFlags_UnsavedDocument |
-        ImGuiDockNodeFlags_AutoHideTabBar /*| ImGuiWindowFlags_NoBackground*/;
+        ImGuiDockNodeFlags_AutoHideTabBar | ImGuiWindowFlags_NoBackground;
 
     ImGui::Begin("DockSpace", nullptr, dockspaceFlags);
 
@@ -89,7 +119,7 @@ void PanelHandler::EndFrame()
     if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
-        glfwMakeContextCurrent(m_Window);
+        glfwMakeContextCurrent(core->window->GetWindow());
     }
 }
 
@@ -143,7 +173,7 @@ void PanelHandler::CustomStyle()
     colors[ImGuiCol_Tab] = ImVec4(0.1, 0.1f, 0.1f, 1.0f);                   // Background color for tabs
     colors[ImGuiCol_TabHovered] = ImVec4(0.25f, 0.25f, 0.25f, 1.0f);        // Tab color when hovered
     colors[ImGuiCol_TabActive] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);            // Tab color when active
-    colors[ImGuiCol_TabUnfocused] = ImVec4(1.0f, 1.0f, 0.2f, 1.0f);         // Tab color when unfocused
+    colors[ImGuiCol_TabUnfocused] = ImVec4(0.15f, 0.15f, 0.15f, 1.0f);         // Tab color when unfocused
     colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);   // Active tab color when unfocused
 
     // Titles
@@ -207,7 +237,8 @@ void PanelHandler::InitializePanels()
 	AddPanel(std::make_shared<SettingsPanel>("Settings Panel", false));
     AddPanel(std::make_shared<AssetsPanel>("Assets Panel", true));
     AddPanel(std::make_shared<InspectorPanel>("Inspector Panel", true));
-    AddPanel(std::make_shared<ViewportPanel>("Viewport Panel", m_Framebuffer, true));
+    AddPanel(std::make_shared<ViewportPanel>("Viewport Panel", app->editorRenderer->GetFramebuffer(), true)); // this is the editor viewport
+    //AddPanel(std::make_shared<GamePanel>("Game Panel", core->renderer->GetFramebuffer(), true)); // this is the editor viewport
 }
 
 void PanelHandler::AddPanel(std::shared_ptr<Panel> panel) {

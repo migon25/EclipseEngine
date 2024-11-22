@@ -48,6 +48,15 @@
     <ClCompile Include="ViewportPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Panel.h">
@@ -83,6 +92,18 @@
     <ClInclude Include="ViewportPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="App.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Module.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\default.frag">
@@ -95,6 +116,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Shaders\grid.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\outline.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\outline.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

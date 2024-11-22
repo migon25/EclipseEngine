@@ -14,7 +14,6 @@ public:
 
     bool demo = true;
 
-private:
     PanelHandler& m_PanelHandler; // Reference to PanelHandler
 };
 
