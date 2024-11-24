@@ -47,7 +47,7 @@ void ViewportPanel::Render()
         ImGui::SetCursorPos(ImVec2(cursorPos.x + offsetX, cursorPos.y + offsetY));
 
         // Display the framebuffer's texture in ImGui
-        ImGui::Image((void*)(intptr_t)m_Framebuffer->GetTextureID(), ImVec2(width, height), ImVec2(0, 1), ImVec2(1, 0));
+        ImGui::Image((void*)(intptr_t)m_Framebuffer->GetTextureID(), ImVec2(m_FramebufferWidth, m_FramebufferHeight), ImVec2(0, 1), ImVec2(1, 0));
 
         ImGui::End();
     }

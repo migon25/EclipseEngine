@@ -10,13 +10,14 @@
 #include "AssetsPanel.h"
 #include "InspectorPanel.h"
 #include "ViewportPanel.h"
+#include "GamePanel.h"
 
 PanelHandler::PanelHandler(App* app) : app(app)
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.Fonts->AddFontFromFileTTF("Assets/Evander-ExtraLight.otf", 14.0f);
+    io.Fonts->AddFontFromFileTTF("Assets/SF-Pro-Text-Light.otf", 14.0f);
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -44,18 +45,18 @@ bool PanelHandler::Initialize()
 bool PanelHandler::PreUpdate() 
 {
 	NewFrame();
-	Render();
 	return true;
 }
 
 bool PanelHandler::Update(double dt) 
 {
-	EndFrame();
+	Render();
 	return true;
 }
 
 bool PanelHandler::PostUpdate()
 {
+	EndFrame();
 	return true;
 }
 
@@ -94,7 +95,7 @@ void PanelHandler::Render() {
         ImGuiWindowFlags_NoNavFocus |
         ImGuiWindowFlags_AlwaysAutoResize | // Makes the window resize automatically
         ImGuiWindowFlags_UnsavedDocument |
-        ImGuiDockNodeFlags_AutoHideTabBar | ImGuiWindowFlags_NoBackground;
+        ImGuiDockNodeFlags_AutoHideTabBar /*| ImGuiWindowFlags_NoBackground*/;
 
     ImGui::Begin("DockSpace", nullptr, dockspaceFlags);
 
@@ -237,8 +238,8 @@ void PanelHandler::InitializePanels()
 	AddPanel(std::make_shared<SettingsPanel>("Settings Panel", false));
     AddPanel(std::make_shared<AssetsPanel>("Assets Panel", true));
     AddPanel(std::make_shared<InspectorPanel>("Inspector Panel", true));
+    AddPanel(std::make_shared<GamePanel>("Game Panel", core->renderer->GetFramebuffer(), true)); // this is the game viewport
     AddPanel(std::make_shared<ViewportPanel>("Viewport Panel", app->editorRenderer->GetFramebuffer(), true)); // this is the editor viewport
-    //AddPanel(std::make_shared<GamePanel>("Game Panel", core->renderer->GetFramebuffer(), true)); // this is the editor viewport
 }
 
 void PanelHandler::AddPanel(std::shared_ptr<Panel> panel) {

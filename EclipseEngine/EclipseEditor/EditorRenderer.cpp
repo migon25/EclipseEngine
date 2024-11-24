@@ -27,19 +27,19 @@ void EditorRenderer::BeginFrame()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo->GetFBO());
 	glViewport(0, 0, fbo->GetWidth(), fbo->GetHeight());
-	glClearColor(1.0f, 0.2f, 0.2f, 1.0);
+	glClearColor(0.2f, 0.2f, 0.2f, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void EditorRenderer::Render(Scene* scene, Camera* editorCamera)
 {
-	//if (scene)
-	//{
-	//	for (auto& object : scene->GetObjects())
-	//	{
-	//		object->Draw(editorCamera);
-	//	}
-	//}
+	if (scene)
+	{
+		for (auto& object : scene->GetObjects())
+		{
+			object->Draw(*scene->defaultShader, *editorCamera);
+		}
+	}
 	RenderGrid(grid, editorCamera);
 	RenderGuizmo();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

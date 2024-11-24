@@ -1,4 +1,5 @@
 #include "EclipseEngine/GameObject.h"
+#include "App.h"
 #include "HierarchyPanel.h"
 #include "PanelHandler.h"
 #include "imgui.h"
@@ -16,7 +17,7 @@ void HierarchyPanel::Render()
 
     if (ImGui::Button("Add Object")) 
     {
-		// Add logic here to create a new game object
+		core->scene->AddCube();
 	}
 
     for (const auto& object : m_RootObjects) {

@@ -6,6 +6,7 @@ Core::Core()
 {
 	window = new Window(1500, 844, "Eclipse Engine");
 	renderer = new Renderer(window);
+	scene = new Scene();
 
     Logger::Log("Initialized Engine");
 }
@@ -19,19 +20,21 @@ bool Core::Initialize()
 {
     window->Initialize();
 	renderer->Initialize();
+	scene->Initialize();
     return true;
 }
 
 bool Core::PreUpdate()
 {
 	renderer->BeginFrame();
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return true;
 }
 
 bool Core::Update(float dt)
 {
 	if (window->ShouldClose()) return false;
+	scene->Update(dt);
+	scene->Draw();
 	return true;
 }
 

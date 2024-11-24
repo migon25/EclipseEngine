@@ -5,6 +5,7 @@
 #include <string>
 #include "Window.h"
 #include "Renderer.h"
+#include "Scene.h"
 
 class Core 
 {
@@ -23,6 +24,7 @@ public:
 public:
     Renderer* renderer;
     Window* window;
+	Scene* scene;
 };
 
 extern Core* core;

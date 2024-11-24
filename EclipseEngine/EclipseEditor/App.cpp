@@ -20,6 +20,7 @@ App::~App()
 
 bool App::Initialize()
 {
+	ilInit();
 	//editorCamera->SetPerspective(45.0f, 16.0f / 9.0f, 0.1f, 100.0f);
 	//editorCamera->SetPosition(glm::vec3(0.0f, -0.5f, 20.0f));
 	//editorCamera->LookAt(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -63,18 +64,21 @@ void App::AddModule(Module* module, bool activate)
 
 bool App::PreUpdate()
 {
+	editorCamera->UpdateMatrix(0.1f, 100.0f);
 	for (std::list<Module*>::iterator it = modules.begin(); it != modules.end(); it++)
 	{
 		if ((*it)->active == false) continue;
 		if (!(*it)->PreUpdate()) return false;
 	}
-	editorRenderer->Render(nullptr, editorCamera);
+	editorRenderer->Render(core->scene, editorCamera);
 	if (!core->PreUpdate()) return false;
 	return true;
 }
 
 bool App::DoUpdate()
 {
+	editorCamera->Inputs(core->window->GetWindow());
+
 	if (!core->Update(dt)) return false;
 	for (std::list<Module*>::iterator it = modules.begin(); it != modules.end(); it++)
 	{
@@ -86,12 +90,12 @@ bool App::DoUpdate()
 
 bool App::PostUpdate()
 {
+	if (!core->PostUpdate()) return false;
 	for (std::list<Module*>::iterator it = modules.begin(); it != modules.end(); it++)
 	{
 		if ((*it)->active == false) continue;
 		if (!(*it)->PostUpdate()) return false;
 	}
-	if (!core->PostUpdate()) return false;
 
 	return true;
 }

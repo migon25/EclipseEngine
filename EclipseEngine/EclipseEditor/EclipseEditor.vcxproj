@@ -95,6 +95,7 @@
     <ClCompile Include="ConsolePanel.cpp" />
     <ClCompile Include="EditorRenderer.cpp" />
     <ClCompile Include="FPSpanel.cpp" />
+    <ClCompile Include="GamePanel.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
@@ -115,6 +116,7 @@
     <ClInclude Include="BasicPanel.h" />
     <ClInclude Include="ConsolePanel.h" />
     <ClInclude Include="EditorRenderer.h" />
+    <ClInclude Include="GamePanel.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="FPSpanel.h" />
