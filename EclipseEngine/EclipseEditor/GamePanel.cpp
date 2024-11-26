@@ -2,7 +2,7 @@
 #include <imgui.h>
 #include "GamePanel.h"
 
-GamePanel::GamePanel(const std::string& name, Framebuffer* framebuffer, bool visible) : Panel(name), m_Framebuffer(framebuffer)
+GamePanel::GamePanel(const std::string& name, Framebuffer* framebuffer, Camera* camera, bool visible) : Panel(name), m_Framebuffer(framebuffer), m_camera(camera)
 {
     SetVisible(visible);
     m_FramebufferWidth = m_Framebuffer->GetWidth();
@@ -38,6 +38,9 @@ void GamePanel::Render()
 			m_FramebufferWidth = width;
 			m_FramebufferHeight = height;
 			m_Framebuffer->Resize(width, height);
+
+			m_camera->width = width;
+			m_camera->height = height;
 		}
 
 		ImVec2 cursorPos = ImGui::GetCursorPos();

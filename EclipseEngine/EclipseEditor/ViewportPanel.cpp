@@ -2,8 +2,8 @@
 #include "EclipseEngine/FrameBuffer.h"
 #include <imgui.h>
 
-ViewportPanel::ViewportPanel(const std::string& name, Framebuffer* framebuffer, bool visible)
-    : Panel(name), m_Framebuffer(framebuffer)
+ViewportPanel::ViewportPanel(const std::string& name, Framebuffer* framebuffer, Camera* camera, bool visible)
+	: Panel(name), m_Framebuffer(framebuffer), m_camera(camera)
 {
     SetVisible(visible);
     m_FramebufferWidth = m_Framebuffer->GetWidth();
@@ -39,6 +39,9 @@ void ViewportPanel::Render()
             m_FramebufferWidth = width;
             m_FramebufferHeight = height;
             m_Framebuffer->Resize(width, height);
+
+			m_camera->width = width;
+			m_camera->height = height;
         }
 
         ImVec2 cursorPos = ImGui::GetCursorPos();

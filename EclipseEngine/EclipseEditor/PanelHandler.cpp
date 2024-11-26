@@ -238,8 +238,8 @@ void PanelHandler::InitializePanels()
 	AddPanel(std::make_shared<SettingsPanel>("Settings Panel", false));
     AddPanel(std::make_shared<AssetsPanel>("Assets Panel", true));
     AddPanel(std::make_shared<InspectorPanel>("Inspector Panel", true));
-    AddPanel(std::make_shared<GamePanel>("Game Panel", core->renderer->GetFramebuffer(), true)); // this is the game viewport
-    AddPanel(std::make_shared<ViewportPanel>("Viewport Panel", app->editorRenderer->GetFramebuffer(), true)); // this is the editor viewport
+    AddPanel(std::make_shared<GamePanel>("Game Panel", core->renderer->GetFramebuffer(), core->scene->GetActiveCamera(), true)); // this is the game viewport
+    AddPanel(std::make_shared<ViewportPanel>("Viewport Panel", app->editorRenderer->GetFramebuffer(), app->editorCamera, true)); // this is the editor viewport
 }
 
 void PanelHandler::AddPanel(std::shared_ptr<Panel> panel) {
