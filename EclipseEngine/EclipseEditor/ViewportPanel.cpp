@@ -15,20 +15,20 @@ void ViewportPanel::Render()
     if (IsVisible()) {
         ImGui::Begin("Viewport");
 
-        const float aspectRatio = 16.0f / 9.0f;
+        const float aspectRatio = 16.0f /9.0f;
 
         // Calculate the available content area in the ImGui panel
         ImVec2 availableSize = ImGui::GetContentRegionAvail();
         float availableWidth = availableSize.x;
         float availableHeight = availableSize.y;
 
-        float viewportWidth = availableWidth;
-        float viewportHeight = availableWidth / aspectRatio;
+        float viewportWidth = availableWidth / aspectRatio;
+        float viewportHeight = availableWidth;
 
         if (viewportHeight > availableHeight) {
             // If the calculated height is too large, adjust to fit within the available height
-            viewportHeight = availableHeight;
-            viewportWidth = availableHeight * aspectRatio;
+            viewportHeight = availableHeight * aspectRatio;
+            viewportWidth = availableHeight;
         }
 
         int width = static_cast<int>(availableSize.x);
@@ -47,7 +47,6 @@ void ViewportPanel::Render()
         ImVec2 cursorPos = ImGui::GetCursorPos();
         float offsetX = (availableWidth - viewportWidth) / 2.0f;
         float offsetY = (availableHeight - viewportHeight) / 2.0f;
-        ImGui::SetCursorPos(ImVec2(cursorPos.x + offsetX, cursorPos.y + offsetY));
 
         // Display the framebuffer's texture in ImGui
         ImGui::Image((void*)(intptr_t)m_Framebuffer->GetTextureID(), ImVec2(m_FramebufferWidth, m_FramebufferHeight), ImVec2(0, 1), ImVec2(1, 0));
