@@ -20,7 +20,7 @@ Mesh::Mesh(std::vector<Vertex>& _vertices, std::vector<GLuint>& _indices, std::v
 
 Mesh::Mesh(const std::string& filepath) 
 {
-	ModelLoader::LoadModel(filepath, vertices, indices, textures);
+	ModelLoader::LoadModel(filepath, vertices, indices, textures); // it should be a .mesh file from custom file format
 
 	VAO.Bind();
 	VBO VBO(vertices);

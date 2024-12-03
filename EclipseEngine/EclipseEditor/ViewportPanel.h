@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <filesystem>
+
 #include "EclipseEngine/Framebuffer.h"
 #include "EclipseEngine/Camera.h"
 #include "EclipseEngine/GameObject.h"
@@ -32,6 +33,13 @@ private:
     Framebuffer* m_Framebuffer;
     Camera* m_camera;
 	std::shared_ptr<GameObject> m_SelectedObject = nullptr;
+
+    std::unique_ptr<Texture> m_Trans;
+    std::unique_ptr<Texture> m_Rot;
+    std::unique_ptr<Texture> m_Sca;
+
+    const float iconSize = 30.0f;
+	const float iconSpacing = 10.0f;
 };
 
 #endif // VIEWPORTPANEL_H

@@ -8,8 +8,16 @@
 #include "Mesh.h"
 #include "Texture.h"
 
-class GameObject 
+class GameObject
 {
+public:
+    std::string name;
+    Transform transform;
+    std::unique_ptr<Material> material; // Using unique_ptr for automatic memory management
+    std::unique_ptr<Mesh> mesh;         // Using unique_ptr for automatic memory management
+
+	std::list<std::shared_ptr<GameObject>> children;
+
 public:
     GameObject();
     ~GameObject();
@@ -23,17 +31,9 @@ public:
 
     template<typename T>
     T* GetComponent();    // Retrieve a component of a specific type
-    const std::vector<std::shared_ptr<GameObject>>& GetChildren() const { return children; }    // Add a child game object
     std::string GetName() const { return name; }
+    const std::list<std::shared_ptr<GameObject>>& GetChildren() const { return children; }    // Add a child game object
 
-public:
-    std::string name;
-    Transform transform;
-    std::unique_ptr<Material> material; // Using unique_ptr for automatic memory management
-    std::unique_ptr<Mesh> mesh;         // Using unique_ptr for automatic memory management
-
-private:
-    std::vector<std::shared_ptr<GameObject>> children;
 };
 
 // Template member function definitions should go here as well
@@ -62,7 +62,6 @@ T* GameObject::GetComponent() {
     return nullptr; // If no matching component, return nullptr
 }
 
-// AddChild
 inline void GameObject::AddChild(std::shared_ptr<GameObject> child) {
     children.push_back(child);
 }

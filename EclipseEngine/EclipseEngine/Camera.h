@@ -27,6 +27,7 @@ public:
 
 	// Static scroll callback function
 	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset); //C
+	glm::vec3 GetRaycastHitPoint(GLFWwindow* window);
 
 public:
 	glm::vec3 Position;                                       // Camera's position

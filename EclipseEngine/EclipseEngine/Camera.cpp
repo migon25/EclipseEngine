@@ -188,3 +188,36 @@ void Camera::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	//std::cout << "Scroll detected: " << yoffset << std::endl; // Debug: Check if scroll events are detected
 }
 
+glm::vec3 Camera::GetRaycastHitPoint(GLFWwindow* window)
+{
+    // Define the ground plane (y = 0)
+    glm::vec3 planeNormal = glm::vec3(0.0f, 1.0f, 0.0f); // Ground plane normal
+    float planeY = 0.0f; // Ground plane height (y = 0)
+
+    // Get mouse position from the window
+    double mouseX, mouseY;
+    glfwGetCursorPos(window, &mouseX, &mouseY);
+
+    // Convert mouse position to normalized device coordinates (NDC)
+    float x = (2.0f * mouseX) / width - 1.0f;
+    float y = 1.0f - (2.0f * mouseY) / height;
+    glm::vec4 rayNDC = glm::vec4(x, y, -1.0f, 1.0f);
+
+    // Convert to view space
+    glm::mat4 invProjection = glm::inverse(glm::perspective(glm::radians(FOVdeg), (float)width / height, 0.1f, 100.0f));
+    glm::vec4 rayEye = invProjection * rayNDC;
+    rayEye.z = -1.0f; // Forward direction
+    rayEye.w = 0.0f;
+
+    // Convert to world space
+    glm::mat4 invView = glm::inverse(glm::lookAt(Position, Position + Orientation, Up));
+    glm::vec3 rayWorld = glm::vec3(invView * rayEye);
+    rayWorld = glm::normalize(rayWorld);
+
+    // Perform ray-plane intersection
+    glm::vec3 rayOrigin = Position; // Camera position
+    float t = (planeY - glm::dot(rayOrigin, planeNormal)) / glm::dot(rayWorld, planeNormal);
+
+    // Return the intersection point
+    return rayOrigin + rayWorld * t;
+}
