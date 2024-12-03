@@ -13,13 +13,13 @@
 AssetsPanel::AssetsPanel(const std::string& name, bool isVisible) : Panel(name), m_CurrentDirectory("Assets")
 {
     SetVisible(isVisible);
-    m_FolderIcon = std::make_unique<Texture>("Assets/Editor/folder.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
+    m_FolderIcon = std::make_unique<Texture>("EditorResources/folder.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
 
-    m_FileIcons[".png"] = std::make_unique<Texture>("Assets/Editor/png.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
-    m_FileIcons[".jpg"] = std::make_unique<Texture>("Assets/Editor/jpg.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
-    m_FileIcons[".fbx"] = std::make_unique<Texture>("Assets/Editor/fbx.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
+    m_FileIcons[".png"] = std::make_unique<Texture>("EditorResources/png.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
+    m_FileIcons[".jpg"] = std::make_unique<Texture>("EditorResources/jpg.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
+    m_FileIcons[".fbx"] = std::make_unique<Texture>("EditorResources/fbx.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
 
-    m_DefaultFileIcon = std::make_unique<Texture>("Assets/Editor/idk.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
+    m_DefaultFileIcon = std::make_unique<Texture>("EditorResources/idk.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
 }
 
 void AssetsPanel::Render()
@@ -29,10 +29,6 @@ void AssetsPanel::Render()
     ImGui::Begin(m_Name.c_str(), &m_Visible);
 
     RenderBreadcrumbNavigation();
-
-    const float iconSize = 80.0f;
-    const int columns = 4; // Number of columns
-    const float padding = 10.0f; // Padding between items
     
     if (ImGui::BeginTable("FileGrid", columns, ImGuiTableFlags_NoBordersInBody))
     {
@@ -121,7 +117,7 @@ void AssetsPanel::Render()
                 if (ImGui::ImageButton(reinterpret_cast<void*>(static_cast<intptr_t>(textureID)), ImVec2(iconSize, iconSize)))
                 {
                     // Handle image click (if necessary)
-                    Logger::Log("Image clicked: " + fileName);
+                    Logger::Log("file clicked: " + fileName);
                 }
                 // Context menu for files
                 if (ImGui::BeginPopupContextItem("FileContextMenu"))
@@ -162,7 +158,6 @@ void AssetsPanel::Render()
                     m_RenameBuffer = renameBuffer; // Update the buffer
                 }
     
-                ImGui::SameLine();
                 if (ImGui::Button("Apply"))
                 {
                     try
@@ -188,14 +183,6 @@ void AssetsPanel::Render()
         }
         ImGui::EndTable();
     }
-    // Button to open the file explorer
-    if (ImGui::Button("Open File Explorer"))
-    {
-        OpenFileExplorer();
-    }
-
-    // Handle drag and drop from file explorer
-    HandleDragAndDrop();
     RenderDeletePopUp();
     ImGui::End();
 }
@@ -267,7 +254,7 @@ void AssetsPanel::OpenFileExplorer()
                 auto gameObject = std::make_unique<GameObject>();
                 gameObject->AddComponent<Mesh>(selectedFile); // Load the FBX file
                 auto& meshTexture = gameObject->GetComponent<Mesh>()->GetTextures();
-				gameObject->AddComponent<Material>(*core->scene->defaultShader, meshTexture); // Add a default material
+				gameObject->AddComponent<Material>(meshTexture); // Add a default material
                 Logger::Log("Loaded FBX: " + std::string(selectedFile));
 				core->scene->AddGameObject(std::move(gameObject));
                 // Add the gameObject to your scene or collection of game objects
@@ -326,43 +313,5 @@ void AssetsPanel::RenderDeletePopUp()
         }
 
         ImGui::EndPopup();
-    }
-}
-
-void AssetsPanel::HandleDragAndDrop() 
-{
-    if (ImGui::BeginDragDropTarget()) 
-    {
-        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE")) 
-        {
-            if (payload->DataSize > 0)
-            {
-                const char* filePath = static_cast<const char*>(payload->Data);
-
-                // Validate file path
-                std::filesystem::path path(filePath);
-                if (!std::filesystem::exists(path))
-                {
-                    Logger::Log("File not found: " + std::string(filePath));
-                    return; // Return to avoid further processing
-                }
-
-                try 
-                {
-                    // Check file extension and load as GameObject
-                    if (path.extension() == ".fbx") 
-                    {
-                        Logger::Log("Dragging FBX file: " + path.string());
-                        // Pass the payload to ViewportPanel when dropped there
-                        ImGui::SetDragDropPayload("FBX_MODEL", filePath, strlen(filePath) + 1);
-                    }
-                }
-                catch (const std::exception& e)
-                {
-                    Logger::Log("Error loading mesh: " + std::string(e.what()));
-                }
-            }
-        }
-        ImGui::EndDragDropTarget();
     }
 }

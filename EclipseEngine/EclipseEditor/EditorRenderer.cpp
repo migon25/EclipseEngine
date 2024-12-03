@@ -37,7 +37,7 @@ void EditorRenderer::Render(Scene* scene, Camera* editorCamera)
 	{
 		for (auto& object : scene->GetObjects())
 		{
-			object->Draw(*scene->defaultShader, *editorCamera);
+			object->Draw(*editorCamera);
 		}
 	}
 	RenderGrid(grid, editorCamera);

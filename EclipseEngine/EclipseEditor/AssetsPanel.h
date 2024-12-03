@@ -18,8 +18,6 @@ public:
 
     void Render() override;
 
-    void HandleDragAndDrop();
-
 private:
     void RenderBreadcrumbNavigation();
     void OpenFileExplorer();
@@ -33,6 +31,9 @@ private:
 
 	bool m_ShowDeletePopup = false;
     std::filesystem::path m_DeletePath;
+
+    const float iconSize = 80.0f;
+    const int columns = 8; // Number of columns
 
 	std::unique_ptr<Texture> m_FolderIcon;
     std::unordered_map<std::string, std::unique_ptr<Texture>> m_FileIcons;

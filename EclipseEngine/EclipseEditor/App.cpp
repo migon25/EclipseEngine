@@ -21,9 +21,6 @@ App::~App()
 bool App::Initialize()
 {
 	ilInit();
-	//editorCamera->SetPerspective(45.0f, 16.0f / 9.0f, 0.1f, 100.0f);
-	//editorCamera->SetPosition(glm::vec3(0.0f, -0.5f, 20.0f));
-	//editorCamera->LookAt(glm::vec3(0.0f, 0.0f, 0.0f));
 	if(!core->Initialize()) return false;
 	for (std::list<Module*>::iterator it = modules.begin(); it != modules.end(); it++)
 	{
