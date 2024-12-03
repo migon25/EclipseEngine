@@ -16,7 +16,7 @@ public:
     bool Initialize();
 
     bool PreUpdate();
-	bool Update(float dt);
+	bool Update(double dt);
 	bool PostUpdate();
 
 	void CleanUp();

@@ -1,9 +1,16 @@
 #include <locale>
-#include <codecvt>
+#include <Windows.h>
 #include <IL/il.h>
 #include "Texture.h"
 #include <iostream>
 #include "Logger.h"
+
+std::wstring Utf8ToWstring(const std::string& utf8Str) {
+    int sizeNeeded = MultiByteToWideChar(CP_UTF8, 0, utf8Str.c_str(), (int)utf8Str.size(), NULL, 0);
+    std::wstring wstrTo(sizeNeeded, 0);
+    MultiByteToWideChar(CP_UTF8, 0, utf8Str.c_str(), (int)utf8Str.size(), &wstrTo[0], sizeNeeded);
+    return wstrTo;
+}
 
 Texture::Texture(const char* filename, const char* texType, GLuint slot, GLenum format, GLenum pixelType): path(filename), type(texType), unit(slot)
 {
@@ -60,8 +67,7 @@ Texture::Texture(const std::string filename, const std::string& texType, GLuint 
     ilBindImage(imageID);
 
     // Convert std::string filename to std::wstring for DevIL compatibility
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring wFilename = converter.from_bytes(filename);
+    std::wstring wFilename = Utf8ToWstring(filename);
 
     std::cout << "Loading image: " << filename << std::endl;
     // Load the image using DevIL

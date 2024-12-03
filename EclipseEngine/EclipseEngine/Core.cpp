@@ -30,7 +30,7 @@ bool Core::PreUpdate()
 	return true;
 }
 
-bool Core::Update(float dt)
+bool Core::Update(double dt)
 {
 	if (window->ShouldClose()) return false;
 	scene->Update(dt);

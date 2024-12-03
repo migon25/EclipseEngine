@@ -19,8 +19,8 @@ void ConsolePanel::Render()
                 ImGui::Text("%s", log.c_str());
             }
         }
-    }
     ImGui::End();
+    }
 }
 
 void ConsolePanel::Log(const std::string& message) {
