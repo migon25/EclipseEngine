@@ -23,7 +23,7 @@ public:
     ~GameObject();
 
     void Update();    // Update and draw the game object
-    void Draw(Shader& shader, Camera& camera);
+    void Draw(Camera& camera);
 
     template<typename T, typename... Args>
     void AddComponent(Args&&... args);    // Add a component to the game object

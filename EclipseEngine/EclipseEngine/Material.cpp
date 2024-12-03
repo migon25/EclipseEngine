@@ -1,8 +1,8 @@
 #include "Material.h"
 
-Material::Material(Shader& shader, const std::vector<Texture>& textures) : shader(shader), textures(textures) 
+Material::Material(const std::vector<Texture>& textures) : textures(textures) 
 {
-
+	defaultShader = new Shader("Shaders/default.vert", "Shaders/default.frag");
 }
 
 void Material::BindTextures() 
@@ -26,7 +26,7 @@ void Material::BindTextures()
 		{
             std::cerr << "Texture " << i << " not valid." << std::endl;
         }
-		textures[i].TexUnit(shader, (type + num).c_str(), i);
+		textures[i].TexUnit(defaultShader, (type + num).c_str(), i);
 		textures[i].Bind();
     }
 }

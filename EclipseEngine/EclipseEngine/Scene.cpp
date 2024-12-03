@@ -12,21 +12,20 @@ Scene::~Scene()
 
 bool Scene::Initialize()
 {
-	defaultShader = new Shader("Shaders/default.vert", "Shaders/default.frag");
 	activeCamera = new Camera(1500, 844, glm::vec3(7.0f, 4.0f, -7.0f));
 
-	//std::vector<Texture> catTexture
-	//{
-	//	Texture("Assets/Baker_house.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
-	//};
+	std::vector<Texture> catTexture
+	{
+		Texture("Assets/Textures/Baker_house.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
+	};
 
-	//auto cube = std::make_unique<GameObject>(); // This has to be in the engine side (SCENE)
-	//cube.get()->name = "house";
-	//cube->AddComponent<Mesh>("Assets/BakerHouse.fbx");
-	//cube->AddComponent<Material>(*defaultShader, catTexture);
-	//cube.get()->transform.SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	auto cube = std::make_unique<GameObject>(); // This has to be in the engine side (SCENE)
+	cube.get()->name = "house";
+	cube->AddComponent<Mesh>("Assets/fbx_files/BakerHouse.fbx");
+	cube->AddComponent<Material>(catTexture);
+	cube.get()->transform.SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
-	//AddGameObject(std::move(cube));
+	AddGameObject(std::move(cube));
 
 	return true;
 }
@@ -41,7 +40,7 @@ void Scene::Draw()
 {
 	for (auto& obj : gameObjects)
 	{
-		obj->Draw(*defaultShader, *activeCamera);
+		obj->Draw(*activeCamera);
 	}
 }
 
@@ -93,14 +92,14 @@ void Scene::AddCube()
 	auto cube = std::make_unique<GameObject>(); // This has to be in the engine side (SCENE)
 	cube.get()->name = "cube";
 	cube->AddComponent<Mesh>(vertices, indices, catTexture);
-	cube->AddComponent<Material>(*defaultShader, catTexture);
+	cube->AddComponent<Material>( catTexture);
 	cube.get()->transform.SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
 
 	auto cube2 = std::make_unique<GameObject>();
 	cube2.get()->name = "cube2";
 	cube2->AddComponent<Mesh>(vertices, indices, catTexture);
-	cube2->AddComponent<Material>(*defaultShader, catTexture);
+	cube2->AddComponent<Material>(catTexture);
 	cube2.get()->transform.SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 	
 	cube.get()->AddChild(std::move(cube2));

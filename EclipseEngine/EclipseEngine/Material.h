@@ -9,13 +9,13 @@
 class Material : public Component 
 {
 public:
-    Material(Shader& shader, const std::vector<Texture>& textures);
+    Material(const std::vector<Texture>& textures);
 
     void BindTextures();
     void Update() override;
 
 public:
-    Shader& shader;
+    Shader* defaultShader = nullptr;
     std::vector<Texture> textures;
 
 };

@@ -15,9 +15,9 @@ ViewportPanel::ViewportPanel(const std::string& name, Framebuffer* framebuffer, 
 {
     SetVisible(visible);
 
-	m_Trans = std::make_unique<Texture>("Assets/Editor/trans.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
-    m_Rot = std::make_unique<Texture>("Assets/Editor/rot.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
-    m_Sca = std::make_unique<Texture>("Assets/Editor/sca.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
+	m_Trans = std::make_unique<Texture>("EditorResources/trans.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
+    m_Rot = std::make_unique<Texture>("EditorResources/rot.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
+    m_Sca = std::make_unique<Texture>("EditorResources/sca.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
 }
 
 void ViewportPanel::Render()
@@ -49,7 +49,7 @@ void ViewportPanel::Render()
 		// Drag and drop FBX files into the viewport
         if (ImGui::BeginDragDropTarget())
         {
-            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("FBX_FILE"))
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("MODEL_FILE"))
             {
                 Logger::Log("Payload FBX received!"); // Log when payload is accepted
                 if (payload->DataSize > 0)
@@ -69,8 +69,7 @@ void ViewportPanel::Render()
                             // Load the FBX file into a GameObject
                             auto gameObject = std::make_shared<GameObject>();
                             gameObject->AddComponent<Mesh>(filePath); // Load the FBX file
-                            gameObject->AddComponent<Material>(*core->scene->defaultShader,
-                                gameObject->GetComponent<Mesh>()->GetTextures()); // Add a default material
+                            //gameObject->AddComponent<Material>(gameObject->GetComponent<Mesh>()->GetTextures()); // Add a default material
 
                             // Position the new GameObject at a default or calculated position
                             glm::vec3 dropPosition = m_camera->GetRaycastHitPoint(core->window->GetWindow());
@@ -85,6 +84,28 @@ void ViewportPanel::Render()
                         }
                     }
                 }
+            }
+            else if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE_FILE"))
+            {
+                if (m_SelectedObject != nullptr)
+                {
+                    const char* filePath = static_cast<const char*>(payload->Data);
+                    Logger::Log("Texture file dropped to selected object: " + std::string(filePath));
+					std::vector<Texture> textures{ Texture(filePath, "diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE) };
+
+					m_SelectedObject->AddComponent<Material>(textures);
+                    // Handle texture file loading
+                }
+                else
+                {
+					Logger::Log("No object selected to apply texture to.");
+                }
+            }
+            else if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("SCENE_FILE"))
+            {
+                const char* filePath = static_cast<const char*>(payload->Data);
+                Logger::Log("Scene file dropped: " + std::string(filePath));
+                // Handle scene file loading
             }
             ImGui::EndDragDropTarget();
         }

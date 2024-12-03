@@ -23,7 +23,6 @@ public:
 
 	void AddCube();
 
-	Shader* defaultShader = nullptr;
 private:
 	std::list<std::shared_ptr<GameObject >> gameObjects;
 	Camera* activeCamera = nullptr;

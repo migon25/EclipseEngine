@@ -26,6 +26,7 @@ bool App::Initialize()
 	{
 		if (!(*it)->Initialize()) return false;
 	}
+	m_fpsPanel = std::dynamic_pointer_cast<FPSPanel>(panelHandler->GetPanel("FPS Panel"));
 	return true;
 }
 
@@ -37,6 +38,19 @@ bool App::Start()
 
 bool App::Update()
 {
+	float currentFrame = glfwGetTime();
+	dt = currentFrame - lastFrame;
+	lastFrame = currentFrame;
+	float fps = 1.0f / dt;          // Assuming dt is the delta time (time since last frame in seconds)
+	float ms = dt * 1000.0f;        // Convert delta time to milliseconds
+
+	if (m_fpsPanel) {
+		if (auto fpsPanel = dynamic_cast<FPSPanel*>(m_fpsPanel.get())) {
+				fpsPanel->Update(fps, ms);
+		}
+	}
+
+	// Pass these values to the FPS panel
 	if (!PreUpdate()) return false;
 	if (!DoUpdate()) return false;
 	if (!PostUpdate()) return false;

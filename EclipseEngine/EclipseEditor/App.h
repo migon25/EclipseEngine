@@ -1,6 +1,7 @@
 #ifndef APP_H
 #define APP_H
 
+#include <memory>
 #include <vector>
 #include <string>
 #include <list>
@@ -10,7 +11,9 @@
 #include "EclipseEngine/Camera.h"
 
 #include "Module.h"
+#include "Panel.h"
 #include "PanelHandler.h"
+#include "FPSpanel.h"
 #include "EditorRenderer.h"
 
 class PanelHandler;
@@ -45,8 +48,11 @@ private:
 
 	// List of modules
 	std::list<Module*> modules;
+	std::shared_ptr<FPSPanel> m_fpsPanel;
 
 	double dt = 0.0f;
+	double lastFrame = 0.0f;
+
 };
 
 #endif // APP_H

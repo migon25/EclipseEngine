@@ -140,7 +140,27 @@ void AssetsPanel::Render()
                 if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
                 {
                     const std::string pathStr = path.string();
-                    ImGui::SetDragDropPayload("FBX_FILE", pathStr.c_str(), pathStr.size() + 1);
+					const char* payloadType = nullptr;
+
+                    // Determine the payload type based on file extension
+                    if (extension == ".fbx" || extension == ".obj")
+                    {
+                        payloadType = "MODEL_FILE";
+                    }
+                    else if (extension == ".png" || extension == ".jpg" || extension == ".dds")
+                    {
+                        payloadType = "TEXTURE_FILE";
+                    }
+                    else if (extension == ".scene")
+                    {
+                        payloadType = "SCENE_FILE";
+                    }
+                    else
+                    {
+                        payloadType = "UNKNOWN_FILE";
+                    }
+
+                    ImGui::SetDragDropPayload(payloadType, pathStr.c_str(), pathStr.size() + 1);
                     ImGui::Image(reinterpret_cast<void*>(static_cast<intptr_t>(textureID)), ImVec2(iconSize, iconSize));
                     ImGui::Text("%s", fileName.c_str());
                     ImGui::EndDragDropSource();

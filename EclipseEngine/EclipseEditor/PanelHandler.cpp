@@ -17,7 +17,7 @@ PanelHandler::PanelHandler(App* app) : app(app)
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.Fonts->AddFontFromFileTTF("Assets/Editor/SF-Pro-Text-Light.otf", 14.0f);
+    io.Fonts->AddFontFromFileTTF("EditorResources/SF-Pro-Text-Light.otf", 14.0f);
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -208,7 +208,7 @@ void PanelHandler::CustomStyle()
     // Plot lines and histogram
     colors[ImGuiCol_PlotLines] = ImVec4(1.0f, 0.5f, 0.0f, 1.0f);            // Color for plot lines
     colors[ImGuiCol_PlotLinesHovered] = ImVec4(1.0f, 0.6f, 0.1f, 1.0f);     // Plot lines when hovered
-    colors[ImGuiCol_PlotHistogram] = ImVec4(0.48f, 0.56f, 0.56f, 1.0f);     // Color for histogram plots
+    colors[ImGuiCol_PlotHistogram] = ImVec4(0.61f, 0.76f, 0.51f, 0.75f);     // Color for histogram plots
     colors[ImGuiCol_PlotHistogramHovered] = ImVec4(1.0f, 0.8f, 0.3f, 1.0f); // Histogram color when hovered
 
     // Modal window darkening

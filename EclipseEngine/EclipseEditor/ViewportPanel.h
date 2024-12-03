@@ -38,8 +38,8 @@ private:
     std::unique_ptr<Texture> m_Rot;
     std::unique_ptr<Texture> m_Sca;
 
-    const float iconSize = 30.0f;
-	const float iconSpacing = 10.0f;
+    const float iconSize = 25.0f;
+	const float iconSpacing = 5.0f; //spacing between icons
 };
 
 #endif // VIEWPORTPANEL_H
