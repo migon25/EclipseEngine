@@ -17,7 +17,7 @@ PanelHandler::PanelHandler(App* app) : app(app)
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.Fonts->AddFontFromFileTTF("Assets/SF-Pro-Text-Light.otf", 14.0f);
+    io.Fonts->AddFontFromFileTTF("Assets/Editor/SF-Pro-Text-Light.otf", 14.0f);
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -82,9 +82,9 @@ void PanelHandler::Render() {
     ImGui::SetNextWindowSize(viewport->WorkSize);
     ImGui::SetNextWindowViewport(viewport->ID);
 
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 10.0f);
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5.0f, 5.0f));
 
     ImGuiWindowFlags dockspaceFlags = ImGuiWindowFlags_NoDocking |
         ImGuiWindowFlags_NoTitleBar |
@@ -161,9 +161,9 @@ void PanelHandler::CustomStyle()
     colors[ImGuiCol_BorderShadow] = ImVec4(1.0f, 0.0f, 0.0f, 1.0f)  ;       // Border shadow color
 
     // Buttons
-    colors[ImGuiCol_Button] = ImVec4(0.2f, 0.3f, 0.4f, 1.0f);               // Button color
-    colors[ImGuiCol_ButtonHovered] = ImVec4(0.3f, 0.4f, 0.5f, 1.0f) ;       // Button color when hovered
-    colors[ImGuiCol_ButtonActive] = ImVec4(0.4f, 0.5f, 0.6f, 1.0f);         // Button color when active
+    colors[ImGuiCol_Button] = ImVec4(0.4f, 0.4f, 0.4f, 1.0f);               // Button color
+    colors[ImGuiCol_ButtonHovered] = ImVec4(0.3f, 0.3f, 0.3f, 1.0f) ;       // Button color when hovered
+    colors[ImGuiCol_ButtonActive] = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);         // Button color when active
 
     // Frame background (used for inputs, sliders, etc.)
     colors[ImGuiCol_FrameBg] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);              // Background color for frames
@@ -171,15 +171,15 @@ void PanelHandler::CustomStyle()
     colors[ImGuiCol_FrameBgActive] = ImVec4(0.4f, 0.4f, 0.5f, 1.0f);        // Frame color when active
 
     // Tabs
-    colors[ImGuiCol_Tab] = ImVec4(0.1, 0.1f, 0.1f, 1.0f);                   // Background color for tabs
+    colors[ImGuiCol_Tab] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);                   // Background color for tabs
     colors[ImGuiCol_TabHovered] = ImVec4(0.25f, 0.25f, 0.25f, 1.0f);        // Tab color when hovered
     colors[ImGuiCol_TabActive] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);            // Tab color when active
     colors[ImGuiCol_TabUnfocused] = ImVec4(0.15f, 0.15f, 0.15f, 1.0f);         // Tab color when unfocused
     colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);   // Active tab color when unfocused
 
     // Titles
-    colors[ImGuiCol_TitleBg] = ImVec4(0.35f, 0.34f, 0.3f, 1.0f);            // Background color for title bar
-    colors[ImGuiCol_TitleBgActive] = ImVec4(0.35f, 0.34f, 0.3f, 1.0f);      // Title bar color when active
+    colors[ImGuiCol_TitleBg] = ImVec4(0.25f, 0.25f, 0.25f, 1.0f);            // Background color for title bar
+    colors[ImGuiCol_TitleBgActive] = ImVec4(0.4f, 0.4f, 0.4f, 1.0f);      // Title bar color when active
     colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.0f, 0.0f, 0.0f, 0.5f);     // Title bar color when collapsed
 
     // Scrollbars

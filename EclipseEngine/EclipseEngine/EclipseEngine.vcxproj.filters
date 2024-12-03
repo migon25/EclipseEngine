@@ -128,5 +128,8 @@
     <ClInclude Include="CameraTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TreeExt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -40,6 +40,13 @@ void MenuPanel::Render() {
 				m_PanelHandler.TogglePanel("Hierarchy Panel");
 			}
 
+			// Toggle for the Hierarchy panel
+			bool isConsolePanelVisible = m_PanelHandler.GetPanelVisibility("Console Panel");
+			ImGui::MenuItem("Console Panel", nullptr, &isConsolePanelVisible);
+			if (ImGui::IsItemClicked()) {
+				m_PanelHandler.TogglePanel("Console Panel");
+			}
+
             ImGui::EndMenu();
         }
 
