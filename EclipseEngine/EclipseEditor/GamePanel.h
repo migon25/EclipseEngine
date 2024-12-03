@@ -18,9 +18,6 @@ public:
 private:
     Framebuffer* m_Framebuffer;
     Camera* m_camera;
-    int m_FramebufferWidth, m_FramebufferHeight;
-    int m_Width;
-    int m_Height;
 };
 
 #endif // GAME_PANEL_H

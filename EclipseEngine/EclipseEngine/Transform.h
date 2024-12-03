@@ -11,6 +11,7 @@ public:
     Transform();
 
     glm::mat4 GetMatrix() const;
+	void SetMatrix(const glm::mat4& matrix);
 
     void SetPosition(const glm::vec3& newPosition);
     void SetRotation(const glm::vec3& newRotation);

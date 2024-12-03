@@ -232,7 +232,7 @@ void PanelHandler::InitializePanels()
 {
     AddPanel(std::make_shared<MenuPanel>("Menu Panel", *this));
     AddPanel(std::make_shared<BasicPanel>("Basic Panel", false));
-    AddPanel(std::make_shared<FPSPanel>("FPS Panel", true)); 
+    AddPanel(std::make_shared<FPSPanel>("FPS Panel", false)); 
     AddPanel(std::make_shared<ConsolePanel>("Console Panel", true));
 	AddPanel(std::make_shared<HierarchyPanel>("Hierarchy Panel", true));
 	AddPanel(std::make_shared<SettingsPanel>("Settings Panel", false));
@@ -240,6 +240,11 @@ void PanelHandler::InitializePanels()
     AddPanel(std::make_shared<InspectorPanel>("Inspector Panel", true));
     AddPanel(std::make_shared<GamePanel>("Game Panel", core->renderer->GetFramebuffer(), core->scene->GetActiveCamera(), true)); // this is the game viewport
     AddPanel(std::make_shared<ViewportPanel>("Viewport Panel", app->editorRenderer->GetFramebuffer(), app->editorCamera, true)); // this is the editor viewport
+
+	// Set the inspector panel for the hierarchy panel
+	HierarchyPanel* hierarchyPanel = static_cast<HierarchyPanel*>(GetPanel("Hierarchy Panel").get());
+	hierarchyPanel->SetInspectorPanel(static_cast<InspectorPanel*>(GetPanel("Inspector Panel").get()));
+	hierarchyPanel->SetViewportPanel(static_cast<ViewportPanel*>(GetPanel("Viewport Panel").get()));
 }
 
 void PanelHandler::AddPanel(std::shared_ptr<Panel> panel) {

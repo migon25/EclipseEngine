@@ -1,5 +1,6 @@
 {
   "dependencies": [
+    "assimp",
     "devil",
     "glew",
     "glfw3",
@@ -12,6 +13,6 @@
         "opengl3-binding"
       ]
     },
-    "assimp"
+    "imguizmo"
   ]
 }

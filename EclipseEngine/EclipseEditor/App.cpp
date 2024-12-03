@@ -77,8 +77,6 @@ bool App::PreUpdate()
 
 bool App::DoUpdate()
 {
-	editorCamera->Inputs(core->window->GetWindow());
-
 	if (!core->Update(dt)) return false;
 	for (std::list<Module*>::iterator it = modules.begin(); it != modules.end(); it++)
 	{

@@ -11,12 +11,12 @@ Grid::Grid()
 		glm::vec3 neutralColor = glm::vec3(0.3f, 0.3f, 0.3f);
 
 		// Horizontal line (Z-axis)
-		glm::vec3 colorZ = (offset == 0.0f) ? glm::vec3(0.0f, 0.75f, 0.0f) : neutralColor;
+		glm::vec3 colorZ = (offset == 0.0f) ? glm::vec3(0.75f, 0.0f, 0.0f) : neutralColor;
 		gridVertices.push_back({ glm::vec3(-gridSize / 2, 0.0f, offset), glm::vec3(0.0f),colorZ, glm::vec2(0.0f) });
 		gridVertices.push_back({ glm::vec3(gridSize / 2, 0.0f, offset), glm::vec3(0.0f), colorZ, glm::vec2(1.0f) });
 
 		// Vertical line (X-axis)
-		glm::vec3 colorX = (offset == 0.0f) ? glm::vec3(0.75f, 0.0f, 0.0f) : neutralColor; // Red for center X-axis
+		glm::vec3 colorX = (offset == 0.0f) ? glm::vec3(0.0f, 0.3f, 0.75f) : neutralColor; // Red for center X-axis
 		gridVertices.push_back({ glm::vec3(offset, 0.0f, -gridSize / 2), glm::vec3(0.0f),colorX, glm::vec2(0.0f) });
 		gridVertices.push_back({ glm::vec3(offset, 0.0f, gridSize / 2), glm::vec3(0.0f),colorX, glm::vec2(1.0f) });
 	}

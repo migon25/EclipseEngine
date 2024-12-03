@@ -1,26 +1,46 @@
-#include "ViewportPanel.h"
-#include "EclipseEngine/FrameBuffer.h"
 #include <imgui.h>
+#include <ImGuizmo.h>
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+
+#include "EclipseEngine/FrameBuffer.h"
+
+#include "App.h"
+#include "ViewportPanel.h"
+
 
 ViewportPanel::ViewportPanel(const std::string& name, Framebuffer* framebuffer, Camera* camera, bool visible)
 	: Panel(name), m_Framebuffer(framebuffer), m_camera(camera)
 {
     SetVisible(visible);
-    m_FramebufferWidth = m_Framebuffer->GetWidth();
-    m_FramebufferHeight = m_Framebuffer->GetHeight();
 }
 
 void ViewportPanel::Render()
 {
-    if (IsVisible()) {
-        ImGui::Begin("Viewport");
+    if (IsVisible())
+    {
+        ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse/* | ImGuiWindowFlags_NoMove*/;
+        ImGui::Begin("Viewport", nullptr, windowFlags);
 
-        const float aspectRatio = 16.0f /9.0f;
+        bool isViewportHovered = ImGui::IsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByPopup);
+        if (isViewportHovered) m_camera->Inputs(core->window->GetWindow());
 
-        // Calculate the available content area in the ImGui panel
-        ImVec2 availableSize = ImGui::GetContentRegionAvail();
-        float availableWidth = availableSize.x;
-        float availableHeight = availableSize.y;
+        // Get the available size of the viewport panel
+        ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+        int width = static_cast<int>(viewportPanelSize.x);
+        int height = static_cast<int>(viewportPanelSize.y);
+
+        // Resize the framebuffer if the panel size changes
+        if (width != m_Framebuffer->GetWidth() || height != m_Framebuffer->GetHeight()) {
+            m_Framebuffer->Resize(width, height);
+            m_camera->width = width;
+            m_camera->height = height;
+        }
+
+        // Display the framebuffer's texture
+        ImVec2 viewportPosition = ImGui::GetCursorScreenPos(); // Position of the viewport in screen coordinates
+        ImGui::Image((void*)(intptr_t)m_Framebuffer->GetTextureID(), ImVec2(width, height), ImVec2(0, 1), ImVec2(1, 0));
+
 
         float viewportWidth = availableWidth / aspectRatio;
         float viewportHeight = availableWidth;
@@ -40,16 +60,11 @@ void ViewportPanel::Render()
             m_FramebufferHeight = height;
             m_Framebuffer->Resize(width, height);
 
-			m_camera->width = width;
-			m_camera->height = height;
         }
 
-        ImVec2 cursorPos = ImGui::GetCursorPos();
-        float offsetX = (availableWidth - viewportWidth) / 2.0f;
-        float offsetY = (availableHeight - viewportHeight) / 2.0f;
 
-        // Display the framebuffer's texture in ImGui
-        ImGui::Image((void*)(intptr_t)m_Framebuffer->GetTextureID(), ImVec2(m_FramebufferWidth, m_FramebufferHeight), ImVec2(0, 1), ImVec2(1, 0));
+            glm::mat4 viewMatrix = m_camera->cameraMatrix;
+            glm::mat4 projectionMatrix = glm::mat4(1.0f);
 
         ImGui::End();
     }
@@ -57,7 +72,5 @@ void ViewportPanel::Render()
 
 void ViewportPanel::Resize(int width, int height)
 {
-    m_Width = width;
-    m_Height = height;
     m_Framebuffer->Resize(width, height);
 }
