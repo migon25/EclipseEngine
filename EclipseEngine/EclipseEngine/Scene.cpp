@@ -14,18 +14,18 @@ bool Scene::Initialize()
 {
 	activeCamera = new Camera(1500, 844, glm::vec3(7.0f, 4.0f, -7.0f));
 
-	std::vector<Texture> catTexture
-	{
-		Texture("Assets/Textures/Baker_house.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
-	};
+	//std::vector<Texture> catTexture
+	//{
+	//	Texture("Assets/Textures/Baker_house.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
+	//};
 
-	auto cube = std::make_unique<GameObject>(); // This has to be in the engine side (SCENE)
-	cube.get()->name = "house";
-	cube->AddComponent<Mesh>("Assets/fbx_files/BakerHouse.fbx");
-	cube->AddComponent<Material>(catTexture);
-	cube.get()->transform.SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	//auto cube = std::make_unique<GameObject>(); // This has to be in the engine side (SCENE)
+	//cube.get()->name = "house";
+	//cube->AddComponent<Mesh>("Assets/fbx_files/BakerHouse.fbx");
+	//cube->AddComponent<Material>(catTexture);
+	//cube.get()->transform.SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
-	AddGameObject(std::move(cube));
+	//AddGameObject(std::move(cube));
 
 	return true;
 }
@@ -36,17 +36,17 @@ bool Scene::Update(double dt)
     return true;
 }
 
-void Scene::Draw()
+void Scene::Draw(Shader& shader)
 {
+	glm::mat4 identity = glm::mat4(1.0f);
 	for (auto& obj : gameObjects)
 	{
-		obj->Draw(*activeCamera);
+		obj->Draw(shader, *activeCamera, identity);
 	}
 }
 
 void Scene::AddGameObject(std::shared_ptr<GameObject> go)
 {
-	go.get()->name = "GameObject" + std::to_string(gameObjects.size());
 	gameObjects.push_back(std::move(go));
 }
 

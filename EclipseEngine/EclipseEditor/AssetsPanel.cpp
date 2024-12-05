@@ -67,7 +67,7 @@ void AssetsPanel::Render()
                 }
                 if (ImGui::BeginDragDropTarget())
                 {
-                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_FILE"))
+                    if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(payloadType))
                     {
                         // Get the source path from the payload
                         std::string sourcePath((const char*)payload->Data);
@@ -140,7 +140,6 @@ void AssetsPanel::Render()
                 if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
                 {
                     const std::string pathStr = path.string();
-					const char* payloadType = nullptr;
 
                     // Determine the payload type based on file extension
                     if (extension == ".fbx" || extension == ".obj")
@@ -241,52 +240,6 @@ void AssetsPanel::RenderBreadcrumbNavigation()
             ImGui::SameLine();
             ImGui::Text(">");
             ImGui::SameLine();
-        }
-    }
-}
-
-void AssetsPanel::OpenFileExplorer()
-{
-    const char* filters[] = { "*.fbx" };
-    const char* selectedFile = tinyfd_openFileDialog(
-        "Select an FBX File",               // Dialog title
-        "Assets/",                          // Default path
-        1,                                  // Number of filters
-        filters,                            // File type filters
-        "FBX Files",                        // Description of filters
-        0                                   // Allow multiple selection (0 = No)
-    );
-
-    if (selectedFile)
-    {
-        std::filesystem::path path(selectedFile);
-        if (!std::filesystem::exists(path))
-        {
-            Logger::Log("File not found: " + std::string(selectedFile));
-            return;
-        }
-
-        try
-        {
-            // Check file extension and load as GameObject
-            if (path.extension() == ".fbx")
-            {
-                auto gameObject = std::make_unique<GameObject>();
-                gameObject->AddComponent<Mesh>(selectedFile); // Load the FBX file
-                auto& meshTexture = gameObject->GetComponent<Mesh>()->GetTextures();
-				gameObject->AddComponent<Material>(meshTexture); // Add a default material
-                Logger::Log("Loaded FBX: " + std::string(selectedFile));
-				core->scene->AddGameObject(std::move(gameObject));
-                // Add the gameObject to your scene or collection of game objects
-            }
-            else
-            {
-                Logger::Log("Invalid file type: " + path.extension().string());
-            }
-        }
-        catch (const std::exception& e)
-        {
-            Logger::Log("Error loading mesh: " + std::string(e.what()));
         }
     }
 }

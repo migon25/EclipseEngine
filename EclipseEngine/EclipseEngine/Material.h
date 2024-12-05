@@ -11,11 +11,10 @@ class Material : public Component
 public:
     Material(const std::vector<Texture>& textures);
 
-    void BindTextures();
+    void BindTextures(Shader& shader);
     void Update() override;
 
 public:
-    Shader* defaultShader = nullptr;
     std::vector<Texture> textures;
 
 };

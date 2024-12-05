@@ -14,7 +14,7 @@ public:
 
 	bool Initialize();
 	bool Update(double dt);
-	void Draw();
+	void Draw(Shader& shader);
 	const std::list<std::shared_ptr<GameObject>>& GetObjects() const { return gameObjects; }
 	Camera* GetActiveCamera() const { return activeCamera; }
 

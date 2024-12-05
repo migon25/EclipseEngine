@@ -9,6 +9,7 @@
 #include "EclipseEngine/Camera.h"
 #include "EclipseEngine/GameObject.h"
 #include "EclipseEngine/Texture.h"
+#include "EclipseEngine/ModelLoader.h"
 
 #include "ImGuizmo.h"
 #include "glm/gtc/matrix_transform.hpp"

@@ -21,6 +21,7 @@ public:
 	void Delete();
 
 	void SetMat4(const std::string& name, const glm::mat4& matrix) const { glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix)); }
+	void setFloat(const std::string& name, float value) { glUniform1f(glGetUniformLocation(ID, name.c_str()), value); }
 
 	GLuint ID;
 };

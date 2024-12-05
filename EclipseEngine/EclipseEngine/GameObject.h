@@ -8,6 +8,7 @@
 #include "Mesh.h"
 #include "Texture.h"
 
+class Mesh; // Forward declaration
 class GameObject
 {
 public:
@@ -23,7 +24,7 @@ public:
     ~GameObject();
 
     void Update();    // Update and draw the game object
-    void Draw(Camera& camera);
+    void Draw(Shader& shader, Camera& camera, const glm::mat4& parentTransform);
 
     template<typename T, typename... Args>
     void AddComponent(Args&&... args);    // Add a component to the game object

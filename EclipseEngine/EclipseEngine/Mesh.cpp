@@ -18,23 +18,6 @@ Mesh::Mesh(std::vector<Vertex>& _vertices, std::vector<GLuint>& _indices, std::v
 	EBO.Unbind();
 }
 
-Mesh::Mesh(const std::string& filepath) 
-{
-	ModelLoader::LoadModel(filepath, vertices, indices, textures); // it should be a .mesh file from custom file format
-
-	VAO.Bind();
-	VBO VBO(vertices);
-	EBO EBO(indices);
-
-	VAO.LinkAttrib(VBO, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)0);
-	VAO.LinkAttrib(VBO, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float)));
-	VAO.LinkAttrib(VBO, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float)));
-	VAO.LinkAttrib(VBO, 3, 2, GL_FLOAT, sizeof(Vertex), (void*)(9 * sizeof(float)));
-	VAO.Unbind();
-	VBO.Unbind();
-	EBO.Unbind();
-}
-
 void Mesh::Update() 
 {
 	// Empty Update method

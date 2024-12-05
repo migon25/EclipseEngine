@@ -20,7 +20,6 @@ public:
 
 private:
     void RenderBreadcrumbNavigation();
-    void OpenFileExplorer();
     void RenderDeletePopUp();
     std::filesystem::path m_CurrentDirectory;
 
@@ -34,6 +33,7 @@ private:
 
     const float iconSize = 80.0f;
     const int columns = 8; // Number of columns
+    const char* payloadType = "ASSET_FILE";
 
 	std::unique_ptr<Texture> m_FolderIcon;
     std::unordered_map<std::string, std::unique_ptr<Texture>> m_FileIcons;

@@ -50,4 +50,3 @@ void GamePanel::Resize(int width, int height)
 {
 	m_Framebuffer->Resize(width, height);
 }
-	

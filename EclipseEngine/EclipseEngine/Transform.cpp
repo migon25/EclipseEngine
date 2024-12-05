@@ -23,6 +23,11 @@ glm::mat4 Transform::GetMatrix() const
     return translationMatrix * rotationMatrix * scaleMatrix;
 }
 
+glm::mat4 Transform::GetWorldMatrix(const glm::mat4& parentMatrix) const
+{
+    return parentMatrix * GetMatrix();
+}
+
 void Transform::SetMatrix(const glm::mat4& matrix)
 {
     glm::vec3 skew;

@@ -9,6 +9,7 @@
 #include "ViewportPanel.h"
 
 enum class ManipulationOperation { IDLE, TRANSLATE, ROTATE, SCALE };
+std::shared_ptr<GameObject> gameObject;
 
 ViewportPanel::ViewportPanel(const std::string& name, Framebuffer* framebuffer, Camera* camera, bool visible)
 	: Panel(name), m_Framebuffer(framebuffer), m_camera(camera)
@@ -67,15 +68,15 @@ void ViewportPanel::Render()
                         try
                         {
                             // Load the FBX file into a GameObject
-                            auto gameObject = std::make_shared<GameObject>();
-                            gameObject->AddComponent<Mesh>(filePath); // Load the FBX file
-                            //gameObject->AddComponent<Material>(gameObject->GetComponent<Mesh>()->GetTextures()); // Add a default material
+                            ModelLoader modelLoader;
+                            gameObject = modelLoader.LoadModel(filePath);
 
                             // Position the new GameObject at a default or calculated position
                             glm::vec3 dropPosition = m_camera->GetRaycastHitPoint(core->window->GetWindow());
                             gameObject->transform.SetPosition(dropPosition);
 
                             Logger::Log("FBX file loaded and added to scene: " + path.string());
+							gameObject->name = path.stem().string();
                             core->scene->AddGameObject(gameObject);
                         }
                         catch (const std::exception& e)

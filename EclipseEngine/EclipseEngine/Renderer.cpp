@@ -13,6 +13,7 @@ Renderer::~Renderer()
 void Renderer::Initialize()
 {
 	fbo->Initialize();
+	defaultShader = new Shader("Shaders/default.vert", "Shaders/default.frag");
 	glEnable(GL_CULL_FACE); // Backface culling testing
 }
 
@@ -24,6 +25,11 @@ void Renderer::BeginFrame()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+void Renderer::Render(Scene* scene)
+{
+	scene->Draw(*defaultShader);
+}
+
 void Renderer::EndFrame()
 {
 	glViewport(0, 0, window->GetWidth(), window->GetHeight());
@@ -33,4 +39,5 @@ void Renderer::EndFrame()
 void Renderer::CleanUp()
 {
 	delete fbo;
+	delete defaultShader;
 }

@@ -4,7 +4,9 @@
 #include "GL/glew.h"
 #include <GLFW/glfw3.h>
 #include "Window.h"
+#include "Scene.h"
 #include "FrameBuffer.h"
+#include "Shader.h"
 
 class Renderer
 {
@@ -14,6 +16,7 @@ public:
 
 	void Initialize();
 	void BeginFrame();
+	void Render(Scene* scene);
 	void EndFrame();
 
 	void CleanUp();
@@ -23,6 +26,7 @@ public:
 private:
 	Window* window;
 	Framebuffer* fbo;
+	Shader* defaultShader = nullptr;
 };
 
 #endif // RENDERER_H

@@ -17,9 +17,6 @@ public:
     // Constructor for creating a mesh with vertices, indices, and textures
     Mesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, std::vector<Texture>& textures);
 
-    // Constructor for loading a mesh from a file path
-    Mesh(const std::string& filepath);
-
     std::vector<Texture>& GetTextures() { return textures; }// Return a reference to the textures vector
 
     void Update() override; // Provide an empty Update if necessary

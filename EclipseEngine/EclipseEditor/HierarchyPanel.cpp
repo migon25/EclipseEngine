@@ -29,14 +29,6 @@ void HierarchyPanel::Render()
 		core->scene->AddCube();
 	}
 
-    //for (const auto& rootObject : m_RootObjects) {
-    //    RenderGameObjectTree(rootObject);
-    //    if (ImGui::TreeNode(rootObject->GetName().c_str())) {
-    //        // Optionally display details or components of the GameObject
-    //        ImGui::TreePop();
-    //    }
-    //}
-
 	for (const auto& rootObject : m_RootObjects) {
 		RenderGameObjectTree(rootObject);
 	}

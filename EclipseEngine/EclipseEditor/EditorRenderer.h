@@ -33,6 +33,12 @@ private:
 
 	Grid* grid = nullptr;
 	Framebuffer* fbo = nullptr;
+	Shader* defaultShader = nullptr;
+	Shader* posShader = nullptr;
+	Shader* depthShader = nullptr;
+	Shader* normalShader = nullptr;
+
+	Shader* optionShader = nullptr;
 };
 
 #endif // !EDITOR_RENDERER_H

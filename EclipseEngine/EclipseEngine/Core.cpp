@@ -34,7 +34,7 @@ bool Core::Update(double dt)
 {
 	if (window->ShouldClose()) return false;
 	scene->Update(dt);
-	scene->Draw();
+	renderer->Render(scene);
 	return true;
 }
 
