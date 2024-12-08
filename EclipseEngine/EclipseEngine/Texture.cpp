@@ -139,3 +139,17 @@ void Texture::Delete()
 {
     glDeleteTextures(1, &textureID);
 }
+
+GLFWimage Texture::GetGLFWImage() {
+    GLFWimage icon;
+    icon.width = ilGetInteger(IL_IMAGE_WIDTH);
+    icon.height = ilGetInteger(IL_IMAGE_HEIGHT);
+
+    // Ensure alignment for GLFW
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+    icon.pixels = new unsigned char[icon.width * icon.height * 4]; // Allocate memory
+    memcpy(icon.pixels, ilGetData(), icon.width * icon.height * 4); // Copy pixel data
+    std::cout << "Icon Width: " << icon.width << ", Height: " << icon.height << std::endl;
+    return icon;
+}

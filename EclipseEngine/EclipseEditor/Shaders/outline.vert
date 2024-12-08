@@ -1,13 +1,12 @@
 #version 330 core
-
 layout (location = 0) in vec3 aPos;
 
-uniform mat4 camMatrix;
 uniform mat4 model;
+uniform mat4 camMatrix;
 uniform float outlining;
 
 void main()
 {
-	vec3 crntPos = vec3(model * outlining * vec4(aPos, 1.0f));
-	gl_Position = camMatrix * vec4(crntPos, 1.0);
+    vec3 scaledPos = aPos * outlining;
+    gl_Position = camMatrix * model * vec4(scaledPos, 1.0);
 }

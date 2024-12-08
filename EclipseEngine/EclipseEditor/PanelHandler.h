@@ -11,6 +11,7 @@
 
 #include "Panel.h"
 #include "Module.h"
+#include "HierarchyPanel.h"
 
 class PanelHandler : public Module
 {
@@ -38,6 +39,7 @@ public:
     bool GetPanelVisibility(const std::string& name);
 
     std::shared_ptr<Panel> GetPanel(const std::string& name);
+	HierarchyPanel* hierarchyPanel;
 
 private:
     std::vector<std::shared_ptr<Panel>> m_Panels;

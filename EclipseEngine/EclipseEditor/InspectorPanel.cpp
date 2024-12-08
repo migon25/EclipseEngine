@@ -29,21 +29,28 @@ void InspectorPanel::Render()
                 {
                     ImGui::Text("Transform");
                     ImGui::Separator();
+
+                    // Position
                     glm::vec3 position = m_SelectedObject.get()->transform.position;
                     ImGui::SliderFloat3("Position", &position.x, -100.0f, 100.0f);
-
-                    //// Update position in the selected object's transform
                     m_SelectedObject.get()->transform.SetPosition(position);
 
-                    ImGui::Text("Scale");
+                    // Scale
                     glm::vec3 scale = m_SelectedObject.get()->transform.scale;
                     ImGui::SliderFloat3("Scale", &scale.x, 0.0f, 10.0f);
                     m_SelectedObject.get()->transform.SetScale(scale);
 
-                    ImGui::Text("Rotation");
-                    glm::vec3 rotation = m_SelectedObject.get()->transform.rotation;
-                    ImGui::SliderFloat3("Rotation", &rotation.x, -180.0f, 180.0f);
-                    m_SelectedObject.get()->transform.SetRotation(rotation);
+                    // Rotation (in degrees for display)
+                    glm::quat rotationQuat = m_SelectedObject.get()->transform.rotation;
+                    glm::vec3 eulerRotation = glm::degrees(glm::eulerAngles(rotationQuat));
+
+                    // Update Euler angles directly in degrees (for user input)
+                    if (ImGui::SliderFloat3("Rotation", &eulerRotation.x, -180.0f, 180.0f)) {
+                        // Convert the updated Euler angles back to a quaternion
+                        rotationQuat = glm::quat(glm::radians(eulerRotation));
+                        m_SelectedObject.get()->transform.SetRotation(rotationQuat);
+                    }
+
 
                     ImGui::Separator();
                     (ImGui::Text("Mesh"));

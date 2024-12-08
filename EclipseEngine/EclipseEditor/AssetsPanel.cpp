@@ -146,7 +146,7 @@ void AssetsPanel::Render()
                     {
                         payloadType = "MODEL_FILE";
                     }
-                    else if (extension == ".png" || extension == ".jpg" || extension == ".dds")
+                    else if (extension == ".png" || extension == ".jpg" || extension == ".dds" || extension == ".tga")
                     {
                         payloadType = "TEXTURE_FILE";
                     }

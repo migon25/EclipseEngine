@@ -9,7 +9,7 @@
 #include "Texture.h"
 
 class Mesh; // Forward declaration
-class GameObject
+class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
     std::string name;
@@ -17,6 +17,8 @@ public:
     std::unique_ptr<Material> material; // Using unique_ptr for automatic memory management
     std::unique_ptr<Mesh> mesh;         // Using unique_ptr for automatic memory management
 
+    // Parent reference (nullable)
+    std::shared_ptr<GameObject> parent;
 	std::list<std::shared_ptr<GameObject>> children;
 
 public:
@@ -35,6 +37,9 @@ public:
     std::string GetName() const { return name; }
     const std::list<std::shared_ptr<GameObject>>& GetChildren() const { return children; }    // Add a child game object
 
+    void UpdateChildrenTransforms();
+private:
+    glm::mat4 CalculateWorldTransform(const glm::mat4& parentTransform) const; // Helper to calculate world transform
 };
 
 // Template member function definitions should go here as well
@@ -65,6 +70,7 @@ T* GameObject::GetComponent() {
 
 inline void GameObject::AddChild(std::shared_ptr<GameObject> child) {
     children.push_back(child);
+    child->parent = shared_from_this(); // Set this object as the parent of the child
 }
 
 #endif // GAME_OBJECT_H

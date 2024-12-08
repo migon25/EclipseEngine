@@ -20,7 +20,6 @@ App::~App()
 
 bool App::Initialize()
 {
-	ilInit();
 	if(!core->Initialize()) return false;
 	for (std::list<Module*>::iterator it = modules.begin(); it != modules.end(); it++)
 	{
@@ -75,13 +74,13 @@ void App::AddModule(Module* module, bool activate)
 
 bool App::PreUpdate()
 {
-	editorCamera->UpdateMatrix(0.1f, 100.0f);
+	editorCamera->UpdateMatrix(0.1f, 200.0f);
 	for (std::list<Module*>::iterator it = modules.begin(); it != modules.end(); it++)
 	{
 		if ((*it)->active == false) continue;
 		if (!(*it)->PreUpdate()) return false;
 	}
-	editorRenderer->Render(core->scene, editorCamera);
+	editorRenderer->Render(core->scene, editorCamera, panelHandler->hierarchyPanel->GetSelectedObject());
 	if (!core->PreUpdate()) return false;
 	return true;
 }

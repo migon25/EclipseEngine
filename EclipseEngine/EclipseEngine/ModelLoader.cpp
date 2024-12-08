@@ -3,6 +3,17 @@
 #include <set>
 #include "Logger.h"
 
+glm::mat4 aiMat4ToMat4(const aiMatrix4x4& from) {
+    glm::mat4 to;
+
+    to[0][0] = from.a1; to[1][0] = from.a2; to[2][0] = from.a3; to[3][0] = from.a4;
+    to[0][1] = from.b1; to[1][1] = from.b2; to[2][1] = from.b3; to[3][1] = from.b4;
+    to[0][2] = from.c1; to[1][2] = from.c2; to[2][2] = from.c3; to[3][2] = from.c4;
+    to[0][3] = from.d1; to[1][3] = from.d2; to[2][3] = from.d3; to[3][3] = from.d4;
+
+    return to;
+}
+
 std::shared_ptr<GameObject> ModelLoader::LoadModel(const std::string& path) {
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -13,15 +24,34 @@ std::shared_ptr<GameObject> ModelLoader::LoadModel(const std::string& path) {
     }
 
     auto model = std::make_shared<GameObject>();
-    ProcessNode(scene->mRootNode, scene, model);
+    model->name = scene->mRootNode->mName.C_Str(); // Name the model based on the root node
+
+    // Skip the root node itself and process its children as the top-level nodes
+    for (unsigned int i = 0; i < scene->mRootNode->mNumChildren; ++i) {
+        ProcessNode(scene->mRootNode->mChildren[i], scene, model);
+    }
+
     return std::move(model);
 }
 
 std::shared_ptr<GameObject> ModelLoader::ProcessNode(aiNode* node, const aiScene* scene, std::shared_ptr<GameObject>& parent) {
+    
+    std::string nodeName = node->mName.C_Str();
+
+    if (nodeName.find("$AssimpFbx$") != std::string::npos) {
+        // Recursively process children without creating a GameObject for this node
+        for (unsigned int i = 0; i < node->mNumChildren; i++) {
+            ProcessNode(node->mChildren[i], scene, parent);
+        }
+        return nullptr; // Skip this node
+    }
+
     // Create a new GameObject for the current node
-    std::cout << "Processing Node: " << node->mName.C_Str() << std::endl;
     std::shared_ptr<GameObject> currentNode = std::make_shared<GameObject>();
-    currentNode->name = node->mName.C_Str();
+    currentNode->name = nodeName;
+
+    // Set the transformation for the current node
+    currentNode->transform.SetFromMatrix(aiMat4ToMat4(node->mTransformation));
 
     // Process all meshes for this node
     for (unsigned int i = 0; i < node->mNumMeshes; i++) {
@@ -51,23 +81,25 @@ std::shared_ptr<GameObject> ModelLoader::ProcessNode(aiNode* node, const aiScene
 void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene,
     std::vector<Vertex>& vertices,
     std::vector<GLuint>& indices,
-    std::vector<Texture>& textures) {
+    std::vector<Texture>& textures)
+{
     // Process vertex positions, normals, and texture coordinates
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
         Vertex vertex;
-        glm::vec3 vector;
 
         // Positions
-        vector.x = mesh->mVertices[i].x;
-        vector.y = mesh->mVertices[i].y;
-        vector.z = mesh->mVertices[i].z;
-        vertex.position = vector;
+        glm::vec3 position;
+        position.x = mesh->mVertices[i].x;
+        position.y = mesh->mVertices[i].y;
+        position.z = mesh->mVertices[i].z;
+        vertex.position = position;
 
         // Normals
-        vector.x = mesh->mNormals[i].x;
-        vector.y = mesh->mNormals[i].y;
-        vector.z = mesh->mNormals[i].z;
-        vertex.normal = vector;
+        glm::vec3 normal;
+        normal.x = mesh->mNormals[i].x;
+        normal.y = mesh->mNormals[i].y;
+        normal.z = mesh->mNormals[i].z;
+        vertex.normal = normal;
 
         // Texture Coordinates
         if (mesh->mTextureCoords[0]) {
@@ -97,27 +129,27 @@ void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene,
     //}
 }
 
-std::vector<Texture> ModelLoader::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName)
-{
-    std::vector<Texture> textures;
-    std::set<std::string> loadedTextures; // To track loaded texture paths
-
-    for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-    {
-        aiString str; // For texture file path
-        mat->GetTexture(type, i, &str);
-
-        // Check if texture is already loaded
-        if (loadedTextures.find(str.C_Str()) != loadedTextures.end())
-        {
-            continue; // Skip if already loaded
-        }
-
-        // Load the texture and add it to the vector
-        Texture texture(str.C_Str(), typeName, textures.size(), GL_RGBA, GL_UNSIGNED_BYTE);
-        textures.push_back(texture);
-        loadedTextures.insert(str.C_Str()); // Track the loaded texture path
-    }
-    return textures;
-}
-
+//std::vector<Texture> ModelLoader::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName)
+//{
+//    std::vector<Texture> textures;
+//    std::set<std::string> loadedTextures; // To track loaded texture paths
+//
+//    for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+//    {
+//        aiString str; // For texture file path
+//        mat->GetTexture(type, i, &str);
+//
+//        // Check if texture is already loaded
+//        if (loadedTextures.find(str.C_Str()) != loadedTextures.end())
+//        {
+//            continue; // Skip if already loaded
+//        }
+//
+//        // Load the texture and add it to the vector
+//        Texture texture(str.C_Str(), typeName, textures.size(), GL_RGBA, GL_UNSIGNED_BYTE);
+//        textures.push_back(texture);
+//        loadedTextures.insert(str.C_Str()); // Track the loaded texture path
+//    }
+//    return textures;
+//}
+//

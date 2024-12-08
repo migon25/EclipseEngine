@@ -14,7 +14,9 @@ void Renderer::Initialize()
 {
 	fbo->Initialize();
 	defaultShader = new Shader("Shaders/default.vert", "Shaders/default.frag");
-	glEnable(GL_CULL_FACE); // Backface culling testing
+	//glEnable(GL_CULL_FACE); // Backface culling testing
+	//glEnable(GL_STENCIL_TEST); // Stencil testing
+	//glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 }
 
 void Renderer::BeginFrame()

@@ -21,7 +21,7 @@ public:
 	bool Initialize() override;
 	bool PreUpdate() override;
 	void BeginFrame();
-	void Render(Scene* scene, Camera* editorCamera);
+	void Render(Scene* scene, Camera* editorCamera, std::shared_ptr<GameObject> selectedObject);
 	bool CleanUp() override;
 
 	Framebuffer* GetFramebuffer() { return fbo; }
@@ -37,6 +37,7 @@ private:
 	Shader* posShader = nullptr;
 	Shader* depthShader = nullptr;
 	Shader* normalShader = nullptr;
+	Shader* outliningShader = nullptr;
 
 	Shader* optionShader = nullptr;
 };

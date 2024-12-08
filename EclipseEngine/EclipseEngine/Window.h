@@ -2,13 +2,15 @@
 #define WINDOW_H
 
 #include <string>
-#include "GL/glew.h"
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
+#include "Texture.h"
 
 class Window
 {
 public:
-	Window(int width, int height, const std::string& title);
+	Window(int width, int height, const std::string& title, const std::string& iconPath = "");
 	~Window();
 
 	bool Initialize();
@@ -28,7 +30,8 @@ private:
 	GLFWmonitor* m_Monitor;
 	int m_Width, m_Height;
 	std::string m_Title;
-
+	Texture* m_IconTexture;
+	std::string m_IconPath;
 };
 
 #endif // WINDOW_H

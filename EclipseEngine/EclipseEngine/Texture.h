@@ -8,6 +8,7 @@
 #include <IL/il.h>    
 #include "Shader.h"
 #include <string>
+#include <GLFW/glfw3.h>
 
 class Texture 
 {
@@ -15,6 +16,8 @@ public:
 	Texture(const char* filename, const char* texType, GLuint slot, GLenum format, GLenum pixelType);
 
 	Texture(const std::string filename, const std::string& texType, GLuint slot, GLenum format = GL_RGBA, GLenum pixelType = GL_UNSIGNED_BYTE);
+
+	GLFWimage GetGLFWImage();
 
 	// Assigns a texture unit to a texture
 	void TexUnit(Shader& shader, const char* uniform, GLuint unit);

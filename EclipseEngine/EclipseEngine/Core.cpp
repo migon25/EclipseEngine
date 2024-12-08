@@ -4,6 +4,7 @@
 
 Core::Core()
 {
+	ilInit();
 	window = new Window(1500, 844, "Eclipse Engine");
 	renderer = new Renderer(window);
 	scene = new Scene();

@@ -1,7 +1,7 @@
 #include "Window.h"
 #include "Logger.h"
 
-Window::Window(int width, int height, const std::string& title) : m_Width(width), m_Height(height), m_Title(title)
+Window::Window(int width, int height, const std::string& title, const std::string& iconPath) : m_Width(width), m_Height(height), m_Title(title), m_IconPath(iconPath), m_IconTexture(nullptr)
 {
 
 }
@@ -9,6 +9,7 @@ Window::Window(int width, int height, const std::string& title) : m_Width(width)
 Window::~Window()
 {
 	CleanUp();
+    delete m_IconTexture;
 }
 
 bool Window::Initialize()
@@ -51,6 +52,16 @@ bool Window::InitializeGLFW()
         return false;
     }
     glfwMakeContextCurrent(m_Window);
+
+    if (!m_IconPath.empty()) {
+        // Load and set the window icon
+		Logger::Log("Loading icon texture: ", m_IconPath.c_str());
+        m_IconTexture = new Texture(m_IconPath, "logo", 0, GL_RGBA, GL_UNSIGNED_BYTE);
+        GLFWimage icon = m_IconTexture->GetGLFWImage();
+        glfwSetWindowIcon(m_Window, 1, &icon);
+        delete[] icon.pixels;
+    }
+
     return true;
 }
 

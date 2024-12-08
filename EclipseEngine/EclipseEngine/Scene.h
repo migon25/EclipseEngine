@@ -5,6 +5,7 @@
 #include <list>
 #include "GameObject.h"
 #include "Camera.h"
+#include "ModelLoader.h"
 
 class Scene
 {
@@ -26,6 +27,7 @@ public:
 private:
 	std::list<std::shared_ptr<GameObject >> gameObjects;
 	Camera* activeCamera = nullptr;
+	ModelLoader modelLoader;
 };
 
 #endif // SCENE_H

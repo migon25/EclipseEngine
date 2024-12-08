@@ -242,7 +242,7 @@ void PanelHandler::InitializePanels()
     AddPanel(std::make_shared<ViewportPanel>("Viewport Panel", app->editorRenderer->GetFramebuffer(), app->editorCamera, true)); // this is the editor viewport
 
 	// Set the inspector panel for the hierarchy panel
-	HierarchyPanel* hierarchyPanel = static_cast<HierarchyPanel*>(GetPanel("Hierarchy Panel").get());
+	hierarchyPanel = static_cast<HierarchyPanel*>(GetPanel("Hierarchy Panel").get());
 	hierarchyPanel->SetInspectorPanel(static_cast<InspectorPanel*>(GetPanel("Inspector Panel").get()));
 	hierarchyPanel->SetViewportPanel(static_cast<ViewportPanel*>(GetPanel("Viewport Panel").get()));
 }

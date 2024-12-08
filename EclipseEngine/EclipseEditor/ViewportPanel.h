@@ -34,7 +34,10 @@ private:
     Framebuffer* m_Framebuffer;
     Camera* m_camera;
 	std::shared_ptr<GameObject> m_SelectedObject = nullptr;
+    ModelLoader modelLoader;
 
+    std::unique_ptr<Texture> m_Local;
+    std::unique_ptr<Texture> m_World;
     std::unique_ptr<Texture> m_Trans;
     std::unique_ptr<Texture> m_Rot;
     std::unique_ptr<Texture> m_Sca;
