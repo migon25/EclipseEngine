@@ -10,7 +10,7 @@
 #include "tinyfiledialogs.h"
 #include "AssetsPanel.h"
 
-AssetsPanel::AssetsPanel(const std::string& name, bool isVisible) : Panel(name), m_CurrentDirectory("Assets")
+AssetsPanel::AssetsPanel(const std::string& name, bool isVisible) : Panel(name), m_CurrentDirectory("Resources")
 {
     SetVisible(isVisible);
     m_FolderIcon = std::make_unique<Texture>("EditorResources/folder.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
@@ -20,7 +20,7 @@ AssetsPanel::AssetsPanel(const std::string& name, bool isVisible) : Panel(name),
     m_FileIcons[".fbx"] = std::make_unique<Texture>("EditorResources/fbx.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
 
     m_DefaultFileIcon = std::make_unique<Texture>("EditorResources/idk.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
-	m_Importer.ScanAssetFolder("Assets");
+	m_Importer.ScanAssetFolder("Resources/Assets");
 }
 
 void AssetsPanel::Render()
@@ -213,12 +213,12 @@ void AssetsPanel::RenderBreadcrumbNavigation()
     auto tempPath = m_CurrentDirectory;
 
     // Create breadcrumbs by splitting the path
-    while (tempPath != tempPath.root_path() && tempPath != "Library")
+    while (tempPath != tempPath.root_path() && tempPath != "Resources")
     {
         breadcrumbs.push_back(tempPath.filename().string());
         tempPath = tempPath.parent_path();
     }
-    breadcrumbs.push_back("Library"); // Add the base directory
+    breadcrumbs.push_back("Resources"); // Add the base directory
 
     // Reverse breadcrumbs to display them in proper order
     std::reverse(breadcrumbs.begin(), breadcrumbs.end());
@@ -229,7 +229,7 @@ void AssetsPanel::RenderBreadcrumbNavigation()
         if (ImGui::Button(breadcrumbs[i].c_str()))
         {
             // Navigate to the selected breadcrumb
-            m_CurrentDirectory = std::filesystem::path("Library");
+            m_CurrentDirectory = std::filesystem::path("Resources");
             for (size_t j = 1; j <= i; ++j) // Rebuild path up to this breadcrumb
             {
                 m_CurrentDirectory /= breadcrumbs[j];
