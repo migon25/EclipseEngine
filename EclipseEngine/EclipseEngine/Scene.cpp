@@ -13,8 +13,8 @@ Scene::~Scene()
 bool Scene::Initialize()
 {
 	activeCamera = new Camera(1500, 844, glm::vec3(7.0f, 4.0f, -7.0f));
-	auto initScene = modelLoader.LoadModel("Assets/fbx_files/Street/untitled.fbx");
-	AddGameObject(initScene);
+/*	auto initScene = modelLoader.LoadModel("Assets/fbx_files/Street/untitled.fbx");
+	AddGameObject(initScene)*/;
 	return true;
 }
 
@@ -26,9 +26,9 @@ bool Scene::Update(double dt)
 
 void Scene::Draw(Shader& shader)
 {
-	glm::mat4 identity = glm::mat4(1.0f);
 	for (auto& obj : gameObjects)
 	{
+		glm::mat4 identity = obj->transform.GetMatrix();
 		obj->Draw(shader, *activeCamera, identity);
 	}
 }
@@ -81,16 +81,21 @@ void Scene::AddCube()
 	cube.get()->name = "cube";
 	cube->AddComponent<Mesh>(vertices, indices, catTexture);
 	cube->AddComponent<Material>( catTexture);
-	cube.get()->transform.SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-
+	cube->transform.position = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	auto cube2 = std::make_shared<GameObject>();
 	cube2.get()->name = "cube2";
 	cube2->AddComponent<Mesh>(vertices, indices, catTexture);
 	cube2->AddComponent<Material>(catTexture);
-	cube2.get()->transform.SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	cube2->transform.position = glm::vec3(2.0f, 0.0f, 0.0f);
+
+	auto cube3 = std::make_shared<GameObject>();
+	cube3.get()->name = "cube2";
+	cube3->AddComponent<Mesh>(vertices, indices, catTexture);
+	cube3->AddComponent<Material>(catTexture);
 	
 	cube.get()->AddChild(cube2);
+	//cube.get()->AddChild(cube3);
 	AddGameObject(cube);
 	Logger::Log("Cube added to the scene");
 }

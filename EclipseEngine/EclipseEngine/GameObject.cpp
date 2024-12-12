@@ -25,7 +25,10 @@ glm::mat4 GameObject::CalculateWorldTransform(const glm::mat4& parentTransform) 
 	{
 		return parentTransform * transform.GetMatrix(); // Combine parent's and local transform
 	}
+    else {
+
     return transform.GetMatrix();
+    }
 }
 
 void GameObject::UpdateChildrenTransforms()
@@ -38,9 +41,8 @@ void GameObject::UpdateChildrenTransforms()
 
 void GameObject::Draw(Shader& shader, Camera& camera, const glm::mat4& parentTransform)
 {
-
     // Get the model matrix from the Transform component
-    glm::mat4 objectModel = transform.GetWorldMatrix(parentTransform); // Get the transformation matrix from Transform
+    glm::mat4 objectModel = CalculateWorldTransform(parentTransform); // Get the transformation matrix from Transform
 
     // Activate the shader program
     if(!material)
@@ -57,7 +59,8 @@ void GameObject::Draw(Shader& shader, Camera& camera, const glm::mat4& parentTra
     if (mesh) mesh->Draw(shader, camera);   // Code to draw the game object (calls Draw on the mesh if it exists)
 
     for (const auto& child : children) {
-        child->Draw(shader, camera, objectModel);
+		glm::mat4 childModel = CalculateWorldTransform(parentTransform);
+        child->Draw(shader, camera, childModel);
     }
 }
 
@@ -93,4 +96,16 @@ void GameObject::UpdateTexture(const std::string& texturePath)
         glDeleteTextures(1, &textureID);
     }
     LoadTexture(texturePath);
+}
+
+AABB GameObject::GetAABB() const {
+    AABB worldAABB;
+    if (mesh) {
+        worldAABB = mesh->GetWorldAABB(transform.GetMatrix());
+    }
+    for (const auto& child : children) {
+        worldAABB.Expand(child->GetAABB().min);
+        worldAABB.Expand(child->GetAABB().max);
+    }
+    return worldAABB;
 }

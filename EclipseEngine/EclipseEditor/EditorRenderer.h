@@ -29,6 +29,7 @@ public:
 private:
 	void RenderGrid(Grid* grid, Camera* editorCamera);
 	void RenderGuizmo();
+	//void RenderAABB(Shader& shader, Camera& camera, GameObject& go);
 	//void RenderLight(Light* light); // no lights for now
 
 	Grid* grid = nullptr;
@@ -38,6 +39,7 @@ private:
 	Shader* depthShader = nullptr;
 	Shader* normalShader = nullptr;
 	Shader* outliningShader = nullptr;
+	Shader* aabbShader = nullptr;
 
 	Shader* optionShader = nullptr;
 };

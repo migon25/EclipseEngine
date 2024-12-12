@@ -4,14 +4,9 @@
 #include "Logger.h"
 
 glm::mat4 aiMat4ToMat4(const aiMatrix4x4& from) {
-    glm::mat4 to;
-
-    to[0][0] = from.a1; to[1][0] = from.a2; to[2][0] = from.a3; to[3][0] = from.a4;
-    to[0][1] = from.b1; to[1][1] = from.b2; to[2][1] = from.b3; to[3][1] = from.b4;
-    to[0][2] = from.c1; to[1][2] = from.c2; to[2][2] = from.c3; to[3][2] = from.c4;
-    to[0][3] = from.d1; to[1][3] = from.d2; to[2][3] = from.d3; to[3][3] = from.d4;
-
-    return to;
+    glm::mat4 mat;
+    for (int c = 0; c < 4; ++c) for (int r = 0; r < 4; ++r) mat[c][r] = from[r][c];
+    return mat;
 }
 
 std::shared_ptr<GameObject> ModelLoader::LoadModel(const std::string& path) {
@@ -95,14 +90,26 @@ void ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene,
         vertex.position = position;
 
         // Normals
-        glm::vec3 normal;
-        normal.x = mesh->mNormals[i].x;
-        normal.y = mesh->mNormals[i].y;
-        normal.z = mesh->mNormals[i].z;
-        vertex.normal = normal;
+        if (mesh->HasNormals())
+        {
+            glm::vec3 normal;
+            normal.x = mesh->mNormals[i].x;
+            normal.y = mesh->mNormals[i].y;
+            normal.z = mesh->mNormals[i].z;
+            vertex.normal = normal;
+        }
+
+		if (mesh->HasVertexColors(0))
+        {
+            glm::u8vec3 color;
+		    color.x = mesh->mColors[0][i].r * 255;
+		    color.y = mesh->mColors[0][i].g * 255;
+		    color.z = mesh->mColors[0][i].b * 255;
+		    vertex.color = color;
+        }
 
         // Texture Coordinates
-        if (mesh->mTextureCoords[0]) {
+        if (mesh->HasTextureCoords(0)) {
             glm::vec2 vec;
             vec.x = mesh->mTextureCoords[0][i].x;
             vec.y = mesh->mTextureCoords[0][i].y;

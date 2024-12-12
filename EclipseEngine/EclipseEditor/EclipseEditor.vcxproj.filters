@@ -66,6 +66,9 @@
     <ClCompile Include="tinyfiledialogs.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceImporter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Panel.h">
@@ -119,6 +122,9 @@
     <ClInclude Include="tinyfiledialogs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceImporter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\outline.frag">
@@ -155,6 +161,12 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Shaders\depth.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="aabb.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="aabb.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

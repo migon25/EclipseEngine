@@ -10,6 +10,7 @@
 #include "Camera.h"
 #include "Texture.h"
 #include "ModelLoader.h"
+#include "AABB.h"
 
 class Mesh : public Component
 {
@@ -21,11 +22,13 @@ public:
 
     void Update() override; // Provide an empty Update if necessary
     void Draw(Shader& shader, Camera& camera);
+    AABB GetWorldAABB(const glm::mat4& transform) const;
 
 public:
     std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
     std::vector<Texture> textures;
+    AABB localAABB;
 
     VAO VAO;
 };

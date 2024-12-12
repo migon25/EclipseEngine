@@ -7,6 +7,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "Texture.h"
+#include "AABB.h"
 
 class Mesh; // Forward declaration
 class GameObject : public std::enable_shared_from_this<GameObject>
@@ -27,6 +28,7 @@ public:
 
     void Update();    // Update and draw the game object
     void Draw(Shader& shader, Camera& camera, const glm::mat4& parentTransform);
+    AABB GetAABB() const; // Returns the AABB in world space
 
     template<typename T, typename... Args>
     void AddComponent(Args&&... args);    // Add a component to the game object
@@ -37,7 +39,10 @@ public:
     std::string GetName() const { return name; }
     const std::list<std::shared_ptr<GameObject>>& GetChildren() const { return children; }    // Add a child game object
 
+	bool HasParent() const { return parent != nullptr; }
     void UpdateChildrenTransforms();
+    glm::mat4 CalculateWorldTransform(const glm::mat4& parentTransform) const; // Helper to calculate world transform
+
 
     void SetTexture(const std::string& texturePath);
     GLuint GetTextureID() const;
@@ -47,8 +52,6 @@ private:
     std::string currentTexturePath;
     void LoadTexture(const std::string& texturePath);
     void UpdateTexture(const std::string& texturePath);
-
-    glm::mat4 CalculateWorldTransform(const glm::mat4& parentTransform) const; // Helper to calculate world transform
 
 };
 

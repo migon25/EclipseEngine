@@ -8,6 +8,7 @@
 
 #include "EclipseEngine/Texture.h"
 #include "Panel.h"
+#include "ResourceImporter.h"
 
 class GameObject;
 
@@ -22,6 +23,7 @@ private:
     void RenderBreadcrumbNavigation();
     void RenderDeletePopUp();
     std::filesystem::path m_CurrentDirectory;
+	ResourceImporter m_Importer;
 
     // Renaming logic
     bool m_IsRenaming = false;             

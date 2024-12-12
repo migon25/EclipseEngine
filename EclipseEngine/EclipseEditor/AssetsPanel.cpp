@@ -20,6 +20,7 @@ AssetsPanel::AssetsPanel(const std::string& name, bool isVisible) : Panel(name),
     m_FileIcons[".fbx"] = std::make_unique<Texture>("EditorResources/fbx.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
 
     m_DefaultFileIcon = std::make_unique<Texture>("EditorResources/idk.png", "icon", 0, GL_RGBA, GL_UNSIGNED_BYTE);
+	m_Importer.ScanAssetFolder("Assets");
 }
 
 void AssetsPanel::Render()

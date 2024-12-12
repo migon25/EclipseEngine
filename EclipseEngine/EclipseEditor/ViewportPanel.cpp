@@ -74,8 +74,8 @@ void ViewportPanel::Render()
                             auto gameObject = modelLoader.LoadModel(filePath);
 
                             // Position the new GameObject at a default or calculated position
-                            glm::vec3 dropPosition = m_camera->GetRaycastHitPoint(core->window->GetWindow());
-                            gameObject->transform.SetPosition(dropPosition);
+                            //glm::vec3 dropPosition = m_camera->GetRaycastHitPoint(core->window->GetWindow());
+                            //gameObject->transform.SetPosition(dropPosition);
 
                             Logger::Log("FBX file loaded and added to scene: " + path.string());
 							gameObject->name = path.stem().string();

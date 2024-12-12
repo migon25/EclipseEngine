@@ -9,6 +9,8 @@ Mesh::Mesh(std::vector<Vertex>& _vertices, std::vector<GLuint>& _indices, std::v
 	VBO VBO(vertices);
 	EBO EBO(indices);
 
+	for (const auto& vertex : vertices) localAABB.Expand(vertex.position);
+	
 	VAO.LinkAttrib(VBO, 0, 3, GL_FLOAT, sizeof(Vertex), (void*) 0);
 	VAO.LinkAttrib(VBO, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float)));
 	VAO.LinkAttrib(VBO, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float)));
@@ -38,4 +40,10 @@ void Mesh::Draw(Shader& shader, Camera& camera) // Camera should not be passed o
 	}
 
 	VAO.Unbind();
+}
+
+AABB Mesh::GetWorldAABB(const glm::mat4& transform) const {
+	AABB worldAABB = localAABB;
+	worldAABB.Transform(transform);
+	return worldAABB;
 }
