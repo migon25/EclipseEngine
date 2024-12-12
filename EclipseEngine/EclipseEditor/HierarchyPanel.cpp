@@ -3,6 +3,8 @@
 #include "HierarchyPanel.h"
 #include "PanelHandler.h"
 #include "imgui.h"
+#include "tinyfiledialogs.h"
+#include "EclipseEngine/ModelLoader.h"
 
 HierarchyPanel::HierarchyPanel(const std::string& name, bool isVisible) : Panel(name)
 {
@@ -26,7 +28,15 @@ void HierarchyPanel::Render()
 
     if(ImGui::Button("Add Object")) 
     {
-		core->scene->AddCube();
+		const char* filterPatterns[1] = { "*.fbx" };
+		const char* filePath = tinyfd_openFileDialog("Select Object", "", 1, filterPatterns, NULL, 0);
+		if (filePath) {
+			std::filesystem::path path(filePath);
+			ModelLoader modelLoader;
+			auto gameObject = modelLoader.LoadModel(filePath);
+			gameObject->name = path.stem().string();
+			core->scene->AddGameObject(gameObject);
+		}
 	}
 
 	for (const auto& rootObject : m_RootObjects) {
