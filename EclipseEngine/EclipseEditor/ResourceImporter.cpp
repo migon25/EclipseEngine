@@ -55,8 +55,11 @@ void ResourceImporter::ImportAsset(const std::string& filePath)
 
 	std::string basePath = fs::path(filePath).replace_extension("").string();
 
-	bool fbxExists = fs::exists(basePath + ".fbx");
-	bool emodelExists = fs::exists(basePath + ".emodel");
+	std::string fbxPath = basePath + ".fbx";
+	std::string emodelPath = "Library/emodel/" + fs::path(filePath).stem().string() + ".emodel";
+
+	bool fbxExists = fs::exists(fbxPath);
+	bool emodelExists = fs::exists(emodelPath);
 
 	const std::string extension = fs::path(filePath).extension().string();
 	if (fbxExists && !emodelExists)
@@ -91,8 +94,9 @@ void ResourceImporter::ConvertFBX(const std::string& filePath)
 	}
 
 	// Save as custom .model file
-	std::string modelFilePath = fs::path(filePath).replace_extension(".emodel").string();
-	
+	std::string modelFilePath = "Library/emodel/" + fs::path(filePath).stem().string() + ".emodel";
+	fs::create_directories("Library/emodel");
+
 	// Open .model file for writing
 	std::ofstream outFile(modelFilePath, std::ios::binary);
 	if (!outFile.is_open()) {
@@ -121,7 +125,8 @@ void ResourceImporter::ProcessNode(aiNode* node, const aiScene* scene, const std
 {
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) {
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		std::string meshFilePath = fs::path(basePath).parent_path().string() + "/mesh_" + node->mName.C_Str() + std::to_string(i) + ".emesh";
+		std::string meshFilePath = "Library/emesh/" + fs::path(basePath).stem().string() + "_mesh_" + node->mName.C_Str() + std::to_string(i) + ".emesh";
+		fs::create_directories("Library/emesh");
 		ProcessMesh(mesh, meshFilePath);
 		meshFiles.push_back(meshFilePath);
 	}

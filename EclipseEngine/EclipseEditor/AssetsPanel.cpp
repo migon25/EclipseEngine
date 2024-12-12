@@ -213,12 +213,12 @@ void AssetsPanel::RenderBreadcrumbNavigation()
     auto tempPath = m_CurrentDirectory;
 
     // Create breadcrumbs by splitting the path
-    while (tempPath != tempPath.root_path() && tempPath != "Assets")
+    while (tempPath != tempPath.root_path() && tempPath != "Library")
     {
         breadcrumbs.push_back(tempPath.filename().string());
         tempPath = tempPath.parent_path();
     }
-    breadcrumbs.push_back("Assets"); // Add the base directory
+    breadcrumbs.push_back("Library"); // Add the base directory
 
     // Reverse breadcrumbs to display them in proper order
     std::reverse(breadcrumbs.begin(), breadcrumbs.end());
@@ -229,7 +229,7 @@ void AssetsPanel::RenderBreadcrumbNavigation()
         if (ImGui::Button(breadcrumbs[i].c_str()))
         {
             // Navigate to the selected breadcrumb
-            m_CurrentDirectory = std::filesystem::path("Assets");
+            m_CurrentDirectory = std::filesystem::path("Library");
             for (size_t j = 1; j <= i; ++j) // Rebuild path up to this breadcrumb
             {
                 m_CurrentDirectory /= breadcrumbs[j];
