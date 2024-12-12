@@ -1,6 +1,5 @@
 #include "imgui.h"
 #include "glm/glm.hpp"
-
 #include "InspectorPanel.h"
 #include "tinyfiledialogs.h"
 
@@ -66,14 +65,6 @@ void InspectorPanel::Render()
                     GLuint textureID = m_SelectedObject.get()->GetTextureID();
                     if (textureID) {
                         ImGui::Image((void*)(intptr_t)textureID, ImVec2(128, 128)); // Adjust size as needed
-                    }
-                    // Button to select a texture file
-                    if (ImGui::Button("Select Texture")) {
-                        const char* filterPatterns[2] = { "*.png", "*.jpg" };
-                        const char* filePath = tinyfd_openFileDialog("Select Texture File", "", 2, filterPatterns, NULL, 0);
-                        if (filePath) {
-                            m_SelectedObject.get()->SetTexture(filePath);
-                        }
                     }
                     //ImGui::Checkbox("Vertex Normals", &temp);
                     //ImGui::Checkbox("Face Normals", &temp);
