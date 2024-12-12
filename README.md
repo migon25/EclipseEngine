@@ -8,6 +8,18 @@ This team is composed by:
 - **Miguel Tamaño**: [https://github.com/migon25](https://github.com/migon25)
 - **Oscar Escofet**: [https://github.com/OscarEFO](https://github.com/OscarEFO)
 
+## New Features 
+- **Street Enviroment Scene is automatically loaded when starting the engine**
+- **Transformation and Game Object Hierarchy**
+  - The user can use the inspector to modify a game object; Delete, reparent, drop any mesh or texture...
+- **Improved Resource Management**
+  - Assets window that shows all assets.
+  - The user can drop/import new files and the assets window reacts properly.
+  - Asset files can be deleted through the window.
+- **File System**
+  - Scene can be serialized to a file that can be opened and saved.
+  - The user can recover the simulation to a previous save.
+
 ## Key Functionalities
 - **File Handling**:
   - Supports drag-and-drop of **FBX** files from any location on the hard drive.
@@ -31,7 +43,7 @@ This team is composed by:
     - Adjustable settings for renderer, window, input, and textures.
     - Displays memory consumption, hardware detection, and software version information (SDL, OpenGL, DevIL).
   - **Hierarchy**:
-    - Lists all GameObjects; allows selection of GameObjects.
+    - Lists all GameObjects; allows selection of GameObjects or changes to parent relations of GameObjects.
   - **Inspector**:
     - Displays component details of the selected GameObject:
       - **Transform**: Position, rotation, and scale (read-only).
@@ -46,3 +58,5 @@ This team is composed by:
 1. Drag and drop **FBX** files and **DDS/PNG** textures into the engine.
 2. Use the **camera controls** for navigating the scene.
 3. Access **Editor Windows** for GameObject management and detailed information.
+4. Edit and transform the **FBX** files using the move, rotate or scale options.
+5. Save the file to recover your edits or return to a previous state of the scene.
