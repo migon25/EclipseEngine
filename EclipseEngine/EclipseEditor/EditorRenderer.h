@@ -29,7 +29,7 @@ public:
 private:
 	void RenderGrid(Grid* grid, Camera* editorCamera);
 	void RenderGuizmo();
-	//void RenderAABB(Shader& shader, Camera& camera, GameObject& go);
+	void RenderAABB(AABB aabb, Shader& shader);
 	//void RenderLight(Light* light); // no lights for now
 
 	Grid* grid = nullptr;

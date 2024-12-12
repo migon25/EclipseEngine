@@ -47,7 +47,7 @@ void GameObject::Draw(Shader& shader, Camera& camera, const glm::mat4& parentTra
     // Activate the shader program
     if(!material)
     { 
-        std::vector<Texture> defaultTex{ Texture("Assets/Textures/default.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE) };
+        std::vector<Texture> defaultTex{ Texture("Resources/Assets/Textures/default.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE) };
         this->AddComponent<Material>(defaultTex); // Add a default material if none exists
     }
 

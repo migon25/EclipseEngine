@@ -26,8 +26,8 @@ quaternion quat(double roll, double pitch, double yaw) {
     return q;
 
 }
-Transform::Transform()
-    : position(0.0f), rotation(glm::quat(1.0f, 0.0f, 0.0f, 0.0f)), scale(1.0f) {}
+
+Transform::Transform() : position(0.0f), rotation(glm::quat(1.0f, 0.0f, 0.0f, 0.0f)), scale(1.0f) {}
 
 glm::mat4 Transform::GetMatrix() const
 {

@@ -13,8 +13,8 @@ Scene::~Scene()
 bool Scene::Initialize()
 {
 	activeCamera = new Camera(1500, 844, glm::vec3(7.0f, 4.0f, -7.0f));
-/*	auto initScene = modelLoader.LoadModel("Assets/fbx_files/Street/untitled.fbx");
-	AddGameObject(initScene)*/;
+	auto initScene = modelLoader.LoadModel("Resources/Assets/fbx_files/Street/untitled.fbx");
+	AddGameObject(initScene);
 	return true;
 }
 
@@ -74,7 +74,7 @@ void Scene::AddCube()
 	};
 	std::vector<Texture> catTexture
 	{
-		Texture("Assets/Textures/checkerboard.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
+		Texture("Resources/Assets/Textures/checkerboard.png","diffuse", 0, GL_RGBA, GL_UNSIGNED_BYTE)
 	};
 
 	auto cube = std::make_shared<GameObject>(); // This has to be in the engine side (SCENE)

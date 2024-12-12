@@ -7,7 +7,7 @@ App::App(int argc, char* args[])
 {
 	core = new Core();
 	panelHandler = new PanelHandler(this);
-	editorCamera = new Camera(core->window->GetWidth(), core->window->GetHeight(), glm::vec3(7.0f, 4.0f, -7.0f));
+	editorCamera = new Camera(core->window->GetWidth(), core->window->GetHeight(), glm::vec3(38.0f, 20.0f, -37.0f));
 	editorRenderer = new EditorRenderer();
 
 	AddModule(editorRenderer, true);
