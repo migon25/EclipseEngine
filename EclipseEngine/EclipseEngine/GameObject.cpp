@@ -1,4 +1,6 @@
 #include "GameObject.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 #include <iostream>
 
 GameObject::GameObject()
@@ -57,4 +59,38 @@ void GameObject::Draw(Shader& shader, Camera& camera, const glm::mat4& parentTra
     for (const auto& child : children) {
         child->Draw(shader, camera, objectModel);
     }
+}
+
+void GameObject::SetTexture(const std::string& texturePath)
+{
+    if (currentTexturePath != texturePath) {
+        currentTexturePath = texturePath;
+        UpdateTexture(texturePath);
+    }
+}
+
+GLuint GameObject::GetTextureID() const
+{
+	return textureID;
+}
+
+void GameObject::LoadTexture(const std::string& texturePath)
+{
+    int width, height, channels;
+    unsigned char* data = stbi_load(texturePath.c_str(), &width, &height, &channels, 0);
+    if (data) {
+        glGenTextures(1, &textureID);
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, channels == 4 ? GL_RGBA : GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+        stbi_image_free(data);
+    }
+}
+
+void GameObject::UpdateTexture(const std::string& texturePath)
+{
+    if (textureID) {
+        glDeleteTextures(1, &textureID);
+    }
+    LoadTexture(texturePath);
 }

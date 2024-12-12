@@ -2,6 +2,7 @@
 #include "glm/glm.hpp"
 
 #include "InspectorPanel.h"
+#include "tinyfiledialogs.h"
 
 InspectorPanel::InspectorPanel(const std::string& name, bool isVisible) : Panel (name)
 {
@@ -61,15 +62,28 @@ void InspectorPanel::Render()
                     ImGui::Text("File: ");
                     ImGui::Separator();
                     ImGui::Text("Draw:");
-                    ImGui::Checkbox("Vertex Normals", &temp);
-                    ImGui::Checkbox("Face Normals", &temp);
-                    ImGui::SameLine();
-                    ImGui::Separator();
-                    ImGui::Text("Indexes: ");
-                    ImGui::Text("Normals: ");
-                    ImGui::Text("Vertexs: ");
-                    ImGui::Text("Faces: ");
-                    ImGui::Text("Tex coords: ");
+                    // Display the texture
+                    GLuint textureID = m_SelectedObject.get()->GetTextureID();
+                    if (textureID) {
+                        ImGui::Image((void*)(intptr_t)textureID, ImVec2(128, 128)); // Adjust size as needed
+                    }
+                    // Button to select a texture file
+                    if (ImGui::Button("Select Texture")) {
+                        const char* filterPatterns[2] = { "*.png", "*.jpg" };
+                        const char* filePath = tinyfd_openFileDialog("Select Texture File", "", 2, filterPatterns, NULL, 0);
+                        if (filePath) {
+                            m_SelectedObject.get()->SetTexture(filePath);
+                        }
+                    }
+                    //ImGui::Checkbox("Vertex Normals", &temp);
+                    //ImGui::Checkbox("Face Normals", &temp);
+                    //ImGui::SameLine();
+                    //ImGui::Separator();
+                    //ImGui::Text("Indexes: ");
+                    //ImGui::Text("Normals: ");
+                    //ImGui::Text("Vertexs: ");
+                    //ImGui::Text("Faces: ");
+                    //ImGui::Text("Tex coords: ");
                     //ImGui::Separator();
                     //ImGui::SliderFloat("Normals length", nullptr, 0.000f, 1.000f);
                     ImGui::Separator();

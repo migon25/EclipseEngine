@@ -38,8 +38,18 @@ public:
     const std::list<std::shared_ptr<GameObject>>& GetChildren() const { return children; }    // Add a child game object
 
     void UpdateChildrenTransforms();
+
+    void SetTexture(const std::string& texturePath);
+    GLuint GetTextureID() const;
+
 private:
+    GLuint textureID;
+    std::string currentTexturePath;
+    void LoadTexture(const std::string& texturePath);
+    void UpdateTexture(const std::string& texturePath);
+
     glm::mat4 CalculateWorldTransform(const glm::mat4& parentTransform) const; // Helper to calculate world transform
+
 };
 
 // Template member function definitions should go here as well
