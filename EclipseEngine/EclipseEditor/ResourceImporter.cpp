@@ -53,13 +53,22 @@ void ResourceImporter::ImportAsset(const std::string& filePath)
 	// Import the asset
 	std::cout << "Importing asset: " << filePath << std::endl;
 
+	std::string basePath = fs::path(filePath).replace_extension("").string();
+
+	bool fbxExists = fs::exists(basePath + ".fbx");
+	bool emodelExists = fs::exists(basePath + ".emodel");
+
 	const std::string extension = fs::path(filePath).extension().string();
-	if (extension == ".fbx") {
-		ConvertFBX(filePath);
+	if (fbxExists && !emodelExists)
+	{
+		if (extension == ".fbx") {
+			ConvertFBX(filePath);
+		}
+		else if (extension == ".png" || extension == ".jpg") {
+			ConvertTexture(filePath);
+		}
 	}
-	else if (extension == ".png" || extension == ".jpg") {
-		ConvertTexture(filePath);
-	}
+	
 }
 
 void ResourceImporter::ImportAllAssets()
