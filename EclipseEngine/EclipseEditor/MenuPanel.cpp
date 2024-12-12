@@ -459,6 +459,27 @@ void MenuPanel::Render() {
 
 			ImGui::EndMenu();
 		}
+
+		// Render start/pause/stop buttons in the center
+		ImGui::SetCursorPos(ImVec2(ImGui::GetWindowWidth() / 2 - 50, ImGui::GetWindowHeight() / 2 - 10));
+		if (ImGui::Button("Start")) {
+			m_SystemState = SystemState::Running;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Pause")) {
+			m_SystemState = SystemState::Paused;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Stop")) {
+			m_SystemState = SystemState::Stopped;
+		}
+
+		// Display the current state
+		ImGui::Text("Current State: %s",
+			m_SystemState == SystemState::Stopped ? "Stopped" :
+			m_SystemState == SystemState::Running ? "Running" : "Paused");
+
         ImGui::EndMainMenuBar();
     }
+
 }
