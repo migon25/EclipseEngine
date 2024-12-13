@@ -13,8 +13,8 @@ Scene::~Scene()
 bool Scene::Initialize()
 {
 	activeCamera = new Camera(1500, 844, glm::vec3(7.0f, 4.0f, -7.0f));
-	auto initScene = modelLoader.LoadModel("Resources/Assets/fbx_files/Street/untitled.fbx");
-	AddGameObject(initScene);
+	//auto initScene = modelLoader.LoadModel("Resources/Assets/fbx_files/Street/untitled.fbx");
+	//AddGameObject(initScene);
 	return true;
 }
 
